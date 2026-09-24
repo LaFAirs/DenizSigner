@@ -3,6 +3,7 @@ import { invoke } from "@tauri-apps/api/core";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useError } from "../ErrorContext";
+import { useDialog } from "../DialogContext";
 import { useTranslation } from "react-i18next";
 
 export type Certificate = {
@@ -19,6 +20,7 @@ export const Certificates = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const loadingRef = useRef<boolean>(false);
   const { err } = useError();
+  const { confirm } = useDialog();
 
   const loadCertificates = useCallback(async () => {
     if (loadingRef.current) return;
@@ -91,7 +93,13 @@ export const Certificates = () => {
                       className="cert-item-revoke"
                       role="button"
                       tabIndex={0}
-                      onClick={() => revokeCertificate(cert.serialNumber)}
+                      onClick={() =>
+                        confirm(
+                          t("certificates.revoke_title"),
+                          t("certificates.revoke_message"),
+                          () => revokeCertificate(cert.serialNumber),
+                        )
+                      }
                     >
                       {t("certificates.revoke")}
                     </td>

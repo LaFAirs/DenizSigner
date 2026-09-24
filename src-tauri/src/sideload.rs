@@ -129,17 +129,121 @@ pub async fn install_sidestore_operation(
     Ok(())
 }
 
+/// Hard cap for a single IPA download (512 MiB — far above real
+/// SideStore/LiveContainer artifacts, far below abuse scale).
+pub const MAX_DOWNLOAD_BYTES: u64 = 512 * 1024 * 1024;
+/// Maximum redirect hops followed, each re-validated against the allowlist.
+const MAX_REDIRECTS: u8 = 5;
+
+/// Downloads an allowlisted URL to `dest` (a caller-chosen temp path with a
+/// fixed filename — never derived from remote data, so no path traversal).
+/// Redirects are followed manually (max [`MAX_REDIRECTS`]) and every hop is
+/// re-validated, so a redirect to an arbitrary host is blocked while legit
+/// GitHub → CDN redirects keep working. The body streams with a hard size
+/// cap; query strings never reach logs ([`redact_url`]).
 pub async fn download(url: impl AsRef<str>, dest: &PathBuf) -> Result<(), AppError> {
-    let url = require_allowed_url(url.as_ref(), &[])?;
-    let response = reqwest::get(url.clone())
-        .await
-        .map_err(|e| AppError::Download(format!("{}: {e}", redact_url(&url))))?;
-    if !response.status().is_success() {
-        return Err(AppError::Download(format!("Failed to download file: HTTP {}", response.status())));
-    }
-    let bytes = response.bytes().await.map_err(|e| AppError::Download(e.to_string()))?;
-    tokio::fs::write(dest, &bytes)
+    use futures::StreamExt;
+
+    let mut current = require_allowed_url(url.as_ref(), &[])?;
+    let client = reqwest::Client::builder()
+        .redirect(reqwest::redirect::Policy::none())
+        .build()
+        .map_err(|e| AppError::Download(format!("HTTP client setup failed: {e}")))?;
+
+    let mut hops: u8 = 0;
+    let response = loop {
+        let redacted = redact_url(&current);
+        let resp = client
+            .get(current.clone())
+            .send()
+            .await
+            .map_err(|e| AppError::Download(format!("{redacted}: {e}")))?;
+        let status = resp.status();
+        if status.is_success() {
+            break resp;
+        }
+        if status.is_redirection() {
+            hops += 1;
+            if hops > MAX_REDIRECTS {
+                return Err(AppError::Download(format!(
+                    "{redacted}: too many redirects"
+                )));
+            }
+            let location = resp.headers().get(reqwest::header::LOCATION).ok_or_else(|| {
+                AppError::Download(format!("{redacted}: redirect without location"))
+            })?;
+            let location = location.to_str().map_err(|_| {
+                AppError::Download(format!("{redacted}: invalid redirect target"))
+            })?;
+            // Resolve relative targets against the current URL, then validate.
+            let next = current.join(location).map_err(|e| {
+                AppError::Download(format!("{redacted}: invalid redirect target: {e}"))
+            })?;
+            current = require_allowed_url(next.as_str(), &[]).map_err(|_| {
+                AppError::Network(format!(
+                    "Blocked redirect to '{}'. See PRIVACY.md for the network allowlist.",
+                    next.host_str().unwrap_or("?")
+                ))
+            })?;
+            continue;
+        }
+        return Err(AppError::Download(format!(
+            "Failed to download file: HTTP {status} ({redacted})"
+        )));
+    };
+
+    check_content_length(response.content_length())?;
+    // Truncate (never append to) any stale temp file with the same fixed name.
+    let mut file = tokio::fs::File::create(dest)
         .await
         .map_err(|e| AppError::Filesystem("Failed to write downloaded file".into(), e.to_string()))?;
+    let mut total: u64 = 0;
+    let mut stream = response.bytes_stream();
+    while let Some(chunk) = stream.next().await {
+        let chunk =
+            chunk.map_err(|e| AppError::Download(format!("Download interrupted: {e}")))?;
+        total = add_checked(total, chunk.len() as u64)?;
+        tokio::io::AsyncWriteExt::write_all(&mut file, &chunk)
+            .await
+            .map_err(|e| AppError::Filesystem("Failed to write downloaded file".into(), e.to_string()))?;
+    }
     Ok(())
+}
+
+/// Rejects declared bodies larger than [`MAX_DOWNLOAD_BYTES`].
+fn check_content_length(len: Option<u64>) -> Result<(), AppError> {
+    if let Some(len) = len {
+        add_checked(0, len)?;
+    }
+    Ok(())
+}
+
+/// Adds bytes under the cap; errors before any overflow or oversize write.
+fn add_checked(total: u64, add: u64) -> Result<u64, AppError> {
+    let total = total
+        .checked_add(add)
+        .ok_or_else(|| AppError::Download("Download size overflow.".to_string()))?;
+    if total > MAX_DOWNLOAD_BYTES {
+        return Err(AppError::Download(format!(
+            "Download exceeds the {} MiB safety limit.",
+            MAX_DOWNLOAD_BYTES / (1024 * 1024)
+        )));
+    }
+    Ok(total)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn size_cap_bounds() {
+        assert!(add_checked(0, 1024).is_ok());
+        assert!(add_checked(MAX_DOWNLOAD_BYTES - 1, 1).is_ok());
+        assert!(add_checked(0, MAX_DOWNLOAD_BYTES + 1).is_err());
+        assert!(add_checked(u64::MAX, 1).is_err());
+        assert!(check_content_length(None).is_ok());
+        assert!(check_content_length(Some(MAX_DOWNLOAD_BYTES)).is_ok());
+        assert!(check_content_length(Some(MAX_DOWNLOAD_BYTES + 1)).is_err());
+    }
 }

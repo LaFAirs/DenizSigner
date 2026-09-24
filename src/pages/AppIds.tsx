@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useStore } from "../StoreContext";
 import { useError } from "../ErrorContext";
+import { useDialog } from "../DialogContext";
 import { useTranslation } from "react-i18next";
 
 type AppId = {
@@ -32,6 +33,7 @@ export const AppIds = () => {
   const [appIdDeletion] = useStore<boolean>("allowAppIdDeletion", false);
 
   const { err } = useError();
+  const { confirm } = useDialog();
 
   const loadAppIds = useCallback(async () => {
     if (loadingRef.current) return;
@@ -131,7 +133,13 @@ export const AppIds = () => {
                     {appIdDeletion && (
                       <td
                         className="cert-item-revoke"
-                        onClick={() => deleteId(appId.appIdId)}
+                        onClick={() =>
+                          confirm(
+                            t("app_ids.delete_title"),
+                            t("app_ids.delete_message"),
+                            () => deleteId(appId.appIdId),
+                          )
+                        }
                       >
                         {t("common.delete")}
                       </td>

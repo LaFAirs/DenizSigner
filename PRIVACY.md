@@ -46,6 +46,24 @@ device change only; no background polling loops.
    (Choose IPA / drag & drop) needs **no** network at all.
 4. **Help links**: opened in the system browser on click.
 
+## Documented hosts (machine-checked)
+
+This table is the contract: `documented_hosts()` in
+`src-tauri/src/network_allowlist.rs` lists these exact strings, and the
+`privacy_documents_all_hosts` unit test fails the build if any of them stops
+appearing in this file. Add a host to the code only together with a row here.
+
+| Host | Zweck | Wann | Daten |
+| ---- | ----- | ---- | ----- |
+| Apple (hosts internal to `isideload`: GSA auth, developer portal) | Login / Developer API (Apple-ID, 2FA-Session, Zertifikate, App-IDs, Provisioning, Signing) | bei Apple-Funktionen (Login, Zertifikate, Install) | notwendige Auth-/Developer-Daten, nur im Transit |
+| ani.sidestore.io | Anisette (Default-Server, in Settings änderbar) | beim Login/Signing | Anisette-bezogene Routing-Daten des Apple-Protokolls |
+| github.com | IPA-Download (SideStore-/LiveContainer-Releases) | nur nach Benutzeraktion (Install-Klick) | Download-Anfrage (Dateiname), Antwort-Bytes |
+| objects.githubusercontent.com | GitHub-CDN als Redirect-Ziel von github.com | nur nach Benutzeraktion (Redirect) | Download-Anfrage, Antwort-Bytes |
+| release-assets.githubusercontent.com | GitHub-CDN als Redirect-Ziel von github.com | nur nach Benutzeraktion (Redirect) | Download-Anfrage (signierte URL ohne Logging), Antwort-Bytes |
+| iforgot.apple.com | Hilfe-Link (Account-Entsperrung), Browser | nur nach Klick | keine (Browser-Navigation) |
+| apple.co | Hilfe-Link (iTunes-Download), Browser | nur nach Klick | keine (Browser-Navigation) |
+| andere | — | — | keine (blockiert, siehe `require_allowed_url`) |
+
 ## Storage
 
 | What | Where |

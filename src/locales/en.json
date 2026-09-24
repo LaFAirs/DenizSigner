@@ -130,7 +130,9 @@
     "serial_number": "Serial Number",
     "machine_name": "Machine Name",
     "machine_id": "Machine ID",
-    "revoke": "Revoke"
+    "revoke": "Revoke",
+    "revoke_title": "Revoke certificate?",
+    "revoke_message": "This will permanently revoke the development certificate. This cannot be undone."
   },
   "app_ids": {
     "manage": "Manage App IDs",
@@ -145,7 +147,9 @@
     "expiration": "Expiration",
     "id": "ID",
     "identifier": "Identifier",
-    "never": "Never"
+    "never": "Never",
+    "delete_title": "Delete App ID?",
+    "delete_message": "This will permanently delete the App ID. This cannot be undone."
   },
   "pairing": {
     "manage": "Manage Pairing File",
@@ -200,7 +204,14 @@
     "dont_use_keyring_message": "This makes DenizSigner less secure by storing pairing files, anisette state, and certificates on disk. Enable this only if the default keyring storage doesn't work and you understand the risks.",
     "privacy_heading": "Privacy",
     "privacy_note": "DenizSigner does not use analytics or third-party telemetry.",
-    "network_activity": "Network activity (allowlist)"
+    "network_activity": "Network activity (allowlist)",
+    "security_heading": "Security",
+    "security_network": "DenizSigner has no analytics, no tracking, and no automatic update service.",
+    "security_apple": "Your Apple password is needed for Apple sign-in. DenizSigner only stores it if you enable “Save Credentials”.",
+    "security_anisette": "An Anisette server is part of the Apple authentication and signing flow. If you use your own server, you should trust its operator.",
+    "security_local": "Your signing credentials are stored locally in the operating system keyring.",
+    "custom_anisette_title": "Custom Anisette Server",
+    "custom_anisette_body": "Authentication-related communication may be sent to this server. Only use a server you trust."
   },
   "dialog": {
     "confirm": "Confirm",

@@ -51,6 +51,22 @@ ok(read("src/locales/de.json").includes("privacy_note"), "de privacy keys");
 ok(read("src/DialogContext.tsx").includes("confirm"), "confirm dialog");
 ok(read("src/pages/Settings.tsx").includes("confirm("), "confirm used in Settings");
 ok(read("src/pages/Pairing.tsx").includes("confirm("), "confirm used in Pairing");
+ok(read("src/pages/Certificates.tsx").includes("revoke_title"), "revoke confirm in Certificates");
+ok(read("src/pages/AppIds.tsx").includes("delete_title"), "delete confirm in AppIds");
+
+// 7. Secrets hygiene in frontend: password cleared after login, never stored.
+const appleId = read("src/AppleID.tsx");
+ok(appleId.includes('setPasswordInput("")'), "password cleared from UI memory");
+ok(!appleId.includes("localStorage"), "no localStorage in AppleID");
+ok(!appleId.includes("store.set"), "no store writes in AppleID");
+ok(!appleId.includes("console.log(password"), "no password logging");
+
+// 8. Security section + custom-anisette warning in Settings.
+const settings = read("src/pages/Settings.tsx");
+ok(settings.includes("security_heading"), "security section");
+ok(settings.includes("custom_anisette_title"), "custom anisette warning");
+ok(read("src/locales/en.json").includes("security_local"), "en security keys");
+ok(read("src/locales/de.json").includes("security_local"), "de security keys");
 
 // 7. Docs.
 ok(read("PRIVACY.md").includes("DenizSigner"), "PRIVACY.md");

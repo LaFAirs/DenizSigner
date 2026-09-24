@@ -119,6 +119,14 @@ export const Settings = ({
           customToggleLabel={t("settings.use_custom_anisette")}
           presetToggleLabel={t("settings.back_preset_servers")}
         />
+        {anisetteServers.every(([value]) => value !== anisetteServer) && (
+          <div className="warn-box" role="note">
+            <strong>{t("settings.custom_anisette_title")}</strong>
+            <p className="settings-hint" style={{ margin: "0.25em 0 0" }}>
+              {t("settings.custom_anisette_body")}
+            </p>
+          </div>
+        )}
         <div>
           <Dropdown
             label={t("app.language")}
@@ -259,6 +267,15 @@ export const Settings = ({
             <li>Anisette server of your choice (default ani.sidestore.io)</li>
             <li>github.com release assets — only IPAs you explicitly install</li>
             <li>iforgot.apple.com / apple.co — help links opened in the browser</li>
+          </ul>
+        </div>
+        <div>
+          <h3 style={{ margin: "0.5em 0 0.25em" }}>{t("settings.security_heading")}</h3>
+          <ul className="settings-hint" style={{ margin: "0.25em 0", paddingLeft: "1.25em" }}>
+            <li>{t("settings.security_network")}</li>
+            <li>{t("settings.security_apple")}</li>
+            <li>{t("settings.security_anisette")}</li>
+            <li>{t("settings.security_local")}</li>
           </ul>
         </div>
         <div>

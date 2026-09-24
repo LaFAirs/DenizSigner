@@ -26,10 +26,12 @@ use crate::{
     sideload::{SideloaderGuard, SideloaderMutex},
 };
 
-/// Signs in with an Apple ID. The password is kept in memory only for the
-/// login call; only the keyring holds it afterwards (and only if the user
-/// opts into "save credentials"). Apple-ID e-mails (not secrets) live in
-/// `data.json` under app-data.
+/// Signs in with an Apple ID. The password is wrapped in `Zeroizing` on
+/// arrival so it is wiped as soon as the login call (and optional keyring
+/// save) completes; only the keyring holds it afterwards, and only if the
+/// user opts into "save credentials". Apple-ID e-mails (not secrets) live in
+/// `data.json` under app-data. Copies inside `isideload`/keyring internals
+/// are outside our control — documented in SECURITY_AUDIT.md.
 #[tauri::command]
 pub async fn login_new(
     handle: AppHandle,
@@ -40,6 +42,7 @@ pub async fn login_new(
     anisette_server: String,
     save_credentials: bool,
 ) -> Result<(), AppError> {
+    let password = zeroize::Zeroizing::new(password);
     let account = login(&handle, window, &email, &password, anisette_server).await?;
     *sideloader_state.lock().unwrap() = Some(account);
     if save_credentials {
@@ -73,13 +76,23 @@ pub async fn login_stored(
     let password = credential_entry(&email)?.get_password().map_err(|e| {
         AppError::KeyringWithMessage("Failed to get credentials".to_string(), e.to_string())
     })?;
+    let password = zeroize::Zeroizing::new(password);
     let account = login(&handle, window, &email, &password, anisette_server).await?;
     *sideloader_state.lock().unwrap() = Some(account);
     Ok(())
 }
 
+/// Deletes an account: keyring password, `data.json` metadata, and — only if
+/// the deleted address owns the live in-memory session — that session.
+/// Other accounts' sessions are never touched. The shared anisette state is
+/// intentionally kept (it is not per-account; wiping it would log out other
+/// accounts) — see SECURITY_AUDIT.md.
 #[tauri::command]
-pub fn delete_account(handle: AppHandle, email: String) -> Result<(), AppError> {
+pub fn delete_account(
+    handle: AppHandle,
+    sideloader_state: State<'_, SideloaderMutex>,
+    email: String,
+) -> Result<(), AppError> {
     let store = handle
         .store("data.json")
         .map_err(|e| AppError::Misc(format!("Failed to get store: {e:?}")))?;
@@ -92,7 +105,19 @@ pub fn delete_account(handle: AppHandle, email: String) -> Result<(), AppError> 
     credential_entry(&email)?.delete_credential().map_err(|e| {
         AppError::KeyringWithMessage("Failed to delete credentials".into(), e.to_string())
     })?;
+    if should_invalidate(
+        sideloader_state.lock().unwrap().as_ref().map(|a| a.get_email()),
+        &email,
+    ) {
+        *sideloader_state.lock().unwrap() = None;
+    }
     Ok(())
+}
+
+/// True when the live session belongs to the deleted account (case-insensitive
+/// comparison on the normalized address; `None` session never invalidates).
+fn should_invalidate(logged_in: Option<&str>, deleted: &str) -> bool {
+    logged_in.is_some_and(|current| current.eq_ignore_ascii_case(deleted))
 }
 
 #[tauri::command]
@@ -148,9 +173,10 @@ async fn login(
                 });
                 let result = rx.recv_timeout(Duration::from_secs(120))?;
                 window_clone.unlisten(handler_id);
-                Ok(TwoFactorCallbackResponse::SubmitCode(
-                    result.trim_matches('"').to_string(),
-                ))
+                // Wipe the code as soon as it is handed to the auth call.
+                // It is never logged, stored, or forwarded anywhere else.
+                let code = zeroize::Zeroizing::new(result.trim_matches('"').to_string());
+                Ok(TwoFactorCallbackResponse::SubmitCode(code.to_string()))
             }
             .boxed()
         }
@@ -276,4 +302,17 @@ pub async fn delete_app_id(
         .delete_app_id(&team, &app_id_id, None)
         .await?;
     Ok(())
+}
+
+#[cfg(test)]
+mod tests {
+    use super::should_invalidate;
+
+    #[test]
+    fn invalidates_only_matching_session() {
+        assert!(should_invalidate(Some("user@example.com"), "user@example.com"));
+        assert!(should_invalidate(Some("User@Example.COM"), "user@example.com"));
+        assert!(!should_invalidate(Some("other@example.com"), "user@example.com"));
+        assert!(!should_invalidate(None, "user@example.com"));
+    }
 }

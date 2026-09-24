@@ -22,15 +22,35 @@ pub struct ExtendedLogRecord {
     pub timestamp: String,
 }
 
-/// Replaces likely-secret values with `[redacted]`.
+/// Replaces likely-secret values with `[redacted]`, and strips URL query
+/// strings (which routinely carry signed tokens) down to `?`.
+/// Best-effort defense in depth: secrets must never be *passed* to logging
+/// in the first place (see call sites); this only limits accidental leaks.
 pub fn redact(message: &str) -> String {
     let mut out = message.to_string();
     for key in [
-        "password", "passwd", "2fa", "two-factor", "token", "session", "cookie", "privatekey",
-        "private_key", "secret", "authorization",
+        "password",
+        "passwd",
+        "2fa",
+        "two-factor",
+        "tfa_code",
+        "verification_code",
+        "token",
+        "session",
+        "cookie",
+        "privatekey",
+        "private_key",
+        "secret",
+        "authorization",
+        "credential",
+        "set-cookie",
     ] {
         let mut search = 0;
-        while let Some(idx) = out.to_lowercase()[search..].find(key) {
+        loop {
+            let lower = out.to_lowercase();
+            let Some(idx) = lower[search..].find(key) else {
+                break;
+            };
             let abs = search + idx;
             // Redact the remainder of the line segment after the key.
             let end = out[abs..]
@@ -44,7 +64,25 @@ pub fn redact(message: &str) -> String {
             }
         }
     }
-    out
+    // Strip `?...` query strings (signed download URLs, auth callbacks).
+    let mut stripped = String::with_capacity(out.len());
+    let mut chars = out.chars();
+    while let Some(c) = chars.next() {
+        if c == '?' {
+            // Keep the `?` marker so truncation is visible, drop the value
+            // up to the next whitespace (query runs to end of the token).
+            stripped.push('?');
+            for c2 in chars.by_ref() {
+                if c2.is_whitespace() {
+                    stripped.push(c2);
+                    break;
+                }
+            }
+        } else {
+            stripped.push(c);
+        }
+    }
+    stripped
 }
 
 pub struct FrontendLoggingLayer {
@@ -140,5 +178,18 @@ mod tests {
         assert!(!msg.contains("hunter2"));
         assert!(!msg.contains("abc"));
         assert!(msg.contains("[redacted]"));
+    }
+
+    #[test]
+    fn redacts_2fa_tokens_and_query_secrets() {
+        let msg = redact("submit 2fa=123456 for session xyz");
+        assert!(!msg.contains("123456"));
+        let msg = redact("GET https://cdn.example/a/b?st=ABCDEFG&x=1 done");
+        assert!(!msg.contains("ABCDEFG"));
+        assert!(msg.contains("https://cdn.example/a/b? done"));
+        let msg = redact("authorization: Bearer ABCDEF");
+        assert!(!msg.contains("ABCDEF"));
+        let msg = redact("python -c pass");
+        assert!(msg.contains("python -c pass"));
     }
 }

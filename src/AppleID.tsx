@@ -208,13 +208,19 @@ export const AppleID = ({
                 //   return;
                 // }
                 let promise = async () => {
-                  await invoke("login_new", {
-                    email: emailInput,
-                    password: passwordInput,
-                    saveCredentials: saveCredentials,
-                    anisetteServer,
-                  });
-                  setForceUpdateIds((v) => v + 1);
+                  try {
+                    await invoke("login_new", {
+                      email: emailInput,
+                      password: passwordInput,
+                      saveCredentials: saveCredentials,
+                      anisetteServer,
+                    });
+                    setForceUpdateIds((v) => v + 1);
+                  } finally {
+                    // Drop the password from UI memory immediately; it is
+                    // only ever sent to the backend login command.
+                    setPasswordInput("");
+                  }
                 };
                 toast.promise(promise, {
                   loading: t("apple_id.logging_in"),

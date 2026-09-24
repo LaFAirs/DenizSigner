@@ -126,7 +126,9 @@
     "serial_number": "Seriennummer",
     "machine_name": "Gerätename",
     "machine_id": "Geräte-ID",
-    "revoke": "Widerrufen"
+    "revoke": "Widerrufen",
+    "revoke_title": "Zertifikat widerrufen?",
+    "revoke_message": "Das Entwicklungszertifikat wird dauerhaft widerrufen. Das kann nicht rückgängig gemacht werden."
   },
   "app_ids": {
     "manage": "App-IDs verwalten",
@@ -141,7 +143,9 @@
     "expiration": "Ablaufdatum",
     "id": "ID",
     "identifier": "Bezeichner",
-    "never": "Nie"
+    "never": "Nie",
+    "delete_title": "App-ID löschen?",
+    "delete_message": "Die App-ID wird dauerhaft gelöscht. Das kann nicht rückgängig gemacht werden."
   },
   "pairing": {
     "manage": "Pairing-Datei verwalten",
@@ -187,7 +191,14 @@
     "language_hint": "Fehlt deine Sprache? Dupliziere en.json im locales-Ordner.",
     "privacy_heading": "Privatsphäre",
     "privacy_note": "DenizSigner nutzt keine Analyse- oder Telemetriedienste.",
-    "network_activity": "Netzwerkaktivität (Allowlist)"
+    "network_activity": "Netzwerkaktivität (Allowlist)",
+    "security_heading": "Sicherheit",
+    "security_network": "DenizSigner hat keine Analysefunktionen, kein Tracking und keinen automatischen Update-Dienst.",
+    "security_apple": "Dein Apple-Passwort wird für die Apple-Anmeldung benötigt. DenizSigner speichert es nur, wenn du „Anmeldedaten speichern“ aktivierst.",
+    "security_anisette": "Ein Anisette-Server ist Bestandteil des Apple-Authentifizierungs- und Signierablaufs. Bei einem eigenen Server solltest du dem Betreiber vertrauen.",
+    "security_local": "Deine Signier-Anmeldedaten werden lokal im Schlüsselbund des Betriebssystems gespeichert.",
+    "custom_anisette_title": "Eigener Anisette-Server",
+    "custom_anisette_body": "Authentifizierungsbezogene Kommunikation kann an diesen Server gesendet werden. Nutze nur einen Server, dem du vertraust."
   },
   "dialog": {
     "confirm": "Bestätigen",
