@@ -1,0 +1,56 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release-windows:
+    name: Release (Windows x64)
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      - name: Build + publish draft release assets
+        uses: tauri-apps/tauri-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ github.ref_name }}
+          releaseName: "DenizSigner ${{ github.ref_name }}"
+          releaseBody: |
+            Private iOS Sideloading & Signing Tool (Windows x64).
+
+            Install `DenizSigner_<version>_x64-setup.exe` (NSIS) or
+            `DenizSigner_<version>_x64_en-US.msi`. `denizsigner.exe` runs portable.
+
+            Verify integrity with `SHA256SUMS.txt`:
+            `certutil -hashfile <file> SHA256`
+
+            Local-first: no accounts, no analytics, no telemetry.
+            See PRIVACY.md for the documented network allowlist.
+          releaseDraft: false
+          prerelease: false
+          args: --bundles nsis,msi
+      - name: Generate SHA256SUMS.txt
+        shell: pwsh
+        run: |
+          Get-ChildItem src-tauri/target/release/bundle/msi/*.msi, src-tauri/target/release/bundle/nsis/*-setup.exe, src-tauri/target/release/denizsigner.exe |
+            Get-FileHash -Algorithm SHA256 |
+            ForEach-Object { "{0}  {1}" -f $_.Hash.ToLower(), (Split-Path $_.Path -Leaf) } |
+            Out-File -Encoding ascii SHA256SUMS.txt
+          Get-Content SHA256SUMS.txt
+      - name: Upload checksums
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ github.ref_name }} SHA256SUMS.txt --clobber

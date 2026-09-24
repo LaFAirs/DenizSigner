@@ -1,0 +1,45 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  frontend:
+    name: Frontend (tsc + vite + tests + audits)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx tsc --noEmit
+      - run: npm run build
+      - run: npm test
+      - name: Network audit
+        shell: pwsh
+        run: powershell -ExecutionPolicy Bypass -File scripts/audit-network.ps1
+      - name: Branding audit
+        shell: pwsh
+        run: powershell -ExecutionPolicy Bypass -File scripts/check-branding.ps1
+
+  backend:
+    name: Backend (cargo test)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: src-tauri
+      - name: No secrets committed
+        shell: pwsh
+        run: |
+          $bad = git ls-files | Select-String -Pattern '\.(p12|pfx|mobileprovision|cer|key)$|Secrets\.swift$|\.env$'
+          if ($bad) { $bad; exit 1 } else { echo "OK: no secrets committed." }
+      - run: cargo test
+        working-directory: src-tauri

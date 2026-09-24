@@ -21,13 +21,13 @@
 
   --glass-surface: #1c1c1e;
   --glass-surface-alt: #2c2c2e;
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-highlight: #0a84ff;
-  --text-muted: #8e8e93;
-  --accent-primary: #0a84ff;
-  --accent-secondary: #007aff;
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-highlight: #2f7bff;
+  --text-muted: #c3c9d6;
+  --accent-primary: #2f7bff;
+  --accent-secondary: #5b9bff;
   --success: #30d158;
-  --danger: #ff453a;
+  --danger: #ff6b62;
 }
 
 * {
@@ -175,7 +175,7 @@ body {
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.13em;
-  color: var(--text-muted);
+  color: rgba(255, 255, 255, 0.92);
 }
 
 .text-muted {
@@ -184,7 +184,7 @@ body {
 
 .section-hint {
   font-size: 0.9rem;
-  color: rgba(247, 249, 255, 0.5);
+  color: rgba(255, 255, 255, 0.85);
 }
 
 .section-hint.placeholder {
@@ -219,7 +219,7 @@ select option:hover {
 }
 
 input::placeholder {
-  color: rgba(242, 242, 247, 0.55);
+  color: rgba(242, 242, 247, 0.75);
 }
 
 input:focus,
@@ -294,6 +294,14 @@ button:active:not(:disabled) {
 .action-row.single-row button {
   flex: 1;
   min-width: 160px;
+  background: linear-gradient(180deg, #3b86ff, #1d6ff2);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.action-row.single-row button:hover:not(:disabled) {
+  background: linear-gradient(180deg, #5b9bff, #2f7bff);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
 .workspace-list {
@@ -326,7 +334,7 @@ button:active:not(:disabled) {
 
 .workspace-list-item span {
   font-size: 0.95rem;
-  color: rgba(247, 249, 255, 0.35);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .workspace-list-item:hover {

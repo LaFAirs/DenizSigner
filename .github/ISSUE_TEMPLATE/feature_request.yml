@@ -1,0 +1,17 @@
+name: Feature request
+description: Suggest an idea for DenizSigner
+labels: [enhancement]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: Idea
+      description: What should DenizSigner do, and why?
+    validations:
+      required: true
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy checklist
+      options:
+        - label: This idea needs no new network endpoints, no analytics, and no accounts.

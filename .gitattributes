@@ -1,0 +1,20 @@
+# Auto-detect text files and ensure LF in the repo; Windows checkout keeps CRLF.
+* text=auto
+
+# Keep SVGs and JSON stable across platforms.
+*.svg text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+*.rs text eol=lf
+*.ts text eol=lf
+*.tsx text eol=lf
+*.md text eol=lf
+
+# Never commit signing material or secrets (belt & suspenders next to CI).
+*.p12 binary
+*.pfx binary
+*.mobileprovision binary
+*.cer binary
+*.key binary
+.env binary

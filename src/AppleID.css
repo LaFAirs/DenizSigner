@@ -19,6 +19,17 @@
   width: 100%;
 }
 
+.credentials button[type="submit"] {
+  background: linear-gradient(180deg, #3b86ff, #1d6ff2);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+.credentials button[type="submit"]:hover:not(:disabled) {
+  background: linear-gradient(180deg, #5b9bff, #2f7bff);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
 .credentials .save-credentials {
   margin: 0;
   padding: 0.25rem 0;
@@ -112,8 +123,8 @@
 }
 
 .action-button.primary {
-  background: var(--accent-primary);
-  border-color: var(--accent-primary);
+  background: linear-gradient(180deg, #3b86ff, #1d6ff2);
+  border-color: rgba(255, 255, 255, 0.25);
   color: #fff;
 }
 
