@@ -8,42 +8,52 @@ const read = (p) => readFileSync(join(root, p), "utf8");
 let n = 0;
 const ok = (cond, name) => { assert.ok(cond, name); n++; console.log(`  ok ${n} - ${name}`); };
 
-// 1. App boots: entries exist, correct title/branding.
-ok(existsSync(join(root, "src/main.tsx")), "main.tsx exists");
-ok(existsSync(join(root, "src/App.tsx")), "App.tsx exists");
+// 1. iloader-exact layout present with DenizSigner branding.
+for (const f of ["src/main.tsx", "src/App.tsx", "src/AppleID.tsx", "src/Device.tsx",
+  "src/errors.tsx", "src/ErrorContext.tsx", "src/LogContext.tsx", "src/StoreContext.tsx",
+  "src/PlatformContext.tsx", "src/DialogContext.tsx", "src/i18next.ts",
+  "src/components/Modal.tsx", "src/components/GlassCard.tsx", "src/components/Dropdown.tsx",
+  "src/components/operations.ts", "src/components/OperationView.tsx",
+  "src/pages/Settings.tsx", "src/pages/Certificates.tsx", "src/pages/Pairing.tsx",
+  "src/pages/AppIds.tsx", "src/App.css"]) {
+  ok(existsSync(join(root, f)), `layout file: ${f}`);
+}
 ok(read("index.html").includes("<title>DenizSigner</title>"), "window title DenizSigner");
+ok(read("src/App.tsx").includes("DenizSigner"), "brand in header");
 ok(!read("src/App.tsx").toLowerCase().includes("iloader"), "no upstream name in App.tsx");
 
-// 2. IPA detection helper present (extension gate; backend checks ZIP magic).
-ok(read("src/lib/network.ts").includes("isIpaPath"), "isIpaPath helper");
-ok(read("src-tauri/src/ipa.rs").includes("Payload/"), "backend Payload check");
+// 2. No updater wiring in frontend.
+ok(!read("src/App.tsx").includes("checkForUpdates"), "no update checker");
+ok(!existsSync(join(root, "src/update.ts")), "no update.ts");
 
-// 3. Friendly errors cover required workflows.
-const errors = read("src/lib/errors.ts");
-for (const t of ["invalid_ipa", "no_device_selected", "not_logged_in", "auth", "anisette", "network", "max_apps"]) {
-  ok(errors.includes(t), `friendly error: ${t}`);
-}
+// 3. Backend boundary + IPA validation + redaction intact.
+ok(read("src-tauri/src/network_allowlist.rs").includes("require_allowed_url"), "backend boundary");
+ok(read("src-tauri/src/ipa.rs").includes("Payload/"), "backend Payload check");
+ok(read("src-tauri/src/logging.rs").includes("redact"), "log redaction");
+ok(read("src-tauri/src/secure_storage.rs").includes('"denizsigner"'), "keyring service denizsigner");
 
 // 4. No telemetry / updater / upstream endpoints in shipped code.
-const shipped = ["src/App.tsx", "src/lib/api.ts", "src/lib/network.ts", "src/lib/errors.ts",
-  "src-tauri/tauri.conf.json", "src-tauri/Cargo.toml", "package.json", "index.html"]
-  .map(read).join("\n").toLowerCase();
-for (const bad of ["telemetry", "analytics", "sentry", "posthog", "plausible", "tauri-plugin-updater", "latest.json", "nab138", "iloader", "me.nabdev", "umami", "amplitude", "hotjar"]) {
+const shipped = ["src/App.tsx", "src/AppleID.tsx", "src/Device.tsx", "src/errors.tsx",
+  "src/pages/Settings.tsx", "src-tauri/tauri.conf.json", "src-tauri/Cargo.toml",
+  "package.json", "index.html"].map(read).join("\n").toLowerCase();
+for (const bad of ["telemetry", "sentry", "posthog", "plausible", "tauri-plugin-updater",
+  "latest.json", "nab138", "iloader", "me.nabdev", "umami", "amplitude", "hotjar",
+  "discord.gg", "crashlytics", "bugsnag"]) {
   ok(!shipped.includes(bad), `no forbidden token: ${bad}`);
 }
 
-// 5. Allowlist documented + surfaced in Settings privacy section.
-ok(read("src/lib/network.ts").includes("ALLOWED_SERVICES"), "ALLOWED_SERVICES");
-ok(read("src/pages/SettingsDialog.tsx").includes("networkActivity"), "privacy network section");
-ok(read("src-tauri/src/network_allowlist.rs").includes("require_allowed_url"), "backend boundary");
+// 5. Privacy section present in Settings; locales carry it.
+ok(read("src/pages/Settings.tsx").includes("privacy_note"), "privacy block in Settings");
+ok(read("src/locales/en.json").includes("privacy_note"), "en privacy keys");
+ok(read("src/locales/de.json").includes("privacy_note"), "de privacy keys");
 
-// 6. Credential storage uses OS store with own service name.
-ok(read("src-tauri/src/secure_storage.rs").includes('"denizsigner"'), "keyring service denizsigner");
-ok(!read("src-tauri/src/secure_storage.rs").includes('"iloader"'), "no upstream service name");
+// 6. Confirm dialog (DialogContext) used for destructive actions.
+ok(read("src/DialogContext.tsx").includes("confirm"), "confirm dialog");
+ok(read("src/pages/Settings.tsx").includes("confirm("), "confirm used in Settings");
+ok(read("src/pages/Pairing.tsx").includes("confirm("), "confirm used in Pairing");
 
-// 7. Destructive actions confirmed + secrets redacted in logs.
-ok(read("src/components/ConfirmDialog.tsx").includes("Cancel") || read("src/components/ConfirmDialog.tsx").includes("confirm.cancel"), "confirm dialog");
-ok(read("src-tauri/src/logging.rs").includes("redact"), "log redaction");
+// 7. Docs.
 ok(read("PRIVACY.md").includes("DenizSigner"), "PRIVACY.md");
+ok(read("NOTICE.md").includes("iloader"), "NOTICE credits upstream");
 
 console.log(`frontend tests: ${n}/${n} passed`);

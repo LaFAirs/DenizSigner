@@ -1,24 +1,67 @@
-import { ReactNode } from "react";
+import { useEffect } from "react";
 import "./Modal.css";
 
-export function Modal({ open, onClose, children, label }: {
-  open: boolean;
-  onClose: () => void;
-  children: ReactNode;
-  label: string;
-}) {
-  if (!open) return null;
+export const Modal = ({
+  isOpen,
+  close,
+  sizeFit,
+  children,
+  hideClose,
+  zIndex,
+}: {
+  children: React.ReactNode;
+  isOpen: boolean;
+  close?: () => void;
+  sizeFit?: boolean;
+  hideClose?: boolean;
+  zIndex?: number;
+}) => {
+  useEffect(() => {
+    if (!isOpen || !close) {
+      return;
+    }
+
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        close();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isOpen, close]);
+
   return (
-    <div className="modal-backdrop" onClick={onClose} role="presentation">
-      <div
-        className="modal"
-        role="dialog"
-        aria-label={label}
-        aria-modal="true"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {children}
-      </div>
-    </div>
+    <>
+      {isOpen && (
+        <div
+          className={`modal-container`}
+          style={
+            zIndex
+              ? {
+                  zIndex: zIndex.toString(),
+                }
+              : {}
+          }
+        >
+          <div className={`modal${sizeFit ? " size-fit" : ""}`}>
+            {!hideClose && close && (
+              <button
+                className="modal-close"
+                onClick={() => {
+                  close();
+                }}
+              >
+                &#x2715;
+              </button>
+            )}
+            <div className="modal-content">{children}</div>
+          </div>
+        </div>
+      )}
+    </>
   );
-}
+};

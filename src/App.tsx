@@ -1,213 +1,429 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { getVersion } from "@tauri-apps/api/app";
-import { listen } from "@tauri-apps/api/event";
-import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
-import { toast } from "sonner";
 import "./App.css";
-import { api, DeviceInfo } from "./lib/api";
-import { isIpaPath } from "./lib/network";
-import { DeviceCard } from "./components/DeviceCard";
-import { OperationFailed, uiProgress, useOperationListener } from "./components/operations";
-import { SettingsDialog, Prefs } from "./pages/SettingsDialog";
-import { LogsDialog } from "./pages/LogsDialog";
-import { AboutDialog } from "./pages/AboutDialog";
-import { CertificatesDialog } from "./pages/CertificatesDialog";
-import { PairingDialog } from "./pages/PairingDialog";
+import { AppleID } from "./AppleID";
+import { Device, DeviceInfo } from "./Device";
+import { invoke } from "@tauri-apps/api/core";
+import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
+import {
+  sideloadOperation,
+  installSideStoreOperation,
+  installLiveContainerOperation,
+  Operation,
+  OperationState,
+  OperationUpdate,
+} from "./components/operations";
+import { listen } from "@tauri-apps/api/event";
+import OperationView from "./components/OperationView";
+import { toast } from "sonner";
+import { Modal } from "./components/Modal";
+import { Certificates } from "./pages/Certificates";
+import { AppIds } from "./pages/AppIds";
+import { Settings } from "./pages/Settings";
+import { Pairing } from "./pages/Pairing";
+import { getVersion } from "@tauri-apps/api/app";
+import { GlassCard } from "./components/GlassCard";
+import { useTranslation } from "react-i18next";
+import { usePlatform } from "./PlatformContext";
 
-const DEFAULT_PREFS: Prefs = {
-  lang: "en",
-  theme: "blue",
-  notifications: true,
-  startMinimized: false,
-  anisette: "ani.sidestore.io",
-  debugLogs: false,
-};
+const logo = "/d-logo.svg";
 
-function loadPrefs(): Prefs {
-  try {
-    const raw = localStorage.getItem("denizsigner.prefs");
-    if (raw) return { ...DEFAULT_PREFS, ...JSON.parse(raw) };
-  } catch {
-    /* ignore */
-  }
-  return DEFAULT_PREFS;
-}
+function App() {
+  const { t } = useTranslation();
 
-export default function App() {
-  const { t, i18n } = useTranslation();
-  const [version, setVersion] = useState("0.1.0");
+  const [operationState, setOperationState] = useState<OperationState | null>(
+    null,
+  );
   const [loggedInAs, setLoggedInAs] = useState<string | null>(null);
-  const [device, setDevice] = useState<DeviceInfo | null>(null);
-  const [noKeyring, setNoKeyring] = useState(false);
-  const [prefs, setPrefs] = useState<Prefs>(loadPrefs);
-  const [dialog, setDialog] = useState<null | "settings" | "logs" | "about" | "certs" | "pairing">(null);
-  const [ipaPath, setIpaPath] = useState<string | null>(null);
-  const [opId, setOpId] = useState<string | null>(null);
-  const [dragOver, setDragOver] = useState(false);
-  const [installing, setInstalling] = useState(false);
-  const deviceRef = useRef<HTMLElement | null>(null);
+  const [selectedDevice, setSelectedDevice] = useState<DeviceInfo | null>(null);
+  const [openModal, setOpenModal] = useState<
+    null | "certificates" | "appids" | "pairing" | "about"
+  >(null);
+  const [version, setVersion] = useState<string>("");
 
-  const opState = useOperationListener(opId, () => setInstalling(false));
+  const refreshDevicesRef = useRef<(() => void) | null>(null);
 
-  useEffect(() => {
-    void getVersion().then(setVersion).catch(() => {});
-    void api.loggedInAs().then(setLoggedInAs).catch(() => {});
-    void api.keyringAvailable().then((ok) => setNoKeyring(!ok)).catch(() => setNoKeyring(true));
-    void i18n.changeLanguage(loadPrefs().lang).catch(() => {});
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const [noKeyringAvailable, setNoKeyringAvailable] = useState<boolean>(false);
+  const { platform } = usePlatform();
 
-  // Native file drop (Tauri webview): payload.paths
-  useEffect(() => {
-    let unlisten: (() => void) | null = null;
-    void listen<{ paths: string[] }>("tauri://drag-drop", (e) => {
-      const p = e.payload.paths?.[0];
-      if (p) {
-        if (!isIpaPath(p)) {
-          toast.error(t("drop.title") + ": .ipa");
-          return;
-        }
-        setIpaPath(p);
-      }
-      setDragOver(false);
-    }).then((f) => {
-      unlisten = f;
-    });
-    return () => unlisten?.();
-  }, [t]);
-
-  const chooseIpa = useCallback(async () => {
-    const path = await openFileDialog({
-      multiple: false,
-      filters: [{ name: "IPA", extensions: ["ipa"] }],
-    });
-    if (typeof path === "string") setIpaPath(path);
-  }, []);
-
-  async function install() {
-    if (!loggedInAs) {
-      toast.error(t("drop.needLogin"));
-      setDialog("settings");
-      return;
-    }
-    if (!device) {
-      toast.error(t("drop.needDevice"));
-      deviceRef.current?.scrollIntoView({ behavior: "smooth" });
-      return;
-    }
-    if (!ipaPath) {
-      await chooseIpa();
-      return;
-    }
-    setOpId(null);
-    setInstalling(true);
-    setOpId("sideload");
+  const checkKeyring = useCallback(async () => {
     try {
-      await api.sideload(ipaPath);
-    } catch {
-      // Failure is delivered via operation_failed event; keep panel open.
+      let available = await invoke<boolean>("keyring_available");
+      setNoKeyringAvailable(!available);
+    } catch (e) {
+      console.error("Unable to check keyring availability:", e);
+      setNoKeyringAvailable(true);
     }
-  }
+  }, []);
 
-  const progress = uiProgress(opState);
-  const steps: string[] = t("progress.steps", { returnObjects: true }) as unknown as string[];
-  const failed = opState && opState.failed.length > 0;
+  useEffect(() => {
+    checkKeyring();
+  }, [checkKeyring]);
+
+  useEffect(() => {
+    const fetchVersion = async () => {
+      const version = await getVersion();
+      setVersion(version);
+    };
+    fetchVersion();
+  }, []);
+
+  const shortcutLabel = useCallback(
+    (mac: string, windows: string, linux?: string) => {
+      if (platform === "mac") return mac;
+      if (platform === "linux") return linux ?? windows;
+      return windows;
+    },
+    [platform],
+  );
+
+  const startOperation = useCallback(
+    async (
+      operation: Operation,
+      params: { [key: string]: any },
+    ): Promise<void> => {
+      setOperationState({
+        current: operation,
+        started: [],
+        failed: [],
+        completed: [],
+      });
+      return new Promise<void>(async (resolve, reject) => {
+        const unlistenFn = await listen<OperationUpdate>(
+          "operation_" + operation.id,
+          (event) => {
+            setOperationState((old) => {
+              if (old == null) return null;
+              if (event.payload.updateType === "started") {
+                return {
+                  ...old,
+                  started: [...old.started, event.payload.stepId],
+                };
+              } else if (event.payload.updateType === "finished") {
+                return {
+                  ...old,
+                  completed: [...old.completed, event.payload.stepId],
+                };
+              } else if (event.payload.updateType === "failed") {
+                return {
+                  ...old,
+                  failed: [
+                    ...old.failed,
+                    {
+                      stepId: event.payload.stepId,
+                      extraDetails: event.payload.extraDetails,
+                    },
+                  ],
+                };
+              }
+              return old;
+            });
+          },
+        );
+        try {
+          await invoke(operation.id + "_operation", params);
+          unlistenFn();
+          resolve();
+        } catch (e) {
+          unlistenFn();
+          reject(e);
+        }
+      });
+    },
+    [setOperationState],
+  );
+
+  const ensuredLoggedIn = useCallback((): boolean => {
+    if (loggedInAs) return true;
+    toast.error(t("app.must_be_logged_in"));
+    return false;
+  }, [loggedInAs, t]);
+
+  const ensureSelectedDevice = useCallback((): boolean => {
+    if (selectedDevice) return true;
+    toast.error(t("app.must_select_device"));
+    return false;
+  }, [selectedDevice, t]);
+
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (event.key === undefined) return;
+      const key = event.key.toLowerCase();
+      const primaryPressed = platform === "mac" ? event.metaKey : event.ctrlKey;
+      if (!primaryPressed) return;
+
+      if (!event.shiftKey && key === "p") {
+        event.preventDefault();
+        if (!ensureSelectedDevice()) return;
+        setOpenModal("pairing");
+      } else if (event.shiftKey && key === "c") {
+        event.preventDefault();
+        if (!ensuredLoggedIn()) return;
+        setOpenModal("certificates");
+      } else if (event.shiftKey && key === "a") {
+        event.preventDefault();
+        if (!ensuredLoggedIn()) return;
+        setOpenModal("appids");
+      } else if (!event.shiftKey && key === "r") {
+        event.preventDefault();
+        refreshDevicesRef.current?.();
+      }
+    };
+
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [platform, ensureSelectedDevice, ensuredLoggedIn]);
 
   return (
-    <main className={`shell theme-${prefs.theme}`}>
-      <header className="topbar">
-        <button className="brand" onClick={() => setDialog("about")} aria-label="DenizSigner — About">
-          <span className="d-badge">D</span>
-          <span className="brand-text">
-            <strong>DenizSigner</strong>
-            <small>{t("subtitle")}</small>
-          </span>
-        </button>
-        <nav className="top-actions">
-          <button className="top-btn" onClick={() => deviceRef.current?.scrollIntoView({ behavior: "smooth" })}>
-            {t("header.device")}
-          </button>
-          <button className="top-btn" onClick={() => setDialog("logs")}>{t("header.logs")}</button>
-          <button className="top-btn" onClick={() => setDialog("settings")}>{t("header.settings")}</button>
-        </nav>
-      </header>
-
-      <div className="content">
-        <section ref={deviceRef} className="card device-section">
-          <DeviceCard selected={device} onSelect={setDevice} />
-          <div className="quick-links">
-            <button className="link" onClick={() => (loggedInAs ? setDialog("certs") : setDialog("settings"))}>
-              {t("signing.certs")}
-            </button>
-            <button className="link" onClick={() => (device ? setDialog("pairing") : toast.error(t("drop.needDevice")))}>
-              {t("pairing.title")}
-            </button>
-          </div>
-        </section>
-
-        <section
-          className={`card drop ${dragOver ? "drag" : ""}`}
-          onDragOver={(e) => {
-            e.preventDefault();
-            setDragOver(true);
-          }}
-          onDragLeave={() => setDragOver(false)}
-          onDrop={(e) => {
-            e.preventDefault();
-            setDragOver(false);
-            const f = e.dataTransfer.files?.[0] as unknown as { path?: string; name?: string } | undefined;
-            const p = f?.path ?? (f?.name && isIpaPath(f.name) ? f.name : undefined);
-            if (p && isIpaPath(p)) setIpaPath(p);
-            else void chooseIpa();
-          }}
-        >
-          <h2>{t("drop.title")}</h2>
-          <p className="hint">{t("drop.subtitle")}</p>
-          {ipaPath && <p className="ipa-path" title={ipaPath}>{ipaPath}</p>}
-          <div className="drop-actions">
-            <button className="btn btn-ghost" onClick={() => void chooseIpa()}>{t("drop.choose")}</button>
-            <button className="btn btn-primary" disabled={installing} onClick={() => void install()}>
-              {t("drop.install")}
-            </button>
-          </div>
-          {installing || opState ? (
-            <div className="progress">
-              <div className="bar">
-                <div className="fill" style={{ width: `${Math.max(0, Math.min(6, progress)) / 6 * 100}%` }} />
-              </div>
-              <ol className="steps">
-                {steps.map((s, i) => (
-                  <li key={s} className={i <= progress ? "done" : ""} aria-current={i === progress ? "step" : undefined}>
-                    {i + 1}. {s}
-                  </li>
-                ))}
-              </ol>
-              {!installing && !failed && progress >= 6 && <p className="ok">{t("progress.finished")}</p>}
-              {failed && opState && (
-                <OperationFailed state={opState} onClose={() => setOpId(null)} />
-              )}
+    <main className="workspace">
+      <header className="workspace-header">
+        <div className="header-left">
+          <div className="title-block">
+            <img src={logo} alt={t("app.logo_alt")} className="logo" />
+            <div>
+              <h1 className="title">DenizSigner</h1>
+              <p className="subtitle">{t("subtitle")}</p>
             </div>
-          ) : (
-            <p className="ready">{loggedInAs && device ? t("drop.ready") : t("tagline")}</p>
+          </div>
+          <span className="version-pill">
+            {t("version")} {version}
+          </span>
+        </div>
+        <div className="header-actions">
+          <button className="toolbar-button" onClick={() => setOpenModal("about")}>
+            {t("app.github")}
+          </button>
+        </div>
+      </header>
+      <div className="workspace-body">
+        <aside className="workspace-sidebar">
+          <section className="workspace-section">
+            <div className="section-header">
+              <p className="section-label">{t("app.section_account")}</p>
+              {/* here to ensure spacing and stuff is correct */}
+              <span className="section-hint placeholder" aria-hidden="true">
+                Placeholder
+              </span>
+            </div>
+            <GlassCard className="panel">
+              <AppleID
+                loggedInAs={loggedInAs}
+                setLoggedInAs={setLoggedInAs}
+                noKeyringAvailable={noKeyringAvailable}
+              />
+            </GlassCard>
+          </section>
+          <section className="workspace-section">
+            <p className="section-label">{t("app.section_management")}</p>
+            <div className="workspace-list">
+              <button
+                className="workspace-list-item"
+                onClick={() => {
+                  if (!ensureSelectedDevice()) return;
+                  setOpenModal("pairing");
+                }}
+              >
+                {t("app.manage_pairing_file")}{" "}
+                <span aria-hidden="true">{shortcutLabel("⌘P", "Ctrl+P")}</span>
+              </button>
+              <button
+                className="workspace-list-item"
+                onClick={() => {
+                  refreshDevicesRef.current?.();
+                }}
+              >
+                {t("app.refresh_devices")}{" "}
+                <span aria-hidden="true">{shortcutLabel("⌘R", "Ctrl+R")}</span>
+              </button>
+              <button
+                className="workspace-list-item"
+                onClick={() => {
+                  if (!ensuredLoggedIn()) return;
+                  setOpenModal("certificates");
+                }}
+              >
+                {t("app.certificates")}{" "}
+                <span aria-hidden="true">
+                  {shortcutLabel("⌘⇧C", "Ctrl+Shift+C")}
+                </span>
+              </button>
+              <button
+                className="workspace-list-item"
+                onClick={() => {
+                  if (!ensuredLoggedIn()) return;
+                  setOpenModal("appids");
+                }}
+              >
+                {t("app.app_ids")}{" "}
+                <span aria-hidden="true">
+                  {shortcutLabel("⌘⇧A", "Ctrl+Shift+A")}
+                </span>
+              </button>
+            </div>
+          </section>
+        </aside>
+        <section className="workspace-content">
+          <section className="workspace-section">
+            <div className="section-header">
+              <p className="section-label">{t("app.devices")}</p>
+              <span className="section-hint">
+                {selectedDevice
+                  ? t("app.active_device", {
+                      name: `${selectedDevice.name} (${selectedDevice.version})`,
+                    })
+                  : t("app.select_device")}
+              </span>
+            </div>
+            <GlassCard className="panel">
+              <Device
+                selectedDevice={selectedDevice}
+                setSelectedDevice={setSelectedDevice}
+                registerRefresh={(fn) => {
+                  refreshDevicesRef.current = fn ?? null;
+                }}
+              />
+            </GlassCard>
+          </section>
+          <section className="workspace-section">
+            <div className="section-header">
+              <p className="section-label">{t("app.installers")}</p>
+              <span className="section-hint">{t("app.choose_build")}</span>
+            </div>
+            <GlassCard className="panel">
+              <div className="action-row single-row">
+                <button
+                  onClick={() => {
+                    if (!ensuredLoggedIn() || !ensureSelectedDevice()) return;
+                    startOperation(installSideStoreOperation, {
+                      nightly: false,
+                      liveContainer: false,
+                    }).catch((e) => {
+                      console.log(e.type);
+                      console.error(e.message);
+                    });
+                  }}
+                >
+                  {t("app.sidestore_stable")}
+                </button>
+                <button
+                  onClick={() => {
+                    if (!ensuredLoggedIn() || !ensureSelectedDevice()) return;
+                    startOperation(installSideStoreOperation, {
+                      nightly: true,
+                      liveContainer: false,
+                    }).catch((e) => {
+                      console.log(e.type);
+                      console.error(e.message);
+                    });
+                  }}
+                >
+                  {t("app.sidestore_nightly")}
+                </button>
+                <button
+                  onClick={() => {
+                    if (!ensuredLoggedIn() || !ensureSelectedDevice()) return;
+                    startOperation(installLiveContainerOperation, {
+                      nightly: false,
+                      liveContainer: true,
+                    }).catch((e) => {
+                      console.log(e.type);
+                      console.error(e.message);
+                    });
+                  }}
+                >
+                  {t("app.livecontainer_sidestore_stable")}
+                </button>
+                <button
+                  onClick={() => {
+                    if (!ensuredLoggedIn() || !ensureSelectedDevice()) return;
+                    startOperation(installLiveContainerOperation, {
+                      nightly: true,
+                      liveContainer: true,
+                    }).catch((e) => {
+                      console.log(e.type);
+                      console.error(e.message);
+                    });
+                  }}
+                >
+                  {t("app.livecontainer_sidestore_nightly")}
+                </button>
+                <button
+                  onClick={async () => {
+                    if (!ensuredLoggedIn() || !ensureSelectedDevice()) return;
+                    let path = await openFileDialog({
+                      multiple: false,
+                      filters: [
+                        { name: t("app.ipa_files"), extensions: ["ipa"] },
+                      ],
+                    });
+                    if (!path) return;
+                    startOperation(sideloadOperation, {
+                      appPath: path as string,
+                    }).catch((e) => {
+                      console.log(e.type);
+                      console.error(e.message);
+                    });
+                  }}
+                >
+                  {t("app.import_ipa")}
+                </button>
+              </div>
+            </GlassCard>
+          </section>
+          <section className="workspace-section">
+            <p className="section-label">{t("app.settings")}</p>
+            <GlassCard className="panel settings-panel">
+              <Settings
+                ensureSelectedDevice={ensureSelectedDevice}
+                setSelectedDevice={setSelectedDevice}
+                platform={platform}
+                shortcutLabel={shortcutLabel}
+                checkKeyring={checkKeyring}
+              />
+            </GlassCard>
+          </section>
+          {operationState && (
+            <OperationView
+              operationState={operationState}
+              closeMenu={() => setOperationState(null)}
+            />
           )}
         </section>
       </div>
-
-      <SettingsDialog
-        open={dialog === "settings"}
-        onClose={() => setDialog(null)}
-        prefs={prefs}
-        setPrefs={setPrefs}
-        loggedInAs={loggedInAs}
-        setLoggedInAs={setLoggedInAs}
-        noKeyring={noKeyring}
-        version={version}
-      />
-      <LogsDialog open={dialog === "logs"} onClose={() => setDialog(null)} />
-      <AboutDialog open={dialog === "about"} onClose={() => setDialog(null)} version={version} />
-      <CertificatesDialog open={dialog === "certs"} onClose={() => setDialog(null)} />
-      <PairingDialog open={dialog === "pairing"} onClose={() => setDialog(null)} />
+      <Modal
+        isOpen={openModal === "certificates"}
+        close={() => setOpenModal(null)}
+      >
+        <Certificates />
+      </Modal>
+      <Modal isOpen={openModal === "appids"} close={() => setOpenModal(null)}>
+        <AppIds />
+      </Modal>
+      <Modal isOpen={openModal === "pairing"} close={() => setOpenModal(null)}>
+        <Pairing />
+      </Modal>
+      <Modal isOpen={openModal === "about"} close={() => setOpenModal(null)}>
+        <div style={{ textAlign: "center" }}>
+          <img
+            src={logo}
+            alt={t("app.logo_alt")}
+            style={{ width: 64, height: 64 }}
+          />
+          <h2 style={{ marginBottom: 0 }}>DenizSigner</h2>
+          <p className="text-muted" style={{ marginTop: 0 }}>
+            Private iOS Sideloading &amp; Signing Tool
+          </p>
+          <p className="text-muted">
+            {t("version")} {version}
+          </p>
+          <p>Built for personal use.</p>
+          <p className="text-muted">Based on open-source components.</p>
+          <p className="text-muted">
+            Local-first. No accounts, no analytics, no tracking.
+          </p>
+        </div>
+      </Modal>
     </main>
   );
 }
+
+export default App;
