@@ -21,6 +21,8 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           workspaces: src-tauri
+      - name: Install frontend dependencies
+        run: npm ci
       - name: Build + publish draft release assets
         uses: tauri-apps/tauri-action@v1
         env:
