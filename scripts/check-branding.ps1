@@ -13,7 +13,7 @@ $files = Get-ChildItem -Path $root -Recurse -File |
 
 foreach ($f in $files) {
   # Upstream credit lives only in these docs (license attribution).
-  $creditDoc = $f.Name -match '^(NOTICE|PRIVACY|README|ARCHITECTURE)\.md$'
+  $creditDoc = $f.Name -match '^(NOTICE|PRIVACY|README|ARCHITECTURE|CHANGELOG)\.md$'
   # Locales + docs may use prose words ("analytics", "tracking") in privacy
   # statements; UI branding check targets product/owner names only here.
   if ($f.FullName -match '\\src\\locales\\') { continue }
