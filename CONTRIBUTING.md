@@ -29,7 +29,7 @@ cd src-tauri && cargo test
 - **No new network endpoints** without documenting them in `PRIVACY.md` and
   enforcing them in `src-tauri/src/network_allowlist.rs`.
 - **No telemetry, analytics, crash-reporting, or update-checkers.** Ever.
-- **No upstream branding** (`iloader`, `nab138`, …) in shipped code or UI.
+- **No upstream branding** (former product or owner names) in shipped code or UI.
   Upstream credit lives only in `NOTICE.md` / `PRIVACY.md` / `ARCHITECTURE.md`.
 - **No secrets in code, logs, or commits.** Passwords/tokens/keys belong in
   the OS credential store; logs must pass through `redact()`.
