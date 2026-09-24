@@ -1,0 +1,98 @@
+{
+  "subtitle": "Privater iOS-Signer",
+  "tagline": "Privates iOS-Sideloading- & Signierwerkzeug",
+  "header": {
+    "settings": "Einstellungen",
+    "logs": "Protokolle",
+    "device": "Gerät"
+  },
+  "device": {
+    "none": "Kein Gerät verbunden",
+    "connected": "verbunden",
+    "viaUsb": "Verbunden via USB",
+    "refresh": "Aktualisieren",
+    "select": "Gerät wählen",
+    "statusLabel": "Gerätestatus"
+  },
+  "drop": {
+    "title": "IPA hier ablegen",
+    "subtitle": "Ziehe eine .ipa-Datei hierher, um sie auf deinem iPhone oder iPad zu installieren.",
+    "choose": "IPA wählen",
+    "install": "Installieren",
+    "ready": "Bereit zum Signieren",
+    "needLogin": "Bitte zuerst anmelden",
+    "needDevice": "Bitte zuerst Gerät verbinden"
+  },
+  "progress": {
+    "title": "Installiere",
+    "finished": "Fertig",
+    "failed": "Installation fehlgeschlagen",
+    "steps": ["IPA wird vorbereitet", "Bundle wird gelesen", "App wird signiert", "Gerät wird vorbereitet", "App wird installiert", "Installation wird geprüft", "Fertig"],
+    "technical": "Technische Details anzeigen",
+    "close": "Schließen"
+  },
+  "error": {
+    "hintFallback": "Prüfe deinen Apple-Developer-Account, das Pairing und den Entwicklermodus."
+  },
+  "confirm": {
+    "cancel": "Abbrechen",
+    "confirm": "Bestätigen",
+    "revokeTitle": "Zertifikat widerrufen?",
+    "revokeBody": "Diese Aktion kann nicht einfach rückgängig gemacht werden.",
+    "revoke": "Widerrufen",
+    "deleteAppIdTitle": "App-ID entfernen?",
+    "deleteAppIdBody": "Diese Aktion kann nicht einfach rückgängig gemacht werden.",
+    "delete": "Entfernen",
+    "deletePairingTitle": "Gespeichertes Pairing löschen?",
+    "deletePairingBody": "Das Gerät muss danach neu gepairt werden.",
+    "resetTitle": "Lokale Konfiguration zurücksetzen?",
+    "resetBody": "Alle lokalen DenizSigner-Einstellungen werden entfernt."
+  },
+  "signing": {
+    "title": "Signierung",
+    "email": "Apple-ID",
+    "password": "Passwort",
+    "anisette": "Anisette-Server",
+    "save": "Im System-Schlüsselbund speichern",
+    "signin": "Anmelden",
+    "signout": "Abmelden",
+    "signedInAs": "Angemeldet als",
+    "certs": "Zertifikate",
+    "appids": "App-IDs",
+    "noKeyring": "System-Schlüsselbund nicht verfügbar — Secrets würden unsicher auf Disk landen."
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "general": "Allgemein",
+    "language": "Sprache",
+    "theme": "Darstellung",
+    "notifications": "Mitteilungen",
+    "startMinimized": "Minimiert starten",
+    "signing": "Signierung",
+    "device": "Gerät",
+    "privacy": "Privatsphäre",
+    "privacyNote": "DenizSigner nutzt keine Analyse- oder Telemetriedienste.",
+    "networkActivity": "Netzwerkaktivität",
+    "advanced": "Erweitert",
+    "logLevel": "Protokollstufe",
+    "debugLogs": "Debug-Protokolle",
+    "openLogs": "Protokollordner öffnen",
+    "reset": "Lokale Konfiguration zurücksetzen",
+    "exportDiag": "Diagnose exportieren",
+    "close": "Schließen"
+  },
+  "logs": { "title": "Protokolle", "clear": "Leeren", "export": "Exportieren", "close": "Schließen", "empty": "Noch keine Einträge." },
+  "about": {
+    "title": "Über",
+    "built": "Für den persönlichen Gebrauch gebaut.",
+    "based": "Basiert auf Open-Source-Komponenten (Lizenzen siehe NOTICE.md).",
+    "privacy": "Local-first. Keine Konten, keine Analyse, kein Tracking."
+  },
+  "pairing": {
+    "title": "Pairing",
+    "place": "Übertragen",
+    "export": "Pairing-Datei exportieren",
+    "delete": "Gespeichertes Pairing löschen",
+    "none": "Keine pairing-kompatiblen Apps auf dem Gerät gefunden."
+  }
+}

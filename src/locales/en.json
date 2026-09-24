@@ -1,0 +1,98 @@
+{
+  "subtitle": "Private iOS Signer",
+  "tagline": "Private iOS Sideloading & Signing Tool",
+  "header": {
+    "settings": "Settings",
+    "logs": "Logs",
+    "device": "Device"
+  },
+  "device": {
+    "none": "No device connected",
+    "connected": "connected",
+    "viaUsb": "Connected via USB",
+    "refresh": "Refresh",
+    "select": "Select device",
+    "statusLabel": "Device status"
+  },
+  "drop": {
+    "title": "Drop an IPA here",
+    "subtitle": "Drag & drop an .ipa file to install it on your connected iPhone or iPad.",
+    "choose": "Choose IPA",
+    "install": "Install",
+    "ready": "Ready to sign",
+    "needLogin": "Sign in first",
+    "needDevice": "Connect a device first"
+  },
+  "progress": {
+    "title": "Installing",
+    "finished": "Finished",
+    "failed": "Installation failed",
+    "steps": ["Preparing IPA", "Reading bundle", "Signing application", "Preparing device", "Installing application", "Verifying installation", "Finished"],
+    "technical": "View technical details",
+    "close": "Close"
+  },
+  "error": {
+    "hintFallback": "Check your Apple Developer account, device pairing and Developer Mode."
+  },
+  "confirm": {
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "revokeTitle": "Revoke certificate?",
+    "revokeBody": "This action cannot be easily undone.",
+    "revoke": "Revoke",
+    "deleteAppIdTitle": "Remove App ID?",
+    "deleteAppIdBody": "This action cannot be easily undone.",
+    "delete": "Remove",
+    "deletePairingTitle": "Delete stored pairing?",
+    "deletePairingBody": "You will need to re-pair the device.",
+    "resetTitle": "Reset local configuration?",
+    "resetBody": "All local DenizSigner settings will be removed."
+  },
+  "signing": {
+    "title": "Signing",
+    "email": "Apple ID",
+    "password": "Password",
+    "anisette": "Anisette server",
+    "save": "Save in OS credential store",
+    "signin": "Sign in",
+    "signout": "Sign out",
+    "signedInAs": "Signed in as",
+    "certs": "Certificates",
+    "appids": "App IDs",
+    "noKeyring": "OS credential store unavailable — secrets would fall back to insecure disk storage."
+  },
+  "settings": {
+    "title": "Settings",
+    "general": "General",
+    "language": "Language",
+    "theme": "Theme",
+    "notifications": "Notifications",
+    "startMinimized": "Start minimized",
+    "signing": "Signing",
+    "device": "Device",
+    "privacy": "Privacy",
+    "privacyNote": "DenizSigner does not use analytics or third-party telemetry.",
+    "networkActivity": "Network activity",
+    "advanced": "Advanced",
+    "logLevel": "Log level",
+    "debugLogs": "Debug logs",
+    "openLogs": "Open logs folder",
+    "reset": "Reset local configuration",
+    "exportDiag": "Export diagnostics",
+    "close": "Close"
+  },
+  "logs": { "title": "Logs", "clear": "Clear", "export": "Export", "close": "Close", "empty": "No log entries yet." },
+  "about": {
+    "title": "About",
+    "built": "Built for personal use.",
+    "based": "Based on open-source components (see NOTICE.md for licenses).",
+    "privacy": "Local-first. No accounts, no analytics, no tracking."
+  },
+  "pairing": {
+    "title": "Pairing",
+    "place": "Place",
+    "export": "Export pairing file",
+    "delete": "Delete stored pairing",
+    "none": "No pairing-compatible apps found on the device."
+  }
+}

@@ -1,0 +1,89 @@
+:root {
+  --blue: #1d6ff2;
+  --blue-dark: #0b3fa0;
+  --ink: #0b1f44;
+  --muted: #4a5f8a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+  color: var(--ink);
+}
+.shell {
+  min-height: 100vh;
+  background: linear-gradient(160deg, #1d6ff2 0%, #1249b8 55%, #0b2f7d 100%);
+  display: flex; flex-direction: column;
+}
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 20px; color: #fff;
+}
+.brand {
+  display: flex; align-items: center; gap: 10px;
+  background: none; border: 0; color: #fff; cursor: pointer; text-align: left;
+}
+.d-badge {
+  width: 40px; height: 40px; border-radius: 12px;
+  background: rgba(255,255,255,0.16);
+  border: 1px solid rgba(255,255,255,0.45);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-weight: 800; font-size: 22px; color: #fff;
+}
+.brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+.brand-text strong { font-size: 18px; }
+.brand-text small { opacity: 0.85; font-size: 12px; }
+.top-actions { display: flex; gap: 8px; }
+.top-btn {
+  background: rgba(255,255,255,0.14); color: #fff;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 10px; padding: 8px 14px; cursor: pointer; font-weight: 600;
+}
+.top-btn:hover { background: rgba(255,255,255,0.24); }
+.content {
+  flex: 1; display: flex; flex-direction: column; gap: 16px;
+  padding: 8px 20px 24px; max-width: 760px; width: 100%; margin: 0 auto;
+}
+.card {
+  background: #fff; border-radius: 18px; padding: 20px;
+  box-shadow: 0 16px 48px rgba(2, 12, 40, 0.28);
+}
+.device-card .device-on, .device-card .device-off {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
+}
+.dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+.dot-on { background: #12b76a; box-shadow: 0 0 0 4px rgba(18,183,106,0.2); }
+.dot-off { background: #98a2b3; }
+.device-row { display: flex; gap: 8px; }
+.device-row select {
+  flex: 1; border: 1px solid #c9d6f2; border-radius: 10px; padding: 10px;
+}
+.quick-links { display: flex; gap: 12px; margin-top: 10px; }
+.link { background: none; border: 0; color: var(--blue); cursor: pointer; font-weight: 600; padding: 0; }
+.drop { text-align: center; }
+.drop.drag { outline: 3px dashed var(--blue); outline-offset: -6px; }
+.drop h2 { margin: 4px 0; }
+.hint { color: var(--muted); }
+.ipa-path {
+  background: #eef4ff; border-radius: 8px; padding: 8px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 13px;
+}
+.drop-actions { display: flex; gap: 10px; justify-content: center; margin: 12px 0; }
+.ready { color: var(--muted); font-size: 13px; }
+.progress .bar { height: 10px; background: #e6edfb; border-radius: 6px; overflow: hidden; }
+.progress .fill { height: 100%; background: var(--blue); transition: width 0.3s; }
+.steps { list-style: none; padding: 0; text-align: left; font-size: 13px; color: var(--muted); }
+.steps li.done { color: var(--ink); font-weight: 600; }
+.op-failed { background: #fef3f2; border: 1px solid #fecdca; border-radius: 12px; padding: 12px; text-align: left; }
+.op-title { font-weight: 700; }
+.tech { background: #0b1f44; color: #d7e3ff; border-radius: 8px; padding: 10px; overflow: auto; max-height: 160px; font-size: 12px; }
+.ok { color: #12b76a; font-weight: 700; }
+.check { display: flex; gap: 8px; align-items: center; margin: 8px 0; font-size: 14px; }
+.allowlist { padding-left: 18px; font-size: 13px; }
+.cert-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #eef2fb; }
+.logs { background: #0b1f44; color: #d7e3ff; border-radius: 8px; padding: 10px; max-height: 300px; overflow: auto; font-size: 12px; white-space: pre-wrap; }
+.about { text-align: center; }
+.about .d-badge { background: var(--blue); border: 0; width: 64px; height: 64px; font-size: 36px; border-radius: 18px; }
+.tfa { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+.row { display: flex; gap: 8px; margin-top: 12px; justify-content: flex-end; }
+.row.start { justify-content: flex-start; }
