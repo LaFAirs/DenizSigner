@@ -1,55 +1,88 @@
-# DenizSigner — Private iOS Sideloading & Signing Tool
+# DenizSigner
 
-Independent desktop app (Tauri 2 + React + Rust) for personal iOS sideloading.
-Technical lineage: built from the open-source techniques of
-[`nab138/iloader`](https://github.com/nab138/iloader) (MIT) — see `NOTICE.md`.
-Own name, own `D` logo, own app ID (`com.denizbudakli.denizsigner`),
-no updater, no telemetry, local-first.
+**Private iOS Sideloading & Signing Tool** — a local-first desktop app for
+personally sideloading IPAs onto iPhone & iPad. No accounts, no analytics,
+no telemetry, no auto-updater.
 
-## Quick start (Windows-first)
+[![Build](https://github.com/LaFAirs/DenizSigner/actions/workflows/build.yml/badge.svg)](https://github.com/LaFAirs/DenizSigner/actions/workflows/build.yml)
+[![Release](https://img.shields.io/github/v/release/LaFAirs/DenizSigner?display_name=tag)](https://github.com/LaFAirs/DenizSigner/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/LaFAirs/DenizSigner/total)](https://github.com/LaFAirs/DenizSigner/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Windows x64](https://img.shields.io/badge/Windows-x64-blue.svg)](#download)
 
-```powershell
-cd DenizSigner
-npm install
-npm run tauri dev        # dev with hot reload (needs WebView2 + iTunes/Apple Devices + usbmuxd)
-```
+## Download
 
-Production build (`.exe` / `.msi` via NSIS; `.app`/`.dmg` on macOS):
+Get the latest release for Windows x64 from
+[**GitHub Releases**](https://github.com/LaFAirs/DenizSigner/releases/latest):
 
-```powershell
-# one-time: generate PNG/ICO/ICNS from the D logo
-npx tauri icon src-tauri/icons/icon.svg
-npm run tauri build
-# output: src-tauri/target/release/bundle/...
-```
+| File | What |
+| ---- | ---- |
+| `DenizSigner_*_x64-setup.exe` | Installer (NSIS, recommended) |
+| `DenizSigner_*_x64_en-US.msi` | Installer (MSI) |
+| `denizsigner.exe` | Portable, no install |
+| `SHA256SUMS.txt` | Checksums for everything above |
 
-The release binary shows no console window (`windows_subsystem = "windows"`).
-
-## Checks
+Verify integrity before installing:
 
 ```powershell
-npm run build            # tsc + vite
-npm test                 # frontend checks (boot, IPA, errors, allowlist, branding)
-powershell -ExecutionPolicy Bypass -File scripts/audit-network.ps1
-powershell -ExecutionPolicy Bypass -File scripts/check-branding.ps1
-cd src-tauri && cargo test
+certutil -hashfile DenizSigner_0.1.0_x64-setup.exe SHA256
+# compare with the matching line in SHA256SUMS.txt
 ```
+
+You need the free **Apple Devices** app (or iTunes) from the Microsoft Store
+so Windows can talk to your iPhone/iPad over USB.
+
+## Features
+
+- 📲 **IPA import & install** — file picker (`.ipa` filter) plus SideStore /
+  LiveContainer one-click installers with automatic pairing-file placement
+- 🔑 **Apple-ID sign-in** — 2FA flow, saved logins, max-certificate picker
+- 📜 **Certificates & App IDs** — list, inspect, revoke (with confirmation)
+- 🔗 **Pairing management** — place / place-in-all / export (confirmed)
+- 🧰 **Settings** — Anisette server presets + custom, language (EN/DE),
+  keyring toggle, anisette reset, log viewer with level filter
+- 🔒 **Privacy section** — in-app overview of every allowed network endpoint
+- 🪟 **No console window**, native `.exe` / `.msi`, German + English UI
 
 ## Privacy
 
-See [`PRIVACY.md`](PRIVACY.md) for the full network audit:
-allowed = Apple (via `isideload`), your Anisette server, release IPAs you
-explicitly request (github.com), Apple help links. Everything else is blocked
-in `src-tauri/src/network_allowlist.rs`. No accounts, no analytics, no updater.
+Local-first. Secrets live only in the OS credential store
+(Windows DPAPI / macOS Keychain, service `denizsigner`); logs redact secrets;
+devices are polled on start / refresh only. The full network audit —
+every allowed domain, why it is needed, and what was removed — is in
+[`PRIVACY.md`](PRIVACY.md). The boundary is enforced in code
+(`src-tauri/src/network_allowlist.rs`) and checked by CI.
 
-## Local data
+## Development (Windows-first)
 
-| OS | Location |
-|----|----------|
-| Windows | `%APPDATA%\com.denizbudakli.denizsigner\` + `…\logs\` |
-| macOS | `~/Library/Application Support/com.denizbudakli.denizsigner/` |
-| Linux | `~/.local/share/com.denizbudakli.denizsigner/` |
+```powershell
+npm install
+npm run tauri dev
+```
 
-Secrets (Apple password, Anisette state, pairing cache) live in the OS
-credential store (DPAPI / Keychain) under service `denizsigner` — never in
-plaintext JSON. `data.json` holds only Apple-ID e-mail addresses.
+Requirements: Node 24+, Rust stable, VS Build Tools 2022 (VCTools),
+Windows SDK 10, WebView2 Runtime.
+
+```powershell
+npx tsc --noEmit   # typecheck
+npm run build      # frontend bundle
+npm test           # 53 frontend checks
+cd src-tauri && cargo test   # 11 backend tests
+```
+
+Releases are cut from version tags (`git tag v0.1.0 && git push origin v0.1.0`);
+see [`CONTRIBUTING.md`](CONTRIBUTING.md). Icons: `npx tauri icon src-tauri/icons/icon.svg`.
+
+## Credits
+
+Built on open-source components — see [`NOTICE.md`](NOTICE.md) —
+including the techniques of
+[`nab138/iloader`](https://github.com/nab138/iloader) (MIT),
+[`idevice`](https://github.com/jkcoxson/idevice),
+[`isideload`](https://github.com/nab138/isideload), Tauri, and React.
+DenizSigner uses its own name, logo, app ID (`com.denizbudakli.denizsigner`),
+and UI theme; no endorsement is implied.
+
+## License
+
+MIT — see [LICENSE](LICENSE). Security policy: [SECURITY.md](SECURITY.md).
