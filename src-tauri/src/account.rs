@@ -10,7 +10,6 @@ use isideload::{
     sideload::{SideloaderBuilder, builder::MaxCertsBehavior, sideloader::Sideloader},
     util::callbacks::MaxCertsCallbackBox,
 };
-use keyring::Entry;
 use rootcause::prelude::*;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -191,7 +190,7 @@ async fn login(
                         serde_json::from_str::<Option<Vec<String>>>(event.payload()).unwrap_or(None);
                     let _ = tx.send(certs);
                 });
-                let result = rx.recv_timeout(Duration::from_secs(300))?;
+                let result = rx.recv_timeout(Duration::from_secs(300));
                 window_clone.unlisten(handler_id);
                 Ok(result?)
             })
@@ -257,11 +256,12 @@ pub async fn list_app_ids(
 ) -> Result<ListAppIdsResponse, AppError> {
     let mut s = SideloaderGuard::take(&sideloader_state)?;
     let team = s.get_mut().get_team().await?;
-    s.get_mut()
+    let response = s
+        .get_mut()
         .get_dev_session()
         .list_app_ids(&team, None)
-        .await
-        .map(|r| r.clone())
+        .await?;
+    Ok(response.clone())
 }
 
 #[tauri::command]

@@ -55,4 +55,6 @@ export const api = {
     invoke<void>("force_disable_keyring", { force }),
   setLogLevelDebug: (enabled: boolean) =>
     invoke<void>("set_log_level_debug", { enabled }),
+  friendlyError: (kind: string) =>
+    invoke<[string, string]>("friendly_error", { kind }),
 };

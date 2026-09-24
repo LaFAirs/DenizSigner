@@ -25,7 +25,7 @@ Logs: tracing file (denizsigner*.log, 7 files) + redacted frontend mirror (log-r
 | `operation.rs` | `operation_<id>` started/finished/failed events | – |
 
 22 commands total — same surface as upstream, minus updater; plus
-`set_log_level_debug`. Minimal permissions (`capabilities/default.json`).
+`set_log_level_debug` and `friendly_error`. Minimal permissions (`capabilities/default.json`).
 
 ## Frontend (`src/`)
 

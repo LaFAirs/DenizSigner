@@ -76,7 +76,13 @@ impl Serialize for AppError {
 
 /// Maps an error type to (title, hint) shown in the UI.
 /// Technical message stays available under "View technical details".
-pub fn friendly(kind: &str) -> (&'static str, &'static str) {
+#[tauri::command]
+pub fn friendly_error(kind: String) -> (String, String) {
+    let (title, hint) = friendly(&kind);
+    (title.to_string(), hint.to_string())
+}
+
+fn friendly(kind: &str) -> (&'static str, &'static str) {
     match kind {
         "max_apps" => (
             "Installation failed — app limit reached",

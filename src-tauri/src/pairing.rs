@@ -12,7 +12,7 @@ use idevice::{
     house_arrest::HouseArrestClient,
     installation_proxy::InstallationProxyClient,
     lockdown::LockdownClient,
-    provider::IdeviceProvider,
+    provider::{IdeviceProvider, UsbmuxdProvider},
     remote_pairing::{RemotePairingClient, RpPairingFile},
     rsd::RsdHandshake,
     usbmuxd::UsbmuxdConnection,
@@ -26,7 +26,7 @@ use tokio_util::sync::CancellationToken;
 use tracing::{error, info, warn};
 
 use crate::{
-    device::{DeviceInfo, DeviceInfoMutex, PROVIDER_LABEL, get_provider},
+    device::{DeviceInfo, DeviceInfoMutex, DeviceInfoWithPairing, PROVIDER_LABEL, get_provider},
     error::AppError,
     secure_storage::{create_sideloading_storage, keyring_available},
 };

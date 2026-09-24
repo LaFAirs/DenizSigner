@@ -10,7 +10,7 @@ use crate::error::AppError;
 
 pub fn validate_ipa_path(path: &str) -> Result<(), AppError> {
     let p = Path::new(path);
-    if p.extension().and_then(|e| e.to_str()).map(|e| e.eq_ignore_ascii_case("ipa")). != Some(true) {
+    if p.extension().and_then(|e| e.to_str()).map(|e| e.eq_ignore_ascii_case("ipa")) != Some(true) {
         return Err(AppError::InvalidIpa(format!(
             "Not an .ipa file: {}",
             p.file_name().and_then(|n| n.to_str()).unwrap_or("?")
