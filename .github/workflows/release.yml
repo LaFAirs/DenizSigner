@@ -12,8 +12,8 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
           node-version: 24
           cache: npm
@@ -43,6 +43,7 @@ jobs:
             See PRIVACY.md for the documented network allowlist.
           releaseDraft: false
           prerelease: false
+          uploadPlainBinary: true
           args: --bundles nsis,msi
       - name: Generate SHA256SUMS.txt
         shell: pwsh
