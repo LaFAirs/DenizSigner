@@ -296,9 +296,8 @@ function App() {
                     startOperation(installSideStoreOperation, {
                       nightly: false,
                       liveContainer: false,
-                    }).catch((e) => {
-                      console.log(e.type);
-                      console.error(e.message);
+                    }).catch(() => {
+                      /* Failures surface via operation events in OperationView. */
                     });
                   }}
                 >
@@ -310,9 +309,8 @@ function App() {
                     startOperation(installSideStoreOperation, {
                       nightly: true,
                       liveContainer: false,
-                    }).catch((e) => {
-                      console.log(e.type);
-                      console.error(e.message);
+                    }).catch(() => {
+                      /* Failures surface via operation events in OperationView. */
                     });
                   }}
                 >
@@ -324,9 +322,8 @@ function App() {
                     startOperation(installLiveContainerOperation, {
                       nightly: false,
                       liveContainer: true,
-                    }).catch((e) => {
-                      console.log(e.type);
-                      console.error(e.message);
+                    }).catch(() => {
+                      /* Failures surface via operation events in OperationView. */
                     });
                   }}
                 >
@@ -338,9 +335,8 @@ function App() {
                     startOperation(installLiveContainerOperation, {
                       nightly: true,
                       liveContainer: true,
-                    }).catch((e) => {
-                      console.log(e.type);
-                      console.error(e.message);
+                    }).catch(() => {
+                      /* Failures surface via operation events in OperationView. */
                     });
                   }}
                 >
@@ -358,9 +354,8 @@ function App() {
                     if (!path) return;
                     startOperation(sideloadOperation, {
                       appPath: path as string,
-                    }).catch((e) => {
-                      console.log(e.type);
-                      console.error(e.message);
+                    }).catch(() => {
+                      /* Failures surface via operation events in OperationView. */
                     });
                   }}
                 >
@@ -410,16 +405,14 @@ function App() {
           />
           <h2 style={{ marginBottom: 0 }}>DenizSigner</h2>
           <p className="text-muted" style={{ marginTop: 0 }}>
-            Private iOS Sideloading &amp; Signing Tool
+            {t("about.tagline")}
           </p>
           <p className="text-muted">
             {t("version")} {version}
           </p>
-          <p>Built for personal use.</p>
-          <p className="text-muted">Based on open-source components.</p>
-          <p className="text-muted">
-            Local-first. No accounts, no analytics, no tracking.
-          </p>
+          <p>{t("about.built")}</p>
+          <p className="text-muted">{t("about.based")}</p>
+          <p className="text-muted">{t("about.local")}</p>
         </div>
       </Modal>
     </main>

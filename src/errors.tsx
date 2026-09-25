@@ -91,12 +91,6 @@ const getSuggestionBlock = (
         const platformEnd = suggestion.indexOf("]");
         if (platformEnd !== -1) {
           const suggestionPlatform = suggestion.substring(11, platformEnd);
-          console.log(
-            "suggestion platform:",
-            suggestionPlatform,
-            "current platform:",
-            platform,
-          );
           if (suggestionPlatform === platform) {
             return true;
           }

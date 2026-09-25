@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import "./Modal.css";
+import { useTranslation } from "react-i18next";
 
 export const Modal = ({
   isOpen,
@@ -8,6 +9,7 @@ export const Modal = ({
   children,
   hideClose,
   zIndex,
+  closeLabel,
 }: {
   children: React.ReactNode;
   isOpen: boolean;
@@ -15,7 +17,9 @@ export const Modal = ({
   sizeFit?: boolean;
   hideClose?: boolean;
   zIndex?: number;
+  closeLabel?: string;
 }) => {
+  const { t } = useTranslation();
   useEffect(() => {
     if (!isOpen || !close) {
       return;
@@ -51,6 +55,7 @@ export const Modal = ({
             {!hideClose && close && (
               <button
                 className="modal-close"
+                aria-label={closeLabel ?? t("common.close")}
                 onClick={() => {
                   close();
                 }}

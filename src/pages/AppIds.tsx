@@ -133,6 +133,9 @@ export const AppIds = () => {
                     {appIdDeletion && (
                       <td
                         className="cert-item-revoke"
+                        role="button"
+                        tabIndex={0}
+                        aria-label={t("common.delete")}
                         onClick={() =>
                           confirm(
                             t("app_ids.delete_title"),
@@ -140,6 +143,12 @@ export const AppIds = () => {
                             () => deleteId(appId.appIdId),
                           )
                         }
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            (e.currentTarget as HTMLElement).click();
+                          }
+                        }}
                       >
                         {t("common.delete")}
                       </td>

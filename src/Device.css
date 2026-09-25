@@ -51,3 +51,25 @@
   border: 1px solid rgba(255, 255, 255, 0.18);
   font-size: 0.9rem;
 }
+
+/* Pairing progress indicator (was unstyled = invisible). */
+.spinner {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--accent-secondary);
+  animation: denizspin 0.9s linear infinite;
+}
+
+@keyframes denizspin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.pairing-modal-content {
+  text-align: center;
+  padding: 1rem 0.5rem;
+}

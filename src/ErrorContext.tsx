@@ -64,7 +64,6 @@ export const ErrorProvider: React.FC<{ children: React.ReactNode }> = ({
     <ErrorContext.Provider
       value={{
         err: (msg: string, err: AppError) => {
-          console.log(err);
           setMsg(msg);
           setError(err);
           setMoreDetailsOpen(false);

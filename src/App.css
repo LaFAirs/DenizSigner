@@ -28,6 +28,15 @@
   --accent-secondary: #5b9bff;
   --success: #30d158;
   --danger: #ff6b62;
+
+  /* DenizSigner design tokens: radii, heights, focus, motion */
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 1.25rem;
+  --radius-pill: 999px;
+  --btn-min-height: 2.75rem;
+  --input-min-height: 2.75rem;
+  --focus-ring: 0 0 0 2px #0b2f7d, 0 0 0 4px var(--accent-secondary);
 }
 
 * {
@@ -61,6 +70,7 @@ body {
   display: flex;
   flex-direction: column;
   background: linear-gradient(160deg, #1d6ff2 0%, #1249b8 55%, #0b2f7d 100%);
+  overflow-x: clip;
 }
 
 .workspace-header {
@@ -236,6 +246,22 @@ button {
   background: #2c2c2e;
   border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow: none;
+  min-height: var(--btn-min-height);
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+select {
+  min-height: var(--input-min-height);
+}
+
+/* Visible keyboard focus everywhere (mouse users unaffected). */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[role="button"]:focus-visible,
+[role="link"]:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
 }
 
 button:disabled {
@@ -377,4 +403,15 @@ h2,
 h3,
 h4 {
   margin: 0.5rem 0;
+}
+
+/* Respect users who prefer reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

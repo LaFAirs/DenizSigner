@@ -1,9 +1,16 @@
 {
   "subtitle": "Private iOS Signer",
   "version": "Version",
+  "about": {
+    "tagline": "Private iOS Sideloading & Signing Tool",
+    "built": "Built for personal use.",
+    "based": "Based on open-source components.",
+    "local": "Local-first. No accounts, no analytics, no tracking."
+  },
   "common": {
     "confirm": "Confirm",
     "cancel": "Cancel",
+    "close": "Close",
     "dismiss": "Dismiss",
     "refresh": "Refresh",
     "delete": "Delete",
@@ -71,9 +78,11 @@
     "login": "Login",
     "two_factor_title": "Two-Factor Authentication",
     "two_factor_prompt": "Please enter the verification code sent to your device.",
+    "two_factor_hint": "Enter the 6-digit code from your trusted device. The request expires after 2 minutes without a code.",
     "verification_placeholder": "Verification Code...",
     "valid_6digit": "Please enter a valid 6-digit code.",
     "submit": "Submit",
+    "submitting": "Submitting…",
     "max_certs_title": "Maximum certificates reached",
     "max_certs_desc": "DenizSigner will revoke your existing certificates and generate a new one.",
     "hide_certificate_list": "Hide certificate list",
@@ -93,7 +102,8 @@
     "pairing_in_progress_header": "Pairing with {{device}}...",
     "pairing_in_progress_hint": "Please unlock your device and click \"Trust,\" then enter your passcode if prompted.",
     "pairing_cancel": "Cancel",
-    "failed_select": "Failed to select device"
+    "failed_select": "Failed to select device",
+    "unknown_error": "Unknown error"
   },
   "operation": {
     "failed": "Operation failed.",
@@ -205,6 +215,10 @@
     "privacy_heading": "Privacy",
     "privacy_note": "DenizSigner does not use analytics or third-party telemetry.",
     "network_activity": "Network activity (allowlist)",
+    "net_apple": "Apple (via isideload): sign-in, certificates, App IDs, signing",
+    "net_anisette": "Anisette server of your choice (default ani.sidestore.io)",
+    "net_github": "github.com release assets — only IPAs you explicitly install",
+    "net_help": "iforgot.apple.com / apple.co — help links opened in the browser",
     "security_heading": "Security",
     "security_network": "DenizSigner has no analytics, no tracking, and no automatic update service.",
     "security_apple": "Your Apple password is needed for Apple sign-in. DenizSigner only stores it if you enable “Save Credentials”.",

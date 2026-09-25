@@ -37,6 +37,8 @@ export const AppleID = ({
   const [certs, setCerts] = useState<Certificate[] | null>(null);
   const [selectedSerials, setSelectedSerials] = useState<string[]>([]);
   const [chooseCertsOpen, setChooseCertsOpen] = useState<boolean>(false);
+  const [loginBusy, setLoginBusy] = useState<boolean>(false);
+  const [tfaBusy, setTfaBusy] = useState<boolean>(false);
   const { err } = useError();
 
   useEffect(() => {
@@ -203,10 +205,7 @@ export const AppleID = ({
                   toast.warning(t("apple_id.enter_email_password"));
                   return;
                 }
-                // if (!emailInput.includes("@")) {
-                //   toast.warning(t("apple_id.valid_email"));
-                //   return;
-                // }
+                setLoginBusy(true);
                 let promise = async () => {
                   try {
                     await invoke("login_new", {
@@ -220,6 +219,7 @@ export const AppleID = ({
                     // Drop the password from UI memory immediately; it is
                     // only ever sent to the backend login command.
                     setPasswordInput("");
+                    setLoginBusy(false);
                   }
                 };
                 toast.promise(promise, {
@@ -230,16 +230,22 @@ export const AppleID = ({
               }}
             >
               <input
-                type="text"
+                type="email"
+                autoComplete="username"
+                aria-label={t("apple_id.email_placeholder")}
                 placeholder={t("apple_id.email_placeholder")}
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
+                disabled={loginBusy}
               />
               <input
                 type="password"
+                autoComplete="current-password"
+                aria-label={t("apple_id.password_placeholder")}
                 placeholder={t("apple_id.password_placeholder")}
                 value={passwordInput}
                 onChange={(e) => setPasswordInput(e.target.value)}
+                disabled={loginBusy}
               />
               {noKeyringAvailable ? (
                 <p className="settings-hint credentials-warning">
@@ -258,7 +264,9 @@ export const AppleID = ({
                   </label>
                 </div>
               )}
-              <button type="submit">{t("apple_id.login")}</button>
+              <button type="submit" disabled={loginBusy}>
+                {loginBusy ? t("apple_id.logging_in") : t("apple_id.login")}
+              </button>
               {addAccountOpen && storedIds.length > 0 && (
                 <button
                   onClick={() => {
@@ -275,6 +283,7 @@ export const AppleID = ({
       <Modal sizeFit isOpen={tfaOpen} zIndex={2000}>
         <h2>{t("apple_id.two_factor_title")}</h2>
         <p>{t("apple_id.two_factor_prompt")}</p>
+        <p className="settings-hint">{t("apple_id.two_factor_hint")}</p>
         <form
           onSubmit={async (e) => {
             e.preventDefault();
@@ -282,19 +291,33 @@ export const AppleID = ({
               toast.warning(t("apple_id.valid_6digit"));
               return;
             }
-            await emit("2fa-recieved", tfaCode);
-            setTfaOpen(false);
-            setTfaCode("");
+            setTfaBusy(true);
+            try {
+              await emit("2fa-recieved", tfaCode);
+              setTfaOpen(false);
+            } finally {
+              // Clear the code immediately after handing it to the backend.
+              setTfaCode("");
+              setTfaBusy(false);
+            }
           }}
         >
           <input
             type="text"
+            inputMode="numeric"
+            autoComplete="one-time-code"
+            maxLength={6}
+            autoFocus
+            aria-label={t("apple_id.verification_placeholder")}
             placeholder={t("apple_id.verification_placeholder")}
             value={tfaCode}
             onChange={(e) => setTfaCode(e.target.value)}
             style={{ marginRight: "0.5em" }}
+            disabled={tfaBusy}
           />
-          <button type="submit">{t("apple_id.submit")}</button>
+          <button type="submit" disabled={tfaBusy}>
+            {tfaBusy ? t("apple_id.submitting") : t("apple_id.submit")}
+          </button>
         </form>
       </Modal>
       <Modal sizeFit isOpen={certs !== null} zIndex={2000}>

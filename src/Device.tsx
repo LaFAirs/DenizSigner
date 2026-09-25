@@ -78,7 +78,9 @@ export const Device = ({
             return;
           }
 
-          const message = String((e.message ?? e) ?? "Unknown error");
+          const message = String(
+            (e.message ?? e) ?? t("device.unknown_error"),
+          );
           if (message !== "Pairing cancelled") {
             toast.error(err(t("device.failed_select"), e));
           }

@@ -103,6 +103,13 @@ export const Pairing = () => {
                       onClick={() => pair(app)}
                       role="button"
                       tabIndex={0}
+                      aria-label={t("pairing.place")}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          (e.currentTarget as HTMLElement).click();
+                        }
+                      }}
                     >
                       {t("pairing.place")}
                     </td>

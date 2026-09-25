@@ -68,6 +68,17 @@ ok(settings.includes("custom_anisette_title"), "custom anisette warning");
 ok(read("src/locales/en.json").includes("security_local"), "en security keys");
 ok(read("src/locales/de.json").includes("security_local"), "de security keys");
 
+// 9. UI polish: about dialog, close label, net list, 2FA/login states.
+ok(read("src/locales/en.json").includes('"tagline"'), "en about keys");
+ok(read("src/locales/de.json").includes('"tagline"'), "de about keys");
+ok(settings.includes("net_apple"), "net list i18n");
+ok(read("src/AppleID.tsx").includes("loginBusy"), "login busy state");
+ok(read("src/AppleID.tsx").includes("two_factor_hint"), "2fa hint");
+ok(read("src/components/Modal.tsx").includes("aria-label"), "modal close label");
+ok(read("src/Device.css").includes(".spinner"), "pairing spinner styled");
+ok(read("src/App.css").includes("prefers-reduced-motion"), "reduced motion");
+ok(read("src/App.css").includes("focus-visible"), "focus rings");
+
 // 7. Docs.
 ok(read("PRIVACY.md").includes("DenizSigner"), "PRIVACY.md");
 ok(read("NOTICE.md").includes("iloader"), "NOTICE credits upstream");

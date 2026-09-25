@@ -1,9 +1,16 @@
 {
   "subtitle": "Privater iOS-Signer",
   "version": "Version",
+  "about": {
+    "tagline": "Privates iOS-Sideloading- & Signierwerkzeug",
+    "built": "Für den persönlichen Gebrauch gebaut.",
+    "based": "Basiert auf Open-Source-Komponenten.",
+    "local": "Local-first. Keine Konten, keine Analyse, kein Tracking."
+  },
   "common": {
     "confirm": "Bestätigen",
     "cancel": "Abbrechen",
+    "close": "Schließen",
     "dismiss": "Schließen",
     "refresh": "Aktualisieren",
     "delete": "Löschen",
@@ -71,14 +78,17 @@
     "login": "Anmelden",
     "two_factor_title": "Zwei-Faktor-Authentifizierung",
     "two_factor_prompt": "Bitte den Bestätigungscode eingeben, der an dein Gerät gesendet wurde.",
+    "two_factor_hint": "Gib den 6-stelligen Code deines vertrauenswürdigen Geräts ein. Die Anfrage verfällt nach 2 Minuten ohne Code.",
     "verification_placeholder": "Bestätigungscode...",
     "valid_6digit": "Bitte einen gültigen 6-stelligen Code eingeben.",
     "submit": "Absenden",
+    "submitting": "Wird gesendet…",
     "max_certs_title": "Maximale Zertifikatanzahl erreicht",
     "max_certs_desc": "DenizSigner widerruft deine vorhandenen Zertifikate und erstellt ein neues.",
     "hide_certificate_list": "Zertifikatliste ausblenden",
     "choose_what_to_revoke": "Auswählen, was widerrufen werden soll",
-    "continue": "Weiter"
+    "continue": "Weiter",
+    "no_keyring_available": "Anmeldedaten können auf diesem Gerät nicht gespeichert werden."
   },
   "device": {
     "title": "iDevice",
@@ -89,7 +99,12 @@
     "found_devices": "Geräte gefunden",
     "unable_load_devices_prefix": "Geräte konnten nicht geladen werden: ",
     "no_devices_found_period": "Keine Geräte gefunden.",
-    "selected": "Ausgewählt"
+    "selected": "Ausgewählt",
+    "failed_select": "Gerät konnte nicht ausgewählt werden",
+    "unknown_error": "Unbekannter Fehler",
+    "pairing_in_progress_header": "Pairing mit {{device}} läuft...",
+    "pairing_in_progress_hint": "Entsperre dein Gerät, tippe auf Vertrauen und gib ggf. deinen Code ein.",
+    "pairing_cancel": "Abbrechen"
   },
   "operation": {
     "failed": "Vorgang fehlgeschlagen.",
@@ -167,7 +182,8 @@
     "pairing_file_exported_success": "Pairing-Datei erfolgreich exportiert!",
     "failed_export_pairing_file": "Pairing-Datei konnte nicht exportiert werden",
     "export_not_recommended": "Exportieren (Nicht empfohlen)",
-    "refresh_installed_apps": "Installierte Apps aktualisieren"
+    "refresh_installed_apps": "Installierte Apps aktualisieren",
+    "place_all": "In allen Apps platzieren"
   },
   "settings": {
     "anisette_server": "Anisette-Server:",
@@ -192,13 +208,25 @@
     "privacy_heading": "Privatsphäre",
     "privacy_note": "DenizSigner nutzt keine Analyse- oder Telemetriedienste.",
     "network_activity": "Netzwerkaktivität (Allowlist)",
+    "net_apple": "Apple (via isideload): Anmeldung, Zertifikate, App-IDs, Signierung",
+    "net_anisette": "Anisette-Server nach Wahl (Standard ani.sidestore.io)",
+    "net_github": "github.com-Release-Artefakte — nur IPAs, die du explizit installierst",
+    "net_help": "iforgot.apple.com / apple.co — Hilfe-Links im Browser",
     "security_heading": "Sicherheit",
     "security_network": "DenizSigner hat keine Analysefunktionen, kein Tracking und keinen automatischen Update-Dienst.",
     "security_apple": "Dein Apple-Passwort wird für die Apple-Anmeldung benötigt. DenizSigner speichert es nur, wenn du „Anmeldedaten speichern“ aktivierst.",
     "security_anisette": "Ein Anisette-Server ist Bestandteil des Apple-Authentifizierungs- und Signierablaufs. Bei einem eigenen Server solltest du dem Betreiber vertrauen.",
     "security_local": "Deine Signier-Anmeldedaten werden lokal im Schlüsselbund des Betriebssystems gespeichert.",
     "custom_anisette_title": "Eigener Anisette-Server",
-    "custom_anisette_body": "Authentifizierungsbezogene Kommunikation kann an diesen Server gesendet werden. Nutze nur einen Server, dem du vertraust."
+    "custom_anisette_body": "Authentifizierungsbezogene Kommunikation kann an diesen Server gesendet werden. Nutze nur einen Server, dem du vertraust.",
+    "anisette_state_not_found": "Kein Anisette-Zustand zum Zurücksetzen",
+    "delete_stored_rppairing": "Gespeichertes Pairing löschen",
+    "delete_stored_rppairing_message": "Gespeicherte Pairing-Datei für dieses Gerät wirklich löschen? Danach muss erneut gepairt werden.",
+    "deleting_stored_rppairing": "Gespeichertes Pairing wird gelöscht...",
+    "dont_use_keyring": "Schlüsselbund nicht verwenden",
+    "dont_use_keyring_message": "Das macht DenizSigner unsicherer, da Pairing-Dateien, Anisette-Zustand und Zertifikate auf der Festplatte landen. Nur aktivieren, wenn der Standard-Schlüsselbund nicht funktioniert und die Risiken klar sind.",
+    "failed_delete_stored_rppairing": "Gespeichertes Pairing konnte nicht gelöscht werden",
+    "stored_rppairing_deleted_success": "Gespeichertes Pairing erfolgreich gelöscht!"
   },
   "dialog": {
     "confirm": "Bestätigen",
@@ -207,6 +235,7 @@
   "error": {
     "title": "Ein Fehler ist aufgetreten: {{msg}}",
     "unknown": "Unbekannt",
-    "support_message": "Besteht das Problem weiterhin, drücke \"In die Zwischenablage kopieren\" und prüfe die Protokolle (Einstellungen → Protokolle ansehen)."
+    "support_message": "Besteht das Problem weiterhin, drücke \"In die Zwischenablage kopieren\" und prüfe die Protokolle (Einstellungen → Protokolle ansehen).",
+    "suggestions_heading": "Vorschläge"
   }
 }

@@ -304,6 +304,19 @@ Release files: portable `.exe`, NSIS `-setup.exe`, `.msi`, `SHA256SUMS.txt`.
 - Still stuck? Settings → View Logs, copy the entry, open an issue —
   without passwords, codes, or tokens.
 
+## Known limitations
+
+- **No physical-device testing in this build.** Device detection, pairing,
+  signing, and installation are implemented and unit-tested, but have not
+  been verified against a real iPhone in this build.
+- **Unsigned Windows build.** SmartScreen warns on first launch; verify the
+  checksum, then allow the app explicitly.
+- **Free Apple IDs** are limited by Apple (3 sideloaded apps, 10 App IDs per
+  7 days) — a platform restriction, not an app bug.
+- **German translations** may lag behind new English strings; missing keys
+  fall back to English automatically.
+- Minimum window size is 560×480; below ~768 px the layout stacks vertically.
+
 ## Roadmap
 
 ### v0.1.x

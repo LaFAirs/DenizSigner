@@ -263,10 +263,10 @@ export const Settings = ({
             {t("settings.network_activity")}
           </p>
           <ul className="settings-hint" style={{ margin: "0.25em 0", paddingLeft: "1.25em" }}>
-            <li>Apple (via isideload): sign-in, certificates, App IDs, signing</li>
-            <li>Anisette server of your choice (default ani.sidestore.io)</li>
-            <li>github.com release assets — only IPAs you explicitly install</li>
-            <li>iforgot.apple.com / apple.co — help links opened in the browser</li>
+            <li>{t("settings.net_apple")}</li>
+            <li>{t("settings.net_anisette")}</li>
+            <li>{t("settings.net_github")}</li>
+            <li>{t("settings.net_help")}</li>
           </ul>
         </div>
         <div>

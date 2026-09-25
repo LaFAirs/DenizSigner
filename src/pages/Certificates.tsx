@@ -93,6 +93,7 @@ export const Certificates = () => {
                       className="cert-item-revoke"
                       role="button"
                       tabIndex={0}
+                      aria-label={t("certificates.revoke")}
                       onClick={() =>
                         confirm(
                           t("certificates.revoke_title"),
@@ -100,6 +101,12 @@ export const Certificates = () => {
                           () => revokeCertificate(cert.serialNumber),
                         )
                       }
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          (e.currentTarget as HTMLElement).click();
+                        }
+                      }}
                     >
                       {t("certificates.revoke")}
                     </td>
