@@ -26,7 +26,7 @@ import { GlassCard } from "./components/GlassCard";
 import { useTranslation } from "react-i18next";
 import { usePlatform } from "./PlatformContext";
 
-const logo = "/d-logo.svg";
+const logo = "/logo-icon.png";
 
 const REPO_URL = "https://github.com/LaFAirs/DenizSigner";
 

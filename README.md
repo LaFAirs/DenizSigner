@@ -1,18 +1,11 @@
 # DenizSigner
 
+![DenizSigner — Sign · Secure · Digital](docs/assets/logo.png)
+
 **Private iOS Sideloading & Signing Tool for Windows**
 
 > A privacy-first, local-first desktop application for signing and sideloading
 > IPAs to your personal iPhone or iPad.
-
-```text
-                         D
-                    DenizSigner
-
-       Private iOS Sideloading & Signing
-
-     Local-first • Privacy-focused • Windows
-```
 
 [![Build](https://github.com/LaFAirs/DenizSigner/actions/workflows/build.yml/badge.svg)](https://github.com/LaFAirs/DenizSigner/actions/workflows/build.yml)
 [![Release](https://img.shields.io/github/v/release/LaFAirs/DenizSigner?display_name=tag)](https://github.com/LaFAirs/DenizSigner/releases/latest)
