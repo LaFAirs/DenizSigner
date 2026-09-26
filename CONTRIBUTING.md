@@ -46,4 +46,4 @@ git tag v0.2.0; git push origin v0.2.0
 ```
 
 `release.yml` builds, signs nothing (desktop app), attaches
-`.exe` + `-setup.exe` + `.msi` + `SHA256SUMS.txt` to the GitHub Release.
+`.exe` + `-setup.exe` + `.msi` to the GitHub Release.

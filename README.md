@@ -33,14 +33,9 @@
 | `DenizSigner_*_x64-setup.exe` | Installer — **recommended** |
 | `DenizSigner_*_x64_en-US.msi` | MSI installer (managed environments) |
 | `denizsigner.exe` | Portable, runs without install |
-| `SHA256SUMS.txt` | Checksums for all files above |
 
-**Verify the download** (PowerShell):
-
-```powershell
-certutil -hashfile DenizSigner_0.1.0_x64-setup.exe SHA256
-# compare the output with the matching line in SHA256SUMS.txt
-```
+> Only download from the official release page above. Windows SmartScreen
+> may warn because the build is unsigned — that is expected for v0.1.0.
 
 ## Interface
 
@@ -156,9 +151,9 @@ policy (scope, response time, safe handling).
 ### Windows
 
 1. Download the [latest release](https://github.com/LaFAirs/DenizSigner/releases/latest)
-   (`DenizSigner_*_x64-setup.exe` recommended) and verify its checksum.
+   (`DenizSigner_*_x64-setup.exe` recommended).
 2. Run the installer. (SmartScreen may warn because the build is unsigned —
-   verify the checksum, then choose “More info → Run anyway”.)
+   only proceed if you downloaded it from the official release page above.)
 3. Install **Apple Devices** (or iTunes) from the Microsoft Store if your
    iPhone is not detected — Windows needs Apple's USB drivers.
 4. Connect your iPhone/iPad via USB, unlock it, tap **Trust**.
@@ -283,10 +278,10 @@ Release Build (local verification + screenshots)
     ↓
 Git Tag (vX.Y.Z)
     ↓
-GitHub Release (CI build + SHA256SUMS.txt)
+GitHub Release (CI build with `.exe`, `-setup.exe`, `.msi`)
 ```
 
-Release files: portable `.exe`, NSIS `-setup.exe`, `.msi`, `SHA256SUMS.txt`.
+Release files: portable `.exe`, NSIS `-setup.exe`, `.msi`.
 
 ## Troubleshooting
 
