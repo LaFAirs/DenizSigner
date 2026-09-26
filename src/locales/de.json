@@ -5,7 +5,8 @@
     "tagline": "Privates iOS-Sideloading- & Signierwerkzeug",
     "built": "Für den persönlichen Gebrauch gebaut.",
     "based": "Basiert auf Open-Source-Komponenten.",
-    "local": "Local-first. Keine Konten, keine Analyse, kein Tracking."
+    "local": "Local-first. Keine Konten, keine Analyse, kein Tracking.",
+    "repo": "GitHub-Repository"
   },
   "common": {
     "confirm": "Bestätigen",

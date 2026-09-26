@@ -4,6 +4,7 @@ import { AppleID } from "./AppleID";
 import { Device, DeviceInfo } from "./Device";
 import { invoke } from "@tauri-apps/api/core";
 import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
+import { openUrl } from "@tauri-apps/plugin-opener";
 import {
   sideloadOperation,
   installSideStoreOperation,
@@ -26,6 +27,8 @@ import { useTranslation } from "react-i18next";
 import { usePlatform } from "./PlatformContext";
 
 const logo = "/d-logo.svg";
+
+const REPO_URL = "https://github.com/LaFAirs/DenizSigner";
 
 function App() {
   const { t } = useTranslation();
@@ -178,7 +181,13 @@ function App() {
       <header className="workspace-header">
         <div className="header-left">
           <div className="title-block">
-            <img src={logo} alt={t("app.logo_alt")} className="logo" />
+            <button
+              className="logo-button"
+              onClick={() => setOpenModal("about")}
+              aria-label="DenizSigner — About"
+            >
+              <img src={logo} alt={t("app.logo_alt")} className="logo" />
+            </button>
             <div>
               <h1 className="title">DenizSigner</h1>
               <p className="subtitle">{t("subtitle")}</p>
@@ -189,7 +198,17 @@ function App() {
           </span>
         </div>
         <div className="header-actions">
-          <button className="toolbar-button" onClick={() => setOpenModal("about")}>
+          <button
+            className="toolbar-button"
+            onClick={async () => {
+              try {
+                await openUrl(REPO_URL);
+              } catch (error) {
+                console.error("Failed to open repository link", error);
+                toast.error(t("app.open_github_failed"));
+              }
+            }}
+          >
             {t("app.github")}
           </button>
         </div>
@@ -413,6 +432,20 @@ function App() {
           <p>{t("about.built")}</p>
           <p className="text-muted">{t("about.based")}</p>
           <p className="text-muted">{t("about.local")}</p>
+          <button
+            className="toolbar-button"
+            style={{ marginTop: "0.5rem" }}
+            onClick={async () => {
+              try {
+                await openUrl(REPO_URL);
+              } catch (error) {
+                console.error("Failed to open repository link", error);
+                toast.error(t("app.open_github_failed"));
+              }
+            }}
+          >
+            {t("about.repo")}
+          </button>
         </div>
       </Modal>
     </main>

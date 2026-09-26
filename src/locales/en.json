@@ -5,7 +5,8 @@
     "tagline": "Private iOS Sideloading & Signing Tool",
     "built": "Built for personal use.",
     "based": "Based on open-source components.",
-    "local": "Local-first. No accounts, no analytics, no tracking."
+    "local": "Local-first. No accounts, no analytics, no tracking.",
+    "repo": "GitHub Repository"
   },
   "common": {
     "confirm": "Confirm",
