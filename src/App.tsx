@@ -7,8 +7,7 @@ import { open as openFileDialog } from "@tauri-apps/plugin-dialog";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import {
   sideloadOperation,
-  installSideStoreOperation,
-  installLiveContainerOperation,
+  installDenizSideloaderOperation,
   Operation,
   OperationState,
   OperationUpdate,
@@ -310,56 +309,23 @@ function App() {
             <GlassCard className="panel">
               <div className="action-row single-row">
                 <button
-                  onClick={() => {
+                  onClick={async () => {
                     if (!ensuredLoggedIn() || !ensureSelectedDevice()) return;
-                    startOperation(installSideStoreOperation, {
-                      nightly: false,
-                      liveContainer: false,
+                    let path = await openFileDialog({
+                      multiple: false,
+                      filters: [
+                        { name: t("app.ipa_files"), extensions: ["ipa"] },
+                      ],
+                    });
+                    if (!path) return;
+                    startOperation(installDenizSideloaderOperation, {
+                      appPath: path as string,
                     }).catch(() => {
                       /* Failures surface via operation events in OperationView. */
                     });
                   }}
                 >
-                  {t("app.sidestore_stable")}
-                </button>
-                <button
-                  onClick={() => {
-                    if (!ensuredLoggedIn() || !ensureSelectedDevice()) return;
-                    startOperation(installSideStoreOperation, {
-                      nightly: true,
-                      liveContainer: false,
-                    }).catch(() => {
-                      /* Failures surface via operation events in OperationView. */
-                    });
-                  }}
-                >
-                  {t("app.sidestore_nightly")}
-                </button>
-                <button
-                  onClick={() => {
-                    if (!ensuredLoggedIn() || !ensureSelectedDevice()) return;
-                    startOperation(installLiveContainerOperation, {
-                      nightly: false,
-                      liveContainer: true,
-                    }).catch(() => {
-                      /* Failures surface via operation events in OperationView. */
-                    });
-                  }}
-                >
-                  {t("app.livecontainer_sidestore_stable")}
-                </button>
-                <button
-                  onClick={() => {
-                    if (!ensuredLoggedIn() || !ensureSelectedDevice()) return;
-                    startOperation(installLiveContainerOperation, {
-                      nightly: true,
-                      liveContainer: true,
-                    }).catch(() => {
-                      /* Failures surface via operation events in OperationView. */
-                    });
-                  }}
-                >
-                  {t("app.livecontainer_sidestore_nightly")}
+                  {t("app.install_denizsideloader")}
                 </button>
                 <button
                   onClick={async () => {

@@ -72,6 +72,9 @@ pub async fn sideload_operation(
     Ok(())
 }
 
+/// LEGACY recovery path (hidden from the UI since DenizSideloader).
+/// Kept so a broken DenizSideloader rollout can fall back to SideStore /
+/// LiveContainer exactly as before. See `docs/RECOVERY_SIDESTORE.md`.
 /// User-initiated SideStore/LiveContainer download + install + pairing.
 /// Download URLs are allowlist-checked (github.com release assets only).
 #[tauri::command]

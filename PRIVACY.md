@@ -45,6 +45,12 @@ device change only; no background polling loops.
    (SideStore / LiveContainer). Data: requested bytes. Local `.ipa` import
    (Choose IPA / drag & drop) needs **no** network at all.
 4. **Help links**: opened in the system browser on click.
+5. **DenizSideloader**: installed from a **local** unsigned IPA you
+   provide (iOS CI artifact, file picker). No download, no new hosts,
+   no new data flows — signing/install reuse the Apple + device-local
+   paths above. The app itself (on device) makes **no** network
+   requests at all: expiry tracking, reminders (local notifications),
+   pairing checks and logs stay on device.
 
 ## Documented hosts (machine-checked)
 

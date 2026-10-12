@@ -48,6 +48,8 @@
     "livecontainer_sidestore_stable": "LiveContainer + SideStore (Stable)",
     "livecontainer_sidestore_nightly": "LiveContainer + SideStore (Nightly)",
     "import_ipa": "IPA importieren",
+    "install_denizsideloader": "DenizSideloader installieren",
+    "denizsideloader_hint": "Braucht die CI-gebaute DenizSideloader-unsigned.ipa (siehe DenizSideloader/README).",
     "settings": "Einstellungen",
     "must_be_logged_in": "Du musst angemeldet sein!",
     "must_select_device": "Du musst ein Gerät auswählen!",
@@ -127,7 +129,13 @@
     "install_livecontainer_step_install": "LiveContainer+SideStore signieren & installieren",
     "install_livecontainer_step_pairing": "Pairing-Datei ablegen",
     "sideload_title": "App wird installiert",
-    "sideload_step_install": "App signieren & installieren"
+    "sideload_step_install": "App signieren & installieren",
+    "install_denizsideloader_title": "DenizSideloader wird installiert",
+    "install_denizsideloader_success_title": "DenizSideloader installiert!",
+    "install_denizsideloader_success_message": "DenizSideloader auf dem Gerät öffnen — die Pairing-Datei wurde automatisch abgelegt.",
+    "install_denizsideloader_step_verify": "DenizSideloader-IPA prüfen",
+    "install_denizsideloader_step_install": "DenizSideloader signieren & installieren",
+    "install_denizsideloader_step_pairing": "Pairing-Datei ablegen"
   },
   "certificates": {
     "manage": "Zertifikate verwalten",

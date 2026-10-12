@@ -1,0 +1,457 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		B10000000000000000000102 = {isa = PBXBuildFile; fileRef = A10000000000000000000102; };
+		B10000000000000000000103 = {isa = PBXBuildFile; fileRef = A10000000000000000000103; };
+		B10000000000000000000104 = {isa = PBXBuildFile; fileRef = A10000000000000000000104; };
+		B10000000000000000000105 = {isa = PBXBuildFile; fileRef = A10000000000000000000105; };
+		B10000000000000000000106 = {isa = PBXBuildFile; fileRef = A10000000000000000000106; };
+		B10000000000000000000107 = {isa = PBXBuildFile; fileRef = A10000000000000000000107; };
+		B10000000000000000000108 = {isa = PBXBuildFile; fileRef = A10000000000000000000108; };
+		B10000000000000000000109 = {isa = PBXBuildFile; fileRef = A10000000000000000000109; };
+		B10000000000000000000110 = {isa = PBXBuildFile; fileRef = A10000000000000000000110; };
+		B10000000000000000000111 = {isa = PBXBuildFile; fileRef = A10000000000000000000111; };
+		B10000000000000000000112 = {isa = PBXBuildFile; fileRef = A10000000000000000000112; };
+		B10000000000000000000113 = {isa = PBXBuildFile; fileRef = A10000000000000000000113; };
+		B10000000000000000000114 = {isa = PBXBuildFile; fileRef = A10000000000000000000114; };
+		B10000000000000000000115 = {isa = PBXBuildFile; fileRef = A10000000000000000000115; };
+		B10000000000000000000116 = {isa = PBXBuildFile; fileRef = A10000000000000000000116; };
+		B10000000000000000000117 = {isa = PBXBuildFile; fileRef = A10000000000000000000117; };
+		B10000000000000000000118 = {isa = PBXBuildFile; fileRef = A10000000000000000000118; };
+		B10000000000000000000119 = {isa = PBXBuildFile; fileRef = A10000000000000000000119; };
+		B10000000000000000000120 = {isa = PBXBuildFile; fileRef = A10000000000000000000120; };
+		B10000000000000000000123 = {isa = PBXBuildFile; fileRef = A10000000000000000000123; };
+		B10000000000000000000124 = {isa = PBXBuildFile; fileRef = A10000000000000000000124; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A10000000000000000000051 = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A10000000000000000000001;
+			proxyType = 1;
+			remoteGlobalIDString = A10000000000000000000010;
+			remoteInfo = DenizSideloader;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A10000000000000000000100 = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DenizSideloader.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000101 = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DenizSideloaderTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000102 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DenizSideloaderApp.swift; sourceTree = "<group>"; };
+		A10000000000000000000103 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		A10000000000000000000104 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		A10000000000000000000105 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagedApp.swift; sourceTree = "<group>"; };
+		A10000000000000000000106 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshState.swift; sourceTree = "<group>"; };
+		A10000000000000000000107 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiryCalculator.swift; sourceTree = "<group>"; };
+		A10000000000000000000108 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLibrary.swift; sourceTree = "<group>"; };
+		A10000000000000000000109 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingManager.swift; sourceTree = "<group>"; };
+		A10000000000000000000110 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diagnostics.swift; sourceTree = "<group>"; };
+		A10000000000000000000111 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainStore.swift; sourceTree = "<group>"; };
+		A10000000000000000000112 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceTransport.swift; sourceTree = "<group>"; };
+		A10000000000000000000113 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshManager.swift; sourceTree = "<group>"; };
+		A10000000000000000000114 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IpaParser.swift; sourceTree = "<group>"; };
+		A10000000000000000000115 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		A10000000000000000000116 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppsView.swift; sourceTree = "<group>"; };
+		A10000000000000000000117 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshView.swift; sourceTree = "<group>"; };
+		A10000000000000000000118 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A10000000000000000000119 = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A10000000000000000000120 = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		A10000000000000000000121 = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A10000000000000000000122 = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DenizSideloader.entitlements; sourceTree = "<group>"; };
+		A10000000000000000000123 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpiryCalculatorTests.swift; sourceTree = "<group>"; };
+		A10000000000000000000124 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PairingAndInstallFailureTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A10000000000000000000041 = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A10000000000000000000060 = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000061,
+				A10000000000000000000065,
+				A10000000000000000000066,
+			);
+			sourceTree = "<group>";
+		};
+		A10000000000000000000061 = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000102,
+				A10000000000000000000103,
+				A10000000000000000000104,
+				A10000000000000000000062,
+				A10000000000000000000063,
+				A10000000000000000000064,
+				A10000000000000000000119,
+				A10000000000000000000120,
+				A10000000000000000000121,
+				A10000000000000000000122,
+			);
+			path = DenizSideloader;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000062 = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000105,
+				A10000000000000000000106,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000063 = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000107,
+				A10000000000000000000108,
+				A10000000000000000000109,
+				A10000000000000000000110,
+				A10000000000000000000111,
+				A10000000000000000000112,
+				A10000000000000000000113,
+				A10000000000000000000114,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000064 = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000115,
+				A10000000000000000000116,
+				A10000000000000000000117,
+				A10000000000000000000118,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000065 = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000123,
+				A10000000000000000000124,
+			);
+			path = DenizSideloaderTests;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000066 = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000100,
+				A10000000000000000000101,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A10000000000000000000010 = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000000000000000000021;
+			buildPhases = (
+				A10000000000000000000040,
+				A10000000000000000000041,
+				A10000000000000000000042,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = DenizSideloader;
+			productName = DenizSideloader;
+			productReference = A10000000000000000000100;
+			productType = "com.apple.product-type.application";
+		};
+		A10000000000000000000011 = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000000000000000000022;
+			buildPhases = (
+				A10000000000000000000043,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A10000000000000000000050,
+			);
+			name = DenizSideloaderTests;
+			productName = DenizSideloaderTests;
+			productReference = A10000000000000000000101;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A10000000000000000000001 = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					A10000000000000000000010 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					A10000000000000000000011 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = A10000000000000000000010;
+					};
+				};
+			};
+			buildConfigurationList = A10000000000000000000020;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				de,
+			);
+			mainGroup = A10000000000000000000060;
+			productRefGroup = A10000000000000000000066;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A10000000000000000000010,
+				A10000000000000000000011,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A10000000000000000000042 = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000000000000000000119,
+				B10000000000000000000120,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A10000000000000000000040 = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000000000000000000102,
+				B10000000000000000000103,
+				B10000000000000000000104,
+				B10000000000000000000105,
+				B10000000000000000000106,
+				B10000000000000000000107,
+				B10000000000000000000108,
+				B10000000000000000000109,
+				B10000000000000000000110,
+				B10000000000000000000111,
+				B10000000000000000000112,
+				B10000000000000000000113,
+				B10000000000000000000114,
+				B10000000000000000000115,
+				B10000000000000000000116,
+				B10000000000000000000117,
+				B10000000000000000000118,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000000000000000000043 = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B10000000000000000000123,
+				B10000000000000000000124,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A10000000000000000000050 = {
+			isa = PBXTargetDependency;
+			target = A10000000000000000000010;
+			targetProxy = A10000000000000000000051;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		A10000000000000000000030 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDED;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A10000000000000000000031 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A10000000000000000000032 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DenizSideloader/DenizSideloader.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DenizSideloader/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DenizSideloader;
+				INFOPLIST_KEY_LSRequiresIPhoneOS = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.denizbudakli.denizsideloader;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A10000000000000000000033 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = DenizSideloader/DenizSideloader.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = DenizSideloader/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = DenizSideloader;
+				INFOPLIST_KEY_LSRequiresIPhoneOS = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.denizbudakli.denizsideloader;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A10000000000000000000034 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.denizbudakli.denizsideloader.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DenizSideloader.app/DenizSideloader";
+			};
+			name = Debug;
+		};
+		A10000000000000000000035 = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.denizbudakli.denizsideloader.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DenizSideloader.app/DenizSideloader";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A10000000000000000000020 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000030,
+				A10000000000000000000031,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000000000000000000021 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000032,
+				A10000000000000000000033,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000000000000000000022 = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000034,
+				A10000000000000000000035,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A10000000000000000000001;
+}

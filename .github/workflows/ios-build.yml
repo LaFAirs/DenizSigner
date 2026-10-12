@@ -1,0 +1,80 @@
+name: iOS
+
+# Builds + tests DenizSideloader on macOS (the main project develops on
+# Windows, so the SwiftUI app is compiled here). The unsigned IPA artifact
+# is then signed + installed via DenizSigner on Windows.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "DenizSideloader/**"
+      - ".github/workflows/ios-build.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "DenizSideloader/**"
+      - ".github/workflows/ios-build.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Swift tests (simulator)
+    runs-on: macos-15
+    defaults:
+      run:
+        working-directory: DenizSideloader
+    steps:
+      - uses: actions/checkout@v5
+      - name: Show Xcode version
+        run: xcodebuild -version
+      - name: No secrets committed (iOS side)
+        shell: pwsh
+        run: |
+          $bad = git ls-files 'DenizSideloader/*' | Select-String -Pattern '\.(p12|pfx|mobileprovision|cer|key)$|Secrets\.swift$|\.env$'
+          if ($bad) { $bad; exit 1 } else { echo "OK: no secrets committed." }
+      - name: Run unit tests
+        run: |
+          xcodebuild test \
+            -project DenizSideloader.xcodeproj \
+            -scheme DenizSideloader \
+            -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
+            CODE_SIGNING_ALLOWED=NO
+
+  build-unsigned-ipa:
+    name: Unsigned IPA artifact
+    runs-on: macos-15
+    needs: test
+    defaults:
+      run:
+        working-directory: DenizSideloader
+    steps:
+      - uses: actions/checkout@v5
+      - name: Build .app (no signing)
+        run: |
+          xcodebuild \
+            -project DenizSideloader.xcodeproj \
+            -scheme DenizSideloader \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build/derived \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            build
+      - name: Package unsigned IPA
+        run: |
+          APP=$(echo build/derived/Build/Products/Release-iphoneos/DenizSideloader.app)
+          test -d "$APP" || { echo "missing $APP"; exit 1; }
+          rm -rf Payload DenizSideloader-unsigned.ipa
+          mkdir Payload
+          cp -R "$APP" Payload/
+          zip -r -y DenizSideloader-unsigned.ipa Payload
+          unzip -l DenizSideloader-unsigned.ipa
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: DenizSideloader-unsigned
+          path: DenizSideloader/DenizSideloader-unsigned.ipa
+          if-no-files-found: error

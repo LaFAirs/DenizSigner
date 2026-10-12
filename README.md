@@ -54,7 +54,7 @@ Only real captures are committed — no mockups.
 - IPA import via file picker and drag & drop
 - iPhone / iPad detection over USB (usbmuxd / lockdown, local only)
 - Installation progress per step with friendly errors + technical details
-- SideStore / LiveContainer one-click installers with pairing placement
+- DenizSideloader one-click installer (own companion app) with pairing placement
 
 ### Signing
 
@@ -114,7 +114,8 @@ Every outbound request the app itself makes is allowlisted in
 | ------- | ------- | -------- |
 | Apple services (via `isideload`) | Apple-ID auth, developer session, certificates, App IDs, signing | Yes |
 | Anisette server of your choice (default `ani.sidestore.io`) | Apple-auth helper headers | Yes |
-| `github.com` + release asset hosts | SideStore/LiveContainer IPAs you explicitly install | Only on click |
+| `github.com` + release asset hosts | Legacy SideStore/LiveContainer recovery downloads you explicitly trigger | Only on click |
+| DenizSideloader unsigned IPA | Local file you provide (iOS CI artifact) — no download, no new hosts | File picker |
 | `iforgot.apple.com`, `apple.co` | Help links, opened in your browser | Only on click |
 
 Removed relative to the upstream reference: auto-updater + manifest endpoint,
@@ -193,9 +194,10 @@ IPA   Signing   Device
 - **Frontend** (`src/`): iloader-style workspace — account, device,
   installers, settings, pairing/certificates/App-ID dialogs, operation
   progress, log viewer. No network calls except Tauri commands.
-- **Backend** (`src-tauri/src/`): 24 narrow Tauri commands — Apple login
+- **Backend** (`src-tauri/src/`): narrow Tauri commands — Apple login
   (2FA via window events), certificates, App IDs, usbmuxd device handling,
-  lockdown/remote pairing, validated sideload, allowlist-gated downloads.
+  lockdown/remote pairing, validated sideload, DenizSideloader installer,
+  allowlist-gated downloads (legacy recovery only).
 - **Device layer**: `idevice` (USB/lockdown/AFC) + `isideload`
   (Apple auth/developer/signing). No DenizSigner servers involved.
 
@@ -207,6 +209,7 @@ Full reference: [`ARCHITECTURE.md`](ARCHITECTURE.md).
 DenizSigner/
 ├── src/                 # React + TypeScript UI
 ├── src-tauri/           # Rust backend (Tauri 2)
+├── DenizSideloader/     # own SwiftUI companion app (iOS CI → unsigned IPA)
 ├── public/              # D logo and static assets
 ├── scripts/             # audit-network, check-branding, frontend tests
 ├── docs/
@@ -254,6 +257,7 @@ under `src-tauri/target/release/bundle/`. Icons:
 | Workflow | Trigger | Purpose |
 | -------- | ------- | ------- |
 | `build.yml` | push / PR | tsc, vite build, frontend tests, both audits, `cargo test`, no-secrets gate |
+| `ios-build.yml` | push / PR (DenizSideloader paths) | Swift unit tests + unsigned-IPA artifact (macOS runner) |
 | `release.yml` | version tag (`v*`) | Tauri release build, `.exe` + `.msi` + checksums to GitHub Release |
 
 Relevant tests run on every pull request; the release pipeline only runs on tags.

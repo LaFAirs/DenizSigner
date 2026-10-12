@@ -23,6 +23,15 @@ Licensed under their own MIT/Apache-2.0 terms (see lockfiles):
 - Tauri 2 + official plugins (opener, store, dialog, process)
 - React, Vite, i18next, sonner
 
+## DenizSideloader (own companion app)
+
+- `DenizSideloader/` is a clean-room SwiftUI app written for this
+  project (MIT, same license as DenizSigner). It contains no code
+  copied from SideStore, LiveContainer, AltStore or any other
+  sideloading app — see `DenizSideloader/NOTICE.md`.
+- Bundle ID `com.denizbudakli.denizsideloader`; installed and paired
+  from DenizSigner via `src-tauri/src/denizsideloader.rs`.
+
 ## Own work
 
 DenizSigner branding (name, D logo, blue UI), network boundary layer,

@@ -6,6 +6,22 @@ versions follow [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- DenizSideloader MVP: own minimal SwiftUI companion app
+  (`DenizSideloader/`, MIT, clean-room) with Home / Apps / Refresh /
+  Settings, expiry tracking, local reminders, pairing checks and
+  diagnostics (DE + EN, iPhone + iPad)
+- DenizSigner installs DenizSideloader via new **Install
+  DenizSideloader** flow (local unsigned IPA + proven USB transport +
+  automatic pairing placement); SideStore UI removed, backend kept as
+  documented recovery path (`docs/RECOVERY_SIDESTORE.md`)
+- iOS CI workflow (macOS runner): Swift unit tests + unsigned-IPA
+  artifact for Windows signing
+- Docs: install workflow, iPadOS-27 compatibility matrix, known
+  limitations; all device functions marked untested until real-device
+  verification
+
 ### Fixed
 
 - Header layout hardened (wrapping nav, no clipped actions on small windows)

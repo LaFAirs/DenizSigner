@@ -21,11 +21,13 @@ Logs: tracing file (denizsigner*.log, 7 files) + redacted frontend mirror (log-r
 | `account.rs` | Apple login (2FA via window events), certs, App IDs | `login_new`, `login_stored`, `delete_account`, `logged_in_as`, `invalidate_account`, `reset_anisette_state`, `get_certificates`, `revoke_certificate`, `list_app_ids`, `delete_app_id` |
 | `device.rs` | usbmuxd device list/select (label `denizsigner`) | `list_devices`, `set_selected_device`, `cancel_pairing` |
 | `pairing.rs` | lockdown/rppairing generate+cache, place/export/delete | `place_pairing_cmd`, `export_pairing_cmd`, `delete_stored_rppairing`, `has_stored_rppairing`, `installed_pairing_apps` |
-| `sideload.rs` | validated sideload + gated SideStore/LiveContainer flow | `sideload_operation`, `install_sidestore_operation` |
+| `sideload.rs` | validated sideload + legacy SideStore/LiveContainer flow (recovery only) | `sideload_operation`, `install_sidestore_operation` |
+| `denizsideloader.rs` | DenizSideloader companion installer (local IPA + pairing) + shared expiry math | `install_denizsideloader_operation` |
 | `operation.rs` | `operation_<id>` started/finished/failed events | – |
 
 22 commands total — same surface as upstream, minus updater; plus
 `set_log_level_debug` and `friendly_error`. Minimal permissions (`capabilities/default.json`).
+23 commands total (legacy SideStore command kept for documented recovery).
 
 ## Frontend (`src/`)
 

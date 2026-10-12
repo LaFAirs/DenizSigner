@@ -36,6 +36,29 @@ type OperationFailedUpdate = {
 
 export type OperationUpdate = OperationInfoUpdate | OperationFailedUpdate;
 
+export const installDenizSideloaderOperation: Operation = {
+  id: "install_denizsideloader",
+  titleKey: "operations.install_denizsideloader_title",
+  successTitleKey: "operations.install_denizsideloader_success_title",
+  successMessageKey: "operations.install_denizsideloader_success_message",
+  steps: [
+    {
+      id: "verify",
+      titleKey: "operations.install_denizsideloader_step_verify",
+    },
+    {
+      id: "install",
+      titleKey: "operations.install_denizsideloader_step_install",
+    },
+    {
+      id: "pairing",
+      titleKey: "operations.install_denizsideloader_step_pairing",
+    },
+  ],
+};
+
+// LEGACY (recovery only, hidden from UI since DenizSideloader).
+// Kept so docs/RECOVERY_SIDESTORE.md stays accurate.
 export const installSideStoreOperation: Operation = {
   id: "install_sidestore",
   titleKey: "operations.install_sidestore_title",
@@ -57,6 +80,7 @@ export const installSideStoreOperation: Operation = {
   ],
 };
 
+// LEGACY (recovery only, hidden from UI since DenizSideloader).
 export const installLiveContainerOperation: Operation = {
   id: "install_sidestore",
   titleKey: "operations.install_livecontainer_title",

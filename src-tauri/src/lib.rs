@@ -1,4 +1,5 @@
 mod account;
+mod denizsideloader;
 mod device;
 mod error;
 mod ipa;
@@ -18,6 +19,7 @@ use crate::{
     error::friendly_error,
     logging::set_log_level_debug,
     pairing::{delete_stored_rppairing, export_pairing_cmd, has_stored_rppairing, installed_pairing_apps, place_pairing_cmd},
+    denizsideloader::install_denizsideloader_operation,
     secure_storage::{force_disable_keyring, keyring_available},
     sideload::{SideloaderMutex, install_sidestore_operation, sideload_operation},
 };
@@ -90,6 +92,7 @@ pub fn run() {
             list_devices,
             sideload_operation,
             set_selected_device,
+            install_denizsideloader_operation,
             install_sidestore_operation,
             get_certificates,
             revoke_certificate,

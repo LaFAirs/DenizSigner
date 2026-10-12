@@ -1,0 +1,510 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    "apps.diagnose" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Installation diagnostizieren" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Diagnose installation" } }
+      }
+    },
+    "apps.empty" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch keine Apps. Tippe oben auf „IPA importieren“." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No apps yet. Tap “Import IPA” above." } }
+      }
+    },
+    "apps.expires" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Läuft ab: %@" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Expires: %@" } }
+      }
+    },
+    "apps.import" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "IPA importieren" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Import IPA" } }
+      }
+    },
+    "apps.import.nometa" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Datei übernommen, aber Name und Version konnten nicht ausgelesen werden. Bitte prüfe die Angaben." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "File kept, but name and version could not be read. Please verify the details." } }
+      }
+    },
+    "apps.managed" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verwaltete Apps" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Managed apps" } }
+      }
+    },
+    "apps.renew" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Signierung erneuern" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Renew signing" } }
+      }
+    },
+    "apps.tab" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Apps" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Apps" } }
+      }
+    },
+    "apps.version" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Version %@ · noch %d Tage" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Version %@ · %d days left" } }
+      }
+    },
+    "badge.days" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "noch %d Tage" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%d days left" } }
+      }
+    },
+    "badge.expired" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "abgelaufen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "expired" } }
+      }
+    },
+    "common.cancel" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Abbrechen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Cancel" } }
+      }
+    },
+    "common.done" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fertig" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Done" } }
+      }
+    },
+    "diag.clean" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Probleme gefunden." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No problems found." } }
+      }
+    },
+    "diag.clean.fix" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Falls die Installation trotzdem scheitert, exportiere das Protokoll und prüfe es in DenizSigner auf Windows." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "If installation still fails, export the log and inspect it in DenizSigner on Windows." } }
+      }
+    },
+    "diag.due" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%@ läuft in %d Tagen ab." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%@ expires in %d days." } }
+      }
+    },
+    "diag.due.fix" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verbinde das Gerät per USB mit DenizSigner auf Windows und erneuere die Signierung vor Ablauf." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Connect the device to DenizSigner on Windows via USB and renew the signing before expiry." } }
+      }
+    },
+    "diag.expired" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%@ ist abgelaufen." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%@ has expired." } }
+      }
+    },
+    "diag.expired.fix" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "App lässt sich nicht mehr starten. Per USB mit DenizSigner auf Windows neu signieren und installieren." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "The app will no longer launch. Re-sign and reinstall via DenizSigner on Windows over USB." } }
+      }
+    },
+    "diag.noapp" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine App ausgewählt." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No app selected." } }
+      }
+    },
+    "diag.noapp.fix" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Importiere zuerst eine IPA-Datei." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Import an IPA file first." } }
+      }
+    },
+    "diag.nometa" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bundle-ID unbekannt (Metadaten nicht lesbar)." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Bundle ID unknown (metadata unreadable)." } }
+      }
+    },
+    "diag.nometa.fix" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "IPA erneut importieren oder Angaben manuell prüfen. Eine unbekannte Bundle-ID kann beim Signieren scheitern." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Re-import the IPA or verify the details manually. An unknown bundle ID may fail signing." } }
+      }
+    },
+    "diag.nopairing" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Pairing-Datei auf dem Gerät." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No pairing file on this device." } }
+      }
+    },
+    "diag.nopairing.fix" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gerät per USB verbinden und in DenizSigner „DenizSideloader installieren“ ausführen — die Pairing-Datei wird automatisch abgelegt." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Connect via USB and run “Install DenizSideloader” in DenizSigner — the pairing file is placed automatically." } }
+      }
+    },
+    "home.apps" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Verwaltete Apps" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Managed apps" } }
+      }
+    },
+    "home.due" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Bald fällig" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Due soon" } }
+      }
+    },
+    "home.empty" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch keine Apps verwaltet. Installiere DenizSigner-Apps auf Windows und importiere die IPA hier zur Ablaufverfolgung." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No apps tracked yet. Install apps with DenizSigner on Windows and import the IPA here for expiry tracking." } }
+      }
+    },
+    "home.install" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "IPA installieren" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Install IPA" } }
+      }
+    },
+    "home.install.hint" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Importiert eine IPA zur Ablaufverfolgung. Das Signieren läuft auf Windows." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Imports an IPA for expiry tracking. Signing runs on Windows." } }
+      }
+    },
+    "home.install.note" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Signieren und Installieren laufen in DenizSigner auf Windows (USB). Diese App verfolgt Ablaufdaten und Pairing." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Signing and installation run in DenizSigner on Windows (USB). This app tracks expiry and pairing." } }
+      }
+    },
+    "home.lastrefresh" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Letzte Verlängerung" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Last renewal" } }
+      }
+    },
+    "home.lastrefresh.never" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "noch nie" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "never" } }
+      }
+    },
+    "home.pairing" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Pairing-Datei" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pairing file" } }
+      }
+    },
+    "home.pairing.missing" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "fehlt" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "missing" } }
+      }
+    },
+    "home.pairing.ok" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "vorhanden" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "present" } }
+      }
+    },
+    "home.status" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Status" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Status" } }
+      }
+    },
+    "home.tab" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Home" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Home" } }
+      }
+    },
+    "ipa.error.method" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Dieses Archiv nutzt ein nicht unterstütztes Kompressionsverfahren." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "This archive uses an unsupported compression method." } }
+      }
+    },
+    "ipa.error.noapp" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kein App-Bundle gefunden (Payload/*.app fehlt)." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No app bundle found (missing Payload/*.app)." } }
+      }
+    },
+    "ipa.error.notzip" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine gültige IPA-Datei (kein lesbares ZIP-Archiv)." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Not a valid IPA file (unreadable ZIP archive)." } }
+      }
+    },
+    "ipa.error.plist" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Info.plist konnte nicht gelesen werden." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Info.plist could not be read." } }
+      }
+    },
+    "ipa.error.toolarge" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Datei zu groß zum Prüfen." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "File too large to inspect." } }
+      }
+    },
+    "ipa.error.zip64" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Zip64-Archive werden nicht unterstützt." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Zip64 archives are not supported." } }
+      }
+    },
+    "pairing.error.notaplist" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine gültige Pairing-Datei (kein Property-List-Wörterbuch)." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Not a valid pairing file (no property-list dictionary)." } }
+      }
+    },
+    "refresh.allgood" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Alles gültig — keine Erneuerung nötig." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Everything valid — no renewal needed." } }
+      }
+    },
+    "refresh.check" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Ablaufdaten prüfen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Check expiry dates" } }
+      }
+    },
+    "refresh.failures" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%d fehlgeschlagene Versuche in Folge." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%d failed attempts in a row." } }
+      }
+    },
+    "refresh.how" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "So funktioniert die Verlängerung" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "How renewal works" } }
+      }
+    },
+    "refresh.how.body" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Kostenlose Apple-IDs laufen nach 7 Tagen ab. Diese App erinnert dich rechtzeitig; das eigentliche Erneuern läuft per USB in DenizSigner auf Windows. Eine garantierte Hintergrund-Erneuerung gibt es auf iOS nicht." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Free Apple IDs expire after 7 days. This app reminds you in time; the actual renewal runs in DenizSigner on Windows via USB. iOS cannot guarantee background renewal." } }
+      }
+    },
+    "refresh.last" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Letzte erfolgreiche Verlängerung: %@" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Last successful renewal: %@" } }
+      }
+    },
+    "refresh.last.never" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Noch keine Verlängerung aufgezeichnet." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No renewal recorded yet." } }
+      }
+    },
+    "refresh.markdone" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Als erneuert markieren" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Mark as renewed" } }
+      }
+    },
+    "refresh.markdone.hint" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Nur antippen, nachdem DenizSigner auf Windows die App wirklich neu signiert hat." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Tap only after DenizSigner on Windows actually re-signed the app." } }
+      }
+    },
+    "refresh.noreminder" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Fällige Apps gefunden, aber Mitteilungen sind aus. Bitte manuell rechtzeitig per USB erneuern." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Due apps found, but notifications are off. Please renew manually via USB in time." } }
+      }
+    },
+    "refresh.reminder.body" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%@ läuft in %d Tagen ab. Per USB mit DenizSigner erneuern." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%@ expires in %d days. Renew via DenizSigner over USB." } }
+      }
+    },
+    "refresh.reminders" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erinnerungen vor Ablauf" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Reminders before expiry" } }
+      }
+    },
+    "refresh.reminders.denied" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Mitteilungen verweigert — die Warnung erscheint nur in der App." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Notifications denied — warnings appear in-app only." } }
+      }
+    },
+    "refresh.reminders.on" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erinnerungen aktiv." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Reminders active." } }
+      }
+    },
+    "refresh.scheduled" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%d von %d Erinnerungen geplant." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%d of %d reminders scheduled." } }
+      }
+    },
+    "refresh.tab" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Refresh" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Refresh" } }
+      }
+    },
+    "settings.about" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Über" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "About" } }
+      }
+    },
+    "settings.about.honest" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Eigenständige Begleit-App zu DenizSigner. Kein Tracking, keine Werbung, keine Cloud. Kostenlose Apple-IDs bleiben an Apples 7-Tage-Grenze gebunden." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Standalone companion to DenizSigner. No tracking, no ads, no cloud. Free Apple IDs stay bound to Apple's 7-day limit." } }
+      }
+    },
+    "settings.account" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Apple-Konto" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Apple account" } }
+      }
+    },
+    "settings.account.body" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Die Anmeldung läuft in DenizSigner auf Windows (mit 2FA). Diese App speichert kein Apple-Passwort." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Sign-in happens in DenizSigner on Windows (with 2FA). This app stores no Apple password." } }
+      }
+    },
+    "settings.device" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gerätestatus" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Device status" } }
+      }
+    },
+    "settings.device.body" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Installation und Erneuerung brauchen eine USB-Verbindung zu DenizSigner auf Windows." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Installation and renewal need a USB connection to DenizSigner on Windows." } }
+      }
+    },
+    "settings.logs" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Diagnoseprotokolle" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Diagnostic logs" } }
+      }
+    },
+    "settings.logs.clear" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Protokolle löschen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Clear logs" } }
+      }
+    },
+    "settings.logs.share" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Protokoll teilen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Share log" } }
+      }
+    },
+    "settings.pairing" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Pairing-Verwaltung" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Pairing management" } }
+      }
+    },
+    "settings.pairing.delete" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Pairing-Dateien löschen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete pairing files" } }
+      }
+    },
+    "settings.pairing.delete.confirm" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Wirklich löschen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Delete" } }
+      }
+    },
+    "settings.pairing.delete.hint" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Danach muss das Gerät per USB erneut gepairt werden." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "The device must be paired again over USB afterwards." } }
+      }
+    },
+    "settings.pairing.import" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Pairing-Datei importieren" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Import pairing file" } }
+      }
+    },
+    "settings.pairing.missing" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Pairing-Datei gefunden." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No pairing file found." } }
+      }
+    },
+    "settings.pairing.ok" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Gefunden: %@" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Found: %@" } }
+      }
+    },
+    "settings.pairing.rescan" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Erneut suchen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Rescan" } }
+      }
+    },
+    "settings.privacy" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Datenschutz" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Privacy" } }
+      }
+    },
+    "settings.privacy.body" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Keine Konten, keine Analyse, keine Werbung, keine Cloud. IPA-Dateien und Pairing-Daten verlassen dieses Gerät nicht. Pairing-Dateien niemals öffentlich hochladen." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "No accounts, no analytics, no ads, no cloud. IPA files and pairing data never leave this device. Never upload pairing files publicly." } }
+      }
+    },
+    "settings.tab" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "Einstellungen" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Settings" } }
+      }
+    },
+    "transport.companion" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%@: Dafür das Gerät per USB mit DenizSigner auf Windows verbinden. iOS erlaubt Apps keine eigene Installation." } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "%@: connect the device to DenizSigner on Windows via USB. iOS does not let apps install by themselves." } }
+      }
+    },
+    "transport.op.install" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%@ installieren" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Install %@" } }
+      }
+    },
+    "transport.op.refresh" : {
+      "localizations" : {
+        "de" : { "stringUnit" : { "state" : "translated", "value" : "%@ erneuern" } },
+        "en" : { "stringUnit" : { "state" : "translated", "value" : "Renew %@" } }
+      }
+    }
+  },
+  "version" : "1.0"
+}

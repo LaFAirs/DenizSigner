@@ -39,6 +39,7 @@ struct PairingStorageEntry {
 static PAIRING_STORAGE: OnceLock<Mutex<PairingStorageEntry>> = OnceLock::new();
 
 const PAIRING_APPS: &[(&str, &str)] = &[
+    ("DenizSideloader", "ALTPairingFile.mobiledevicepairing"),
     ("SideStore", "ALTPairingFile.mobiledevicepairing"),
     ("LiveContainer", "SideStore/Documents/ALTPairingFile.mobiledevicepairing"),
     ("Feather", "pairingFile.plist"),
