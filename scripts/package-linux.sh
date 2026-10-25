@@ -13,4 +13,4 @@ install -m644 packaging/linux/denizsigner.desktop "$stage/$name/packaging/linux/
 install -m755 scripts/install-linux.sh "$stage/$name/scripts/"
 install -m644 LICENSE docs/LINUX.md "$stage/$name/"
 tar -C "$stage" -czf "releases/$name.tar.gz" "$name"
-sha256sum "releases/$name.tar.gz" > "releases/$name.tar.gz.sha256"
+(cd releases && sha256sum "$name.tar.gz" > "$name.tar.gz.sha256")

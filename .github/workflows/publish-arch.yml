@@ -1,0 +1,32 @@
+name: Publish verified Arch Linux build
+on:
+  push:
+    branches: [codex/linux-credential-manager]
+    paths: ['.github/workflows/publish-arch.yml']
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - name: Retrieve locally tested release archive
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p releases
+          archive="releases/DenizSigner-0.1.0-linux-x86_64.tar.gz"
+          : > "$archive"
+          for blob in 199bd38d17eb99331b4cf574ed0a00d9b061c662 c88a96b3c41b87bcbef1597ccca5657333ff3182 92c0baee59d85fc14ecb0d140b42c851479c7af8 36815241a30761eb09ec917034e3c3d57ad326fe 31b807eeedc9f784cf62ea7fd2349fcb97582b2d; do
+            gh api "repos/LaFAirs/DenizSigner/git/blobs/$blob" --jq .content | base64 --decode >> "$archive"
+          done
+          echo "b30953f658978ca892968414bacc831202656721f526c8d60c9839880c1e1cfd  $archive" | sha256sum --check -
+          tar -tzf "$archive"
+          (cd releases && sha256sum DenizSigner-0.1.0-linux-x86_64.tar.gz > DenizSigner-0.1.0-linux-x86_64.tar.gz.sha256)
+      - name: Publish tested Arch build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create linux-arch-f941550 releases/* --target f941550cb63f910cb534aad052c625c63c4f73b6 --prerelease --title "DenizSigner Linux — verified Arch build" --notes-file docs/LINUX.md
+
