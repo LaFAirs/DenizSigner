@@ -8,6 +8,8 @@ permissions:
 jobs:
   publish:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: write
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v5
@@ -28,5 +30,5 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          gh release create linux-arch-f941550 releases/* --target f941550cb63f910cb534aad052c625c63c4f73b6 --prerelease --title "DenizSigner Linux — verified Arch build" --notes-file docs/LINUX.md
+          gh release create linux-arch-f941550 releases/* --target "$GITHUB_SHA" --prerelease --title "DenizSigner Linux — verified Arch build" --notes-file docs/LINUX.md
 
