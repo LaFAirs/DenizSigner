@@ -224,8 +224,6 @@
     "delete_stored_rppairing": "Gespeichertes Pairing löschen",
     "delete_stored_rppairing_message": "Gespeicherte Pairing-Datei für dieses Gerät wirklich löschen? Danach muss erneut gepairt werden.",
     "deleting_stored_rppairing": "Gespeichertes Pairing wird gelöscht...",
-    "dont_use_keyring": "Schlüsselbund nicht verwenden",
-    "dont_use_keyring_message": "Das macht DenizSigner unsicherer, da Pairing-Dateien, Anisette-Zustand und Zertifikate auf der Festplatte landen. Nur aktivieren, wenn der Standard-Schlüsselbund nicht funktioniert und die Risiken klar sind.",
     "failed_delete_stored_rppairing": "Gespeichertes Pairing konnte nicht gelöscht werden",
     "stored_rppairing_deleted_success": "Gespeichertes Pairing erfolgreich gelöscht!"
   },

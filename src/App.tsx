@@ -17,6 +17,7 @@ import { listen } from "@tauri-apps/api/event";
 import OperationView from "./components/OperationView";
 import { toast } from "sonner";
 import { Modal } from "./components/Modal";
+import { CredentialManager } from "./pages/CredentialManager";
 import { Certificates } from "./pages/Certificates";
 import { AppIds } from "./pages/AppIds";
 import { Settings } from "./pages/Settings";
@@ -39,7 +40,7 @@ function App() {
   const [loggedInAs, setLoggedInAs] = useState<string | null>(null);
   const [selectedDevice, setSelectedDevice] = useState<DeviceInfo | null>(null);
   const [openModal, setOpenModal] = useState<
-    null | "certificates" | "appids" | "pairing" | "about"
+    null | "credentials" | "certificates" | "appids" | "pairing" | "about"
   >(null);
   const [version, setVersion] = useState<string>("");
 
@@ -150,6 +151,7 @@ function App() {
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
       if (event.key === undefined) return;
+      if (event.target instanceof HTMLElement && event.target.closest("input, textarea, select, [contenteditable=true]")) return;
       const key = event.key.toLowerCase();
       const primaryPressed = platform === "mac" ? event.metaKey : event.ctrlKey;
       if (!primaryPressed) return;
@@ -234,6 +236,7 @@ function App() {
           <section className="workspace-section">
             <p className="section-label">{t("app.section_management")}</p>
             <div className="workspace-list">
+              <button className="workspace-list-item" onClick={() => setOpenModal("credentials")}>Credential Manager <span aria-hidden="true">↗</span></button>
               <button
                 className="workspace-list-item"
                 onClick={() => {
@@ -403,6 +406,7 @@ function App() {
           )}
         </section>
       </div>
+      <Modal isOpen={openModal === "credentials"} close={() => setOpenModal(null)}><CredentialManager /></Modal>
       <Modal
         isOpen={openModal === "certificates"}
         close={() => setOpenModal(null)}

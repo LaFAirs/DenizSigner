@@ -39,6 +39,16 @@ pub type PairingCancelToken = Mutex<Option<CancellationToken>>;
 /// Polled only on start / user refresh / device change — no background polling.
 #[tauri::command]
 pub async fn list_devices() -> Result<Vec<Result<DeviceInfo, AppError>>, AppError> {
+    #[cfg(target_os = "linux")]
+    if let Ok(UsbmuxdAddr::UnixSocket(path)) = UsbmuxdAddr::from_env_var() {
+        // Arch starts usbmuxd when an Apple device is attached. An absent or
+        // stale socket means there are currently no devices, not a UI failure.
+        if let Err(error) = tokio::net::UnixStream::connect(path).await {
+            if matches!(error.kind(), std::io::ErrorKind::NotFound | std::io::ErrorKind::ConnectionRefused) {
+                return Ok(vec![]);
+            }
+        }
+    }
     let mut usbmuxd = get_usbmuxd().await?;
     let devs = usbmuxd.get_devices().await.map_err(|e| {
         AppError::Usbmuxd("Failed to list devices from usbmuxd".into(), e.to_string())

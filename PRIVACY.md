@@ -69,7 +69,8 @@ appearing in this file. Add a host to the code only together with a row here.
 | What | Where |
 |------|-------|
 | App data + `logs/denizsigner*.log` (7 daily files) | `%APPDATA%\com.denizbudakli.denizsigner\` (Win), `~/Library/Application Support/com.denizbudakli.denizsigner/` (macOS), `~/.local/share/com.denizbudakli.denizsigner/` (Linux) |
-| Apple password, Anisette state, pairing cache | OS credential store, service `denizsigner` (DPAPI / Keychain). Fallback to disk only with explicit user toggle + warning |
+| Apple password, Anisette state, pairing cache | OS credential store, service `denizsigner` (DPAPI / Keychain / Linux Secret Service). No plaintext filesystem fallback |
+| Imported PKCS#12 archives, passwords, token values | OS credential store, `credential-manager-v1` entry; no source-file deletion |
 | Apple-ID e-mails (not secrets), prefs (`anisetteServer`, `lang`, log level) | `data.json` / `preferences.json` under app-data; UI prefs additionally in `localStorage` |
 
 ## Logging

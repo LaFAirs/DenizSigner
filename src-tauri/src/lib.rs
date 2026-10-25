@@ -1,4 +1,5 @@
 mod account;
+mod credentials;
 mod device;
 mod error;
 mod ipa;
@@ -14,11 +15,16 @@ use crate::{
         delete_account, delete_app_id, get_certificates, invalidate_account, list_app_ids,
         logged_in_as, login_new, login_stored, reset_anisette_state, revoke_certificate,
     },
-    device::{DeviceInfoMutex, PairingCancelToken, cancel_pairing, list_devices, set_selected_device},
+    device::{
+        DeviceInfoMutex, PairingCancelToken, cancel_pairing, list_devices, set_selected_device,
+    },
     error::friendly_error,
     logging::set_log_level_debug,
-    pairing::{delete_stored_rppairing, export_pairing_cmd, has_stored_rppairing, installed_pairing_apps, place_pairing_cmd},
-    secure_storage::{force_disable_keyring, keyring_available},
+    pairing::{
+        delete_stored_rppairing, export_pairing_cmd, has_stored_rppairing, installed_pairing_apps,
+        place_pairing_cmd,
+    },
+    secure_storage::keyring_available,
     sideload::{SideloaderMutex, install_sidestore_operation, sideload_operation},
 };
 use tauri::Manager;
@@ -26,12 +32,21 @@ use tracing_subscriber::{Layer, Registry, fmt, layer::SubscriberExt, util::Subsc
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
+    #[cfg(target_os = "linux")]
+    keyring::set_default_credential_builder(keyring::secret_service::default_credential_builder());
     tauri::Builder::default()
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_store::Builder::new().build())
         .setup(|app| {
+            #[cfg(unix)]
+            {
+                use std::os::unix::fs::PermissionsExt;
+                let directory = app.path().app_data_dir()?;
+                std::fs::create_dir_all(&directory)?;
+                std::fs::set_permissions(&directory, std::fs::Permissions::from_mode(0o700))?;
+            }
             let log_dir = app
                 .path()
                 .app_data_dir()
@@ -48,9 +63,8 @@ pub fn run() {
                 .expect("failed to create log file appender");
 
             let file_layer = fmt::layer()
+                .event_format(logging::RedactedFormat)
                 .with_writer(file_appender)
-                .with_target(true)
-                .with_ansi(false)
                 .with_filter(tracing_subscriber::filter::LevelFilter::DEBUG);
 
             let frontend_layer = logging::FrontendLoggingLayer::new(app.handle().clone())
@@ -76,6 +90,13 @@ pub fn run() {
                 tracing::error!(target: "panic", location = location, message = message, "panic captured");
             }));
 
+            #[cfg(target_os = "linux")]
+            if std::env::var("DENIZSIGNER_HYPRBARS").as_deref() == Ok("1") {
+                if let Some(window) = app.get_webview_window("main") {
+                    window.set_decorations(false)?;
+                }
+            }
+            app.manage(credentials::CredentialAccess::default());
             app.manage(DeviceInfoMutex::new(None));
             app.manage(SideloaderMutex::new(None));
             app.manage(PairingCancelToken::new(None));
@@ -101,7 +122,15 @@ pub fn run() {
             export_pairing_cmd,
             delete_stored_rppairing,
             keyring_available,
-            force_disable_keyring,
+            credentials::credential_unlock,
+            credentials::credential_lock,
+            credentials::credential_list,
+            credentials::credential_import,
+            credentials::credential_remove,
+            credentials::credential_select,
+            credentials::credential_discover,
+            credentials::credential_save_token,
+            credentials::credential_sign_ipa,
             friendly_error,
             set_log_level_debug,
             cancel_pairing,

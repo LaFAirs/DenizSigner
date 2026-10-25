@@ -56,7 +56,7 @@ pub fn redact(message: &str) -> String {
             let end = out[abs..]
                 .find(['\n', ';'])
                 .map(|e| abs + e)
-                .unwrap_or(out.len().min(abs + 96));
+                .unwrap_or(out.len());
             out.replace_range(abs..end, &format!("{key}=[redacted]"));
             search = abs + key.len() + 12;
             if search >= out.len() {
@@ -91,7 +91,9 @@ pub struct FrontendLoggingLayer {
 
 impl FrontendLoggingLayer {
     pub fn new(app_handle: AppHandle) -> Self {
-        Self { app_handle: Arc::new(app_handle) }
+        Self {
+            app_handle: Arc::new(app_handle),
+        }
     }
 }
 
@@ -145,7 +147,10 @@ where
             }
         }
 
-        let mut v = Visitor { message: String::new(), fields: Vec::new() };
+        let mut v = Visitor {
+            message: String::new(),
+            fields: Vec::new(),
+        };
         event.record(&mut v);
         let raw = if v.fields.is_empty() {
             v.message
@@ -156,7 +161,9 @@ where
             level,
             message: redact(&raw),
             target: Some(metadata.target().to_string()),
-            timestamp: chrono::Local::now().format("%Y-%m-%d %H:%M:%S%.3f").to_string(),
+            timestamp: chrono::Local::now()
+                .format("%Y-%m-%d %H:%M:%S%.3f")
+                .to_string(),
         };
         let _ = self.app_handle.emit("log-record", &record);
     }
@@ -191,5 +198,38 @@ mod tests {
         assert!(!msg.contains("ABCDEF"));
         let msg = redact("python -c pass");
         assert!(msg.contains("python -c pass"));
+    }
+}
+
+/// Redacts before the file sink too (including dependency-generated events).
+pub struct RedactedFormat;
+impl<S, N> tracing_subscriber::fmt::FormatEvent<S, N> for RedactedFormat
+where
+    S: tracing::Subscriber + for<'a> LookupSpan<'a>,
+    N: for<'a> tracing_subscriber::fmt::FormatFields<'a> + 'static,
+{
+    fn format_event(
+        &self,
+        _: &tracing_subscriber::fmt::FmtContext<'_, S, N>,
+        mut writer: tracing_subscriber::fmt::format::Writer<'_>,
+        event: &tracing::Event<'_>,
+    ) -> std::fmt::Result {
+        struct Fields(String);
+        impl tracing::field::Visit for Fields {
+            fn record_debug(&mut self, field: &tracing::field::Field, value: &dyn std::fmt::Debug) {
+                use std::fmt::Write;
+                let _ = write!(self.0, " {}={:?}", field.name(), value);
+            }
+        }
+        let mut fields = Fields(String::new());
+        event.record(&mut fields);
+        writeln!(
+            writer,
+            "{} {} {}{}",
+            chrono::Utc::now().to_rfc3339(),
+            event.metadata().level(),
+            event.metadata().target(),
+            redact(&fields.0)
+        )
     }
 }

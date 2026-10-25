@@ -211,8 +211,6 @@
     "deleting_stored_rppairing": "Deleting stored pairing...",
     "stored_rppairing_deleted_success": "Stored pairing deleted successfully!",
     "failed_delete_stored_rppairing": "Failed to delete stored pairing",
-    "dont_use_keyring": "Don't use keyring",
-    "dont_use_keyring_message": "This makes DenizSigner less secure by storing pairing files, anisette state, and certificates on disk. Enable this only if the default keyring storage doesn't work and you understand the risks.",
     "privacy_heading": "Privacy",
     "privacy_note": "DenizSigner does not use analytics or third-party telemetry.",
     "network_activity": "Network activity (allowlist)",
@@ -274,15 +272,19 @@
         "Ensure your device is properly connected to your computer.",
         "Unplug and reconnect the device. If the issue persists, try a different USB port and cable."
       ],
-      "not_logged_in": ["Sign in to your Apple ID first."],
-      "no_device_selected": ["Select a device before continuing."],
+      "not_logged_in": [
+        "Sign in to your Apple ID first."
+      ],
+      "no_device_selected": [
+        "Select a device before continuing."
+      ],
       "anisette": [
         "Ensure your computer is connected to the internet.",
         "Change your anisette server. Try several different servers.",
         "Make sure you can access ((link:{{anisetteServerUrl}})) in a browser."
       ],
       "keyring": [
-        "Try enabling \"Don't use keyring\" in settings to bypass this issue. Note that this is less secure."
+        "Unlock the operating system keyring and retry. Unencrypted storage is disabled."
       ],
       "misc": [
         "Try again. Restarting the app, your computer, and/or your phone may also help."

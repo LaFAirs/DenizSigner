@@ -2,7 +2,9 @@
 
 ![DenizSigner — Sign · Secure · Digital](docs/assets/logo.png)
 
-**Private iOS Sideloading & Signing Tool for Windows**
+**Private iOS Sideloading & Signing Tool for Windows and Linux**
+
+Linux installation, Credential Manager, signing and limitations: [Linux guide](docs/LINUX.md).
 
 > A privacy-first, local-first desktop application for signing and sideloading
 > IPAs to your personal iPhone or iPad.
@@ -73,7 +75,7 @@ Only real captures are committed — no mockups.
 
 - Local-first: no DenizSigner account, no registration, no cloud backend
 - No analytics, no telemetry, no crash reporting, no auto-updater
-- OS credential storage (Windows DPAPI / macOS Keychain), secrets redacted in logs
+- OS credential storage (Windows DPAPI / macOS Keychain / Linux Secret Service), secrets redacted in logs
 - Documented, enforced network allowlist (see below)
 
 ### Desktop
@@ -125,7 +127,7 @@ download counter, community/support links. Device-local traffic
 
 Security-related design decisions:
 
-- OS credential storage (DPAPI / Keychain, service `denizsigner`)
+- OS credential storage (DPAPI / Keychain / Secret Service, service `denizsigner`)
 - Secret redaction before any log sink (`logging::redact`, unit-tested)
 - Central network allowlist, `https` only, validated Anisette hosts
 - Restricted Tauri permissions (no fs/shell/http plugins, no updater)
@@ -247,7 +249,7 @@ powershell -ExecutionPolicy Bypass -File scripts/check-branding.ps1
 
 Release build: `npm run tauri build` → `.exe` + `-setup.exe` + `.msi`
 under `src-tauri/target/release/bundle/`. Icons:
-`npx tauri icon src-tauri/icons/icon.svg`.
+`npx tauri icon public/logo-icon.png`.
 
 ## GitHub Actions
 
@@ -285,8 +287,7 @@ Release files: portable `.exe`, NSIS `-setup.exe`, `.msi`.
 - **Anisette errors** — check the connection, try another Anisette server in
   Settings, open the server URL in a browser to test reachability.
 - **Pairing fails** — keep the device unlocked, tap Trust, re-select it.
-- **Keyring unavailable** — Settings explains the insecure-disk fallback;
-  only enable it if the OS store genuinely fails.
+- **Keyring unavailable** — unlock your OS keyring. No unencrypted disk fallback is permitted.
 - **Installation rejected** — free Apple IDs allow 3 apps / 10 App IDs per
   7 days; remove unused apps or wait for expiry.
 - Still stuck? Settings → View Logs, copy the entry, open an issue —

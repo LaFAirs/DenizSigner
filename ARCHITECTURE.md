@@ -17,7 +17,8 @@ Logs: tracing file (denizsigner*.log, 7 files) + redacted frontend mirror (log-r
 | `error.rs` | `AppError` + `friendly()` mapping + `anyhow` conversion + tests | – |
 | `ipa.rs` | `.ipa` extension + ZIP `Payload/*.app` check + tests | – |
 | `logging.rs` | `FrontendLoggingLayer` (level-gated), `redact()`, `set_log_level_debug` | `set_log_level_debug` |
-| `secure_storage.rs` | keyring service `denizsigner`, `create_sideloading_storage` | `keyring_available`, `force_disable_keyring` |
+| `credentials.rs` | PKCS#12 profiles, secure token vault, offline IPA signing | `credential_*` commands; see docs/LINUX.md |
+| `secure_storage.rs` | keyring service `denizsigner`, `create_sideloading_storage` | `keyring_available` (fails closed) |
 | `account.rs` | Apple login (2FA via window events), certs, App IDs | `login_new`, `login_stored`, `delete_account`, `logged_in_as`, `invalidate_account`, `reset_anisette_state`, `get_certificates`, `revoke_certificate`, `list_app_ids`, `delete_app_id` |
 | `device.rs` | usbmuxd device list/select (label `denizsigner`) | `list_devices`, `set_selected_device`, `cancel_pairing` |
 | `pairing.rs` | lockdown/rppairing generate+cache, place/export/delete | `place_pairing_cmd`, `export_pairing_cmd`, `delete_stored_rppairing`, `has_stored_rppairing`, `installed_pairing_apps` |

@@ -44,10 +44,6 @@ export const Settings = ({
     "ani.sidestore.io",
   );
 
-  const [overrideKeyring, setOverrideKeyring] = useStore<boolean>(
-    "overrideKeyring",
-    false,
-  );
   // const [appIdDeletion, setAppIdDeletion] = useStore<boolean>(
   //   "appIdDeletion",
   //   false,
@@ -82,6 +78,7 @@ export const Settings = ({
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
       if (event.key === undefined) return;
+      if (event.target instanceof HTMLElement && event.target.closest("input, textarea, select, [contenteditable=true]")) return;
       const key = event.key.toLowerCase();
       const primaryPressed = platform === "mac" ? event.metaKey : event.ctrlKey;
       if (!primaryPressed) return;
@@ -96,12 +93,7 @@ export const Settings = ({
     return () => window.removeEventListener("keydown", handler);
   }, [platform]);
 
-  useEffect(() => {
-    (async () => {
-      await invoke("force_disable_keyring", { force: overrideKeyring });
-      checkKeyring();
-    })();
-  }, [overrideKeyring]);
+  useEffect(() => { checkKeyring(); }, [checkKeyring]);
 
   return (
     <>
@@ -278,21 +270,7 @@ export const Settings = ({
             <li>{t("settings.security_local")}</li>
           </ul>
         </div>
-        <div>
-          <label className="settings-label">
-            {t("settings.dont_use_keyring")}
-            <input
-              type="checkbox"
-              checked={overrideKeyring}
-              onChange={(e) => {
-                setOverrideKeyring(e.target.checked);
-              }}
-            />
-          </label>
-          <span className="settings-hint">
-            {t("settings.dont_use_keyring_message")}
-          </span>
-        </div>
+        <p className="settings-hint">Secrets are stored only in the OS credential store. Unlock the keyring to use signing; unencrypted storage is disabled.</p>
         {/* <div>
           <label className="settings-label">
             Allow App ID deletion:
