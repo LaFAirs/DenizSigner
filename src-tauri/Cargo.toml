@@ -16,6 +16,7 @@ tauri-build = { version = "2", features = [] }
 # NOTE: no tauri "devtools" feature in release builds (smaller surface).
 tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
+tauri-plugin-single-instance = "2"
 tauri-plugin-store = "2"
 tauri-plugin-dialog = "2"
 tauri-plugin-process = "2"

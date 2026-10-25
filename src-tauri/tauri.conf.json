@@ -21,8 +21,7 @@
     ],
     "security": {
       "csp": "default-src 'self'; img-src 'self' asset: http://asset.localhost data:; style-src 'self' 'unsafe-inline'; connect-src ipc: http://ipc.localhost"
-    },
-    "enableGTKAppId": true
+    }
   },
   "bundle": {
     "active": true,

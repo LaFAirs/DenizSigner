@@ -6,6 +6,6 @@ Comment[de]=iOS-Signierung und sichere Zertifikatsverwaltung
 Exec=denizsigner
 Icon=com.denizbudakli.denizsigner
 Terminal=false
-Categories=Utility;Development;
+Categories=Utility;
 StartupWMClass=denizsigner
 StartupNotify=true

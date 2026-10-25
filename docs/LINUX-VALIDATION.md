@@ -24,6 +24,10 @@ against the installed release binary; generated test keys only.
 | App data / keyring permissions | 0700 |
 | Installed executable matches release build SHA-256 | PASS |
 | No-device startup with inactive usbmuxd | PASS; empty device list, no error modal |
+| Launchpad search with new rounded icon | PASS |
+| Fresh Launchpad activation | PASS, native Wayland window |
+| Three repeated desktop-entry activations | PASS, one window and the same process |
+| Dock identity and permanent pin | PASS, desktop ID / Wayland class `denizsigner` |
 
 GUI workflow tests ran in an isolated Xvfb display after a real Wayland launch
 was verified, so synthetic keyboard input did not interfere with the user's
@@ -46,3 +50,8 @@ is implemented through permanent files and the existing Secret Service systemd
 socket / DBus activation. Windows/macOS builds were not executed on this Linux
 host. Imported-profile export currently rejects app extensions requiring their
 own provisioning profiles; the original Apple-ID workflow remains available.
+
+Repeated-launch testing found a GTK application-ID activation race. The optional
+GTK app-ID override was removed, the original stable Wayland class retained,
+and Tauri's official single-instance plugin registered first. Subsequent desktop
+activations notify the existing process; no duplicate webview is created.

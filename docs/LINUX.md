@@ -18,7 +18,7 @@ under `~/.local/bin`, the original app icon and a desktop entry under
 `~/.local/share/applications`. The installer adds the desktop ID to an existing
 MacShell `~/.config/macdock/pinned.json`. No shell source changes are needed.
 The application remains available after login/reboot. No reboot is needed for
-installation. Use `GDK_BACKEND=wayland` in a Wayland session (the launcher does so).
+installation. Repeated starts use a single application instance. Use `GDK_BACKEND=wayland` in a Wayland session (the launcher does so).
 
 Build from source with Rust stable, Node 22.12+ (24 recommended), npm and base-devel:
 `npm ci && npm run build && cargo build --release --features custom-protocol --locked --manifest-path src-tauri/Cargo.toml`.
