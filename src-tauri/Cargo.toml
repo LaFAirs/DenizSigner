@@ -1,6 +1,6 @@
 [package]
 name = "denizsigner"
-version = "0.1.1"
+version = "0.1.2"
 description = "DenizSigner - Private iOS Sideloading & Signing Tool"
 authors = ["Deniz Budakli"]
 edition = "2024"
@@ -23,10 +23,11 @@ tauri-plugin-process = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 idevice = { version = "0.1.57", features = ["usbmuxd", "house_arrest", "afc", "core_device_proxy", "remote_pairing", "tcp", "tunnel_tcp_stack", "xpc", "rsd", "pair"] }
-isideload = { version = "=0.4.5" }
+isideload = { version = "=0.5.0" }
 keyring = { version = "3.6.3", features = ["apple-native", "windows-native", "sync-secret-service", "crypto-rust"] }
 futures = "0.3.31"
 once_cell = "1.21.3"
+reqwest-auth = { package = "reqwest", version = "0.13", default-features = false }
 reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls", "stream"] }
 tokio = { version = "1", features = ["full"] }
 chrono = "0.4"

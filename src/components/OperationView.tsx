@@ -1,3 +1,4 @@
+import { DEFAULT_ANISETTE_SERVER } from "../anisette";
 import { OperationState } from "./operations";
 import "./OperationView.css";
 import { Modal } from "./Modal";
@@ -33,7 +34,7 @@ export default ({
   const [moreDetailsOpen, setMoreDetailsOpen] = useState(false);
   const [anisetteServer] = useStore<string>(
     "anisetteServer",
-    "ani.sidestore.io",
+    DEFAULT_ANISETTE_SERVER,
   );
   const { platform } = usePlatform();
   const [suggestions, setSuggestions] = useState<string[]>([]);

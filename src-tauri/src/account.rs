@@ -7,8 +7,8 @@ use isideload::{
         certificates::{CertificatesApi, DevelopmentCertificate},
         developer_session::DeveloperSession,
     },
-    sideload::{SideloaderBuilder, builder::MaxCertsBehavior, sideloader::Sideloader},
-    util::callbacks::MaxCertsCallbackBox,
+    sideload::{SideloaderBuilder, builder::{MaxCertsBehavior, ExtensionsBehavior, ExtensionsBehaviorSelection}, sideloader::Sideloader},
+    util::callbacks::{MaxCertsCallbackBox, ExtensionsBehaviorCallbackBox},
 };
 use rootcause::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -156,12 +156,15 @@ async fn login(
     email: &str,
     password: &str,
     anisette_server: String,
-) -> Result<Sideloader<MaxCertsCallbackBox>, AppError> {
+) -> Result<Sideloader<MaxCertsCallbackBox, ExtensionsBehaviorCallbackBox>, AppError> {
     let anisette_url = require_anisette_url(&anisette_server)?;
 
+    let two_factor_started = std::sync::Arc::new(std::sync::atomic::AtomicBool::new(false));
     let tfa_closure = {
+        let two_factor_started = two_factor_started.clone();
         let window_clone = window.clone();
         move |params: TwoFactorCallbackParams| {
+            two_factor_started.store(true, std::sync::atomic::Ordering::Relaxed);
             let window_clone = window_clone.clone();
             async move {
                 // Register before showing the prompt so an immediate code is not lost.
@@ -196,8 +199,27 @@ async fn login(
                 .set_storage(create_sideloading_storage(app)?)
                 .set_url(&anisette_url),
         )
-        .login(password, Box::new(tfa_closure))
+        // Disable the dependency's immediate 429 retry loop.
+        .err_429_retries(Some(0))
+        .build()
         .await?;
+    let mut retries = 0;
+    loop {
+        match account.login(password, &tfa_closure).await {
+            Ok(()) => break,
+            Err(report) => {
+                if let Some(delay) = crate::auth_retry::initial_login_retry_delay(
+                    &report, retries, two_factor_started.load(std::sync::atomic::Ordering::Relaxed),
+                ) {
+                    retries += 1;
+                    tracing::warn!("Apple initial login returned HTTP 503; retry {retries}/2 in {} seconds", delay.as_secs());
+                    tokio::time::sleep(delay).await;
+                } else {
+                    return Err(report.into());
+                }
+            }
+        }
+    }
     debug!("Logged in");
     let dev_session = DeveloperSession::from_account(&mut account).await?;
     debug!("Created developer session");
@@ -233,6 +255,8 @@ async fn login(
         .machine_name(PROVIDER_LABEL.into())
         .storage(create_sideloading_storage(app)?)
         .max_certs_behavior(MaxCertsBehavior::Prompt(max_certs_callback))
+        // Preserve the previous behavior of registering extension profiles separately.
+        .extensions_behavior(ExtensionsBehaviorSelection::Fixed(ExtensionsBehavior::RegisterAll))
         .build())
 }
 
@@ -315,17 +339,28 @@ pub async fn delete_app_id(
 mod tests {
     use super::should_invalidate;
 
-    // Exercise the resolved dependency: the old macOS identity triggers -80045.
+    // No Apple account is used: ensure client identity is fetched from the server.
     #[tokio::test]
-    async fn anisette_uses_fixed_authkit_identity() {
+    async fn anisette_fetches_server_client_identity() {
         use isideload::anisette::{AnisetteProvider, remote_v3::RemoteV3AnisetteProvider};
-        // Match the crypto initialization performed by main() in the application.
+        use tokio::io::{AsyncReadExt, AsyncWriteExt};
         let _ = rustls::crypto::aws_lc_rs::default_provider().install_default();
-        let provider = RemoteV3AnisetteProvider::default().unwrap();
+        let listener = tokio::net::TcpListener::bind("127.0.0.1:0").await.unwrap();
+        let url = format!("http://{}", listener.local_addr().unwrap());
+        let server = tokio::spawn(async move {
+            let (mut socket, _) = listener.accept().await.unwrap();
+            let mut request = [0; 4096];
+            let count = socket.read(&mut request).await.unwrap();
+            assert!(std::str::from_utf8(&request[..count]).unwrap().starts_with("GET /v3/client_info "));
+            let body = r#"{"client_info":"server-selected-authkit-identity","user_agent":"server-agent"}"#;
+            let response = format!("HTTP/1.1 200 OK\r\nContent-Type: application/json\r\nContent-Length: {}\r\nConnection: close\r\n\r\n{}", body.len(), body);
+            socket.write_all(response.as_bytes()).await.unwrap();
+        });
+        let provider = RemoteV3AnisetteProvider::default().unwrap().set_url(&url);
         let info = provider.get_client_info().await.unwrap();
-        assert!(info.client_info.contains("<Android;"));
-        assert!(info.client_info.contains("com.apple.AuthKit/1"));
-        assert!(!info.client_info.contains("<macOS;"));
+        assert_eq!(info.client_info, "server-selected-authkit-identity");
+        assert_eq!(info.user_agent, "server-agent");
+        server.await.unwrap();
     }
 
     #[test]

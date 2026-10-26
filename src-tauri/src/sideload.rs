@@ -2,7 +2,7 @@ use std::{path::PathBuf, sync::Mutex};
 
 use isideload::{
     sideload::{application::SpecialApp, sideloader::Sideloader},
-    util::callbacks::MaxCertsCallbackBox,
+    util::callbacks::{MaxCertsCallbackBox, ExtensionsBehaviorCallbackBox},
 };
 use tauri::{AppHandle, Manager, State, Window};
 
@@ -15,11 +15,11 @@ use crate::{
     pairing::{get_sidestore_info, place_file},
 };
 
-pub type SideloaderMutex = Mutex<Option<Sideloader<MaxCertsCallbackBox>>>;
+pub type SideloaderMutex = Mutex<Option<Sideloader<MaxCertsCallbackBox, ExtensionsBehaviorCallbackBox>>>;
 
 pub struct SideloaderGuard<'a> {
     state: &'a SideloaderMutex,
-    sideloader: Option<Sideloader<MaxCertsCallbackBox>>,
+    sideloader: Option<Sideloader<MaxCertsCallbackBox, ExtensionsBehaviorCallbackBox>>,
 }
 
 impl<'a> SideloaderGuard<'a> {
@@ -29,7 +29,7 @@ impl<'a> SideloaderGuard<'a> {
         Ok(Self { state, sideloader: Some(sideloader) })
     }
 
-    pub fn get_mut(&mut self) -> &mut Sideloader<MaxCertsCallbackBox> {
+    pub fn get_mut(&mut self) -> &mut Sideloader<MaxCertsCallbackBox, ExtensionsBehaviorCallbackBox> {
         self.sideloader.as_mut().expect("Sideloader should be present")
     }
 }

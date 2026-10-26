@@ -33,7 +33,7 @@ function Get-CodeFiles {
 # used by unit tests (network_allowlist.rs), not real endpoints.
 $KnownHosts = @(
   "github.com", "objects.githubusercontent.com", "release-assets.githubusercontent.com",
-  "iforgot.apple.com", "apple.co", "ani.sidestore.io",
+  "iforgot.apple.com", "apple.co", "ani.sidestore.io", "mac-ani.jkcoxson.com", "gsa.apple.com",
   "schema.tauri.app", "localhost"
 )
 $TestHostRx = '(\.|^)(example|example\.com|example\.org|evil\.com|evilgithub\.com)$|^(example|example\.com|example\.org|evil\.com|evilgithub\.com)$'

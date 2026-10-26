@@ -4,6 +4,21 @@ All notable changes to DenizSigner are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.1.2] — 2026-10-26
+
+### Fixed
+
+- Move to pinned `isideload` 0.5.0 and the current upstream Mac Anisette
+  services. Fetch client identity from the selected service instead of the
+  obsolete hardcoded Android workaround.
+- Migrate legacy preset server preferences to `mac-ani.jkcoxson.com`;
+  preserve custom server preferences. No credential deletion.
+- Retry only an initial Apple login HTTP 503, twice, after 3 and 8 seconds.
+  Never replay password proofs or 2FA requests. Disable upstream immediate
+  HTTP 429 retries and show specific EN/DE Apple-service guidance.
+- Preserve separate provisioning profiles for app extensions across the
+  library API upgrade.
+
 ## [0.1.1] — 2026-10-26
 
 ### Fixed

@@ -27,6 +27,8 @@ pub enum AppError {
     #[error("{0}")]
     AppleAuthRejected(String),
     #[error("{0}")]
+    AppleServiceUnavailable(String),
+    #[error("{0}")]
     Download(String),
     #[error("{0}: {1}")]
     HouseArrest(String, String),
@@ -98,6 +100,10 @@ fn friendly(kind: &str) -> (&'static str, &'static str) {
             "Apple account locked",
             "Apple locked this account for security. Unlock it at iforgot.apple.com, then sign in again.",
         ),
+        "apple_service_unavailable" => (
+            "Apple sign-in service unavailable (HTTP 503)",
+            "Apple could not process the request. Initial sign-in requests are retried twice with a delay. If this persists, wait and try again later. Your password and saved credentials do not need to be reset.",
+        ),
         "apple_auth_rejected" => (
             "Apple authentication rejected (-80045)",
             "Apple rejected the authentication request. Use a code from a trusted Apple device; SMS verification may not work with the current compatibility fix. Avoid repeated sign-in attempts and retry later if Apple still rejects the request.",
@@ -160,6 +166,9 @@ fn friendly(kind: &str) -> (&'static str, &'static str) {
 impl From<Report> for AppError {
     fn from(report: Report) -> Self {
         let report_str = report.to_string();
+        if crate::auth_retry::apple_service_unavailable(&report) {
+            return AppError::AppleServiceUnavailable(report_str);
+        }
 
         for cause in report.iter_reports() {
             if cause.downcast_current_context::<keyring::Error>().is_some() {

@@ -1,7 +1,7 @@
 {
   "name": "denizsigner",
   "private": true,
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "DenizSigner — Private iOS Sideloading & Signing Tool",
   "scripts": {
@@ -9,7 +9,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "test": "node scripts/test-frontend.mjs"
+    "test": "node scripts/test-frontend.mjs && node scripts/test-anisette.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2.11.1",

@@ -10,7 +10,7 @@
 //! | # | Target host | HTTPS | Purpose | Code site | User action? |
 //! |---|-------------|-------|---------|-----------|----------------|
 //! | 1 | Apple endpoints (internal to `isideload`: GSA auth, developer portal) | yes | Apple-ID login, 2FA session, certificates, App IDs, provisioning, signing | `isideload` crate via `account.rs` / `sideload.rs` | yes (login / install click) |
-//! | 2 | Configured Anisette host (default `ani.sidestore.io`) | yes, enforced | Anisette headers for Apple auth | `account.rs` (`RemoteV3AnisetteProvider::set_url`) | yes (login; server chosen in Settings) |
+//! | 2 | Configured Anisette host (default `mac-ani.jkcoxson.com`) | yes, enforced | Anisette headers for Apple auth | `account.rs` (`RemoteV3AnisetteProvider::set_url`) | yes (login; server chosen in Settings) |
 //! | 3 | `github.com`, `objects.githubusercontent.com`, `release-assets.githubusercontent.com` (incl. redirects between them) | yes, enforced + re-validated per redirect | SideStore / LiveContainer `.ipa` artifacts | `sideload.rs::download` | yes (explicit install click) |
 //! | 4 | `iforgot.apple.com`, `apple.co` | yes | Help links, opened in the system browser (no background traffic) | locale strings via opener | yes (click) |
 //!
@@ -55,6 +55,9 @@ pub fn documented_hosts() -> &'static [&'static str] {
         "objects.githubusercontent.com",
         "release-assets.githubusercontent.com",
         "ani.sidestore.io",
+        "mac-ani.jkcoxson.com",
+        "new.ani.sidestore.io",
+        "ani3.stikstore.app",
     ]
 }
 

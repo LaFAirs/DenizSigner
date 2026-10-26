@@ -1,3 +1,4 @@
+import { migrateAnisetteServer } from "./anisette";
 import React, {
   createContext,
   useContext,
@@ -36,6 +37,12 @@ export const StoreProvider: React.FC<{ children: React.ReactNode }> = ({
       const values: { [key: string]: any } = {};
       for (const key of keys) {
         values[key] = await storeInstance.get(key);
+      }
+      const anisetteServer = migrateAnisetteServer(values.anisetteServer);
+      if (values.anisetteServer !== anisetteServer) {
+        values.anisetteServer = anisetteServer;
+        await storeInstance.set("anisetteServer", anisetteServer);
+        await storeInstance.save();
       }
       setStoreValues(values);
       setStoreInitialized(true);

@@ -1,4 +1,4 @@
-# PRIVACY.md — Network & storage audit (DenizSigner v0.1.0)
+# PRIVACY.md — Network & storage audit (DenizSigner v0.1.2)
 
 ## Principle
 
@@ -22,7 +22,7 @@ Found external touchpoints:
 | 1 | `github.com/nab138/iloader/releases/.../latest.json` (+ `pubkey`) | `tauri.conf.json:30`, `src/update.ts` (tauri-plugin-updater) | auto-update manifest | **REMOVED** — updater plugin + `update.ts` deleted; `createUpdaterArtifacts: false`; audit script fails on `latest.json` |
 | 2 | `api.github.com/repos/nab138/iloader/...` + gist badge | `count_downloads.ts`, README badge | CI download counter | **REMOVED** — script not shipped |
 | 3 | `github.com/SideStore/SideStore`, `github.com/LiveContainer/...` `.ipa` | `sideload.rs:109-125` via `reqwest::get` | user-clicked IPA downloads | **KEPT, gated** — only on explicit click, URL checked by `require_allowed_url` (github.com + asset hosts, https only) |
-| 4 | Anisette: `ani.sidestore.io` (default) + alternatives, user-custom | `Settings.tsx:25-34`, `account.rs:192-204` | Apple-auth helper headers | **KEPT, validated** — `require_anisette_url` (https + host); user-configurable; documented in Settings → Privacy |
+| 4 | Anisette: `mac-ani.jkcoxson.com` (default), `new.ani.sidestore.io`, `ani3.stikstore.app` + user-custom | `Settings.tsx:25-34`, `account.rs:192-204` | Apple-auth helper headers | **KEPT, validated** — `require_anisette_url` (https + host); user-configurable; documented in Settings → Privacy |
 | 5 | Apple private endpoints (GSA, developer portal) via `isideload` | `account.rs:205-210` (`AppleAccount::login`, `DeveloperSession`) | login, certs, App IDs, signing | **KEPT** — functionally required; no DenizSigner-owned server in between |
 | 6 | `iforgot.apple.com`, `apple.co/ms`, sidestore release/help links | locales, `openUrl` calls | help links (browser) | **KEPT** — browser navigation only, no background traffic |
 | 7 | `github.com/nab138/iloader`, `discord.gg/…`, `iloader.app` links | About/errors/docs | upstream help/community | **REMOVED/REPLACED** — About shows local info + NOTICE.md; no upstream links in UI |
@@ -38,7 +38,7 @@ device change only; no background polling loops.
    provisioning, signing/install handshake. Data: credentials in transit
    only; password never written to disk outside the OS keyring (and only
    with explicit opt-in).
-2. **Anisette server** (default `https://ani.sidestore.io`, changeable):
+2. **Anisette server** (default `https://mac-ani.jkcoxson.com`, changeable):
    protocol helper for Apple auth. Data: routing identifiers the Apple
    protocol requires. No DenizSigner telemetry added.
 3. **github.com release assets**: only the exact `.ipa` the user clicks
@@ -56,7 +56,7 @@ appearing in this file. Add a host to the code only together with a row here.
 | Host | Zweck | Wann | Daten |
 | ---- | ----- | ---- | ----- |
 | Apple (hosts internal to `isideload`: GSA auth, developer portal) | Login / Developer API (Apple-ID, 2FA-Session, Zertifikate, App-IDs, Provisioning, Signing) | bei Apple-Funktionen (Login, Zertifikate, Install) | notwendige Auth-/Developer-Daten, nur im Transit |
-| ani.sidestore.io | Anisette (Default-Server, in Settings änderbar) | beim Login/Signing | Anisette-bezogene Routing-Daten des Apple-Protokolls |
+| mac-ani.jkcoxson.com | Anisette (Default-Server, in Settings änderbar) | beim Login/Signing | Anisette-bezogene Routing-Daten des Apple-Protokolls |
 | github.com | IPA-Download (SideStore-/LiveContainer-Releases) | nur nach Benutzeraktion (Install-Klick) | Download-Anfrage (Dateiname), Antwort-Bytes |
 | objects.githubusercontent.com | GitHub-CDN als Redirect-Ziel von github.com | nur nach Benutzeraktion (Redirect) | Download-Anfrage, Antwort-Bytes |
 | release-assets.githubusercontent.com | GitHub-CDN als Redirect-Ziel von github.com | nur nach Benutzeraktion (Redirect) | Download-Anfrage (signierte URL ohne Logging), Antwort-Bytes |
@@ -88,3 +88,12 @@ powershell -ExecutionPolicy Bypass -File scripts/check-branding.ps1
 cd src-tauri && cargo test   # allowlist, IPA, error-mapping, redaction, pairing-version tests
 npm test                     # frontend checks
 ```
+
+## Authentication compatibility update (0.1.2)
+
+The default Anisette service is now `mac-ani.jkcoxson.com`; alternatives are
+`new.ani.sidestore.io` and `ani3.stikstore.app`. Legacy presets, including
+`ani.sidestore.io`, migrate to this default. Custom hosts are preserved.
+The selected service supplies its current client identity via `/v3/client_info`.
+Login HTTP 503 retries are limited to two initial requests after 3 and 8 seconds.
+Saved Apple passwords remain in the OS credential store.

@@ -26,17 +26,24 @@ Package using `scripts/package-linux.sh`. The tarball contains an installer and
 checksum; installed system libraries are required. Existing Windows release CI
 is retained; Linux CI builds/tests separately and can publish a Linux prerelease.
 
-## Apple login compatibility (0.1.1)
+## Apple login compatibility (0.1.2)
 
-Version 0.1.1 upgrades the pinned authentication library from `isideload` 0.4.0
-to 0.4.5 for Apple's `-80045` rejection. This includes the AuthKit client identity
-workaround, anisette resync, and detection of already-delivered 2FA codes.
-Enter the six-digit code shown on a trusted Apple device. SMS verification may
-not work with the upstream compatibility fix. No password or saved anisette
-state reset is required by this update. Remaining Apple rejections now have
-specific guidance instead of suggesting that the password must be wrong.
+The pinned authentication library is now `isideload` 0.5.0, matching upstream
+v2.4.0. Client identity is fetched from the selected Anisette service. Current
+presets are `mac-ani.jkcoxson.com` (default), `new.ani.sidestore.io`, and
+`ani3.stikstore.app`. Legacy preset preferences migrate to the default at startup;
+custom preferences remain unchanged. Upstream can reprovision incompatible
+Anisette state through its regular flow without deleting saved passwords.
 
-Upstream fix: https://github.com/nab138/iloader/releases/tag/v2.3.7
+Initial Apple login requests returning HTTP 503 are retried twice, after 3 and
+8 seconds, within the same account object. Password proof, 2FA and signing
+requests are never automatically replayed by this wrapper. Immediate upstream
+HTTP 429 retries are disabled. Persistent HTTP 503 errors receive specific
+EN/DE guidance to wait and retry later. A server-side outage can still prevent
+login. Live Apple authentication needs the user and a valid account; local
+mock-service tests do not establish that a personal login succeeds.
+
+Upstream: https://github.com/nab138/iloader/releases/tag/v2.4.0
 
 ## Credential Manager
 

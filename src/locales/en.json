@@ -215,7 +215,7 @@
     "privacy_note": "DenizSigner does not use analytics or third-party telemetry.",
     "network_activity": "Network activity (allowlist)",
     "net_apple": "Apple (via isideload): sign-in, certificates, App IDs, signing",
-    "net_anisette": "Anisette server of your choice (default ani.sidestore.io)",
+    "net_anisette": "Anisette server of your choice (default mac-ani.jkcoxson.com)",
     "net_github": "github.com release assets — only IPAs you explicitly install",
     "net_help": "iforgot.apple.com / apple.co — help links opened in the browser",
     "security_heading": "Security",
@@ -309,6 +309,10 @@
         "Apple rejected the authentication request (-80045). This does not necessarily mean your password is wrong.",
         "Use a code from a trusted Apple device. SMS codes may not work with the current compatibility fix.",
         "Avoid repeated sign-in attempts. If Apple still rejects the request, wait and try again later."
+      ],
+      "apple_service_unavailable": [
+        "The Apple sign-in service returned HTTP 503. The initial sign-in request is retried at most twice with a delay.",
+        "If the error persists, wait a few minutes and try again later. Your password and saved credentials do not need to be reset."
       ]
     },
     "support_message": "If the issue persists, press \"Copy to clipboard\" and check the logs (Settings → View Logs) for details."

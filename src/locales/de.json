@@ -210,7 +210,7 @@
     "privacy_note": "DenizSigner nutzt keine Analyse- oder Telemetriedienste.",
     "network_activity": "Netzwerkaktivität (Allowlist)",
     "net_apple": "Apple (via isideload): Anmeldung, Zertifikate, App-IDs, Signierung",
-    "net_anisette": "Anisette-Server nach Wahl (Standard ani.sidestore.io)",
+    "net_anisette": "Anisette-Server deiner Wahl (Standard mac-ani.jkcoxson.com)",
     "net_github": "github.com-Release-Artefakte — nur IPAs, die du explizit installierst",
     "net_help": "iforgot.apple.com / apple.co — Hilfe-Links im Browser",
     "security_heading": "Sicherheit",
@@ -241,6 +241,10 @@
         "Apple hat die Authentifizierungsanfrage abgewiesen (-80045). Das bedeutet nicht automatisch, dass dein Passwort falsch ist.",
         "Verwende einen Code von einem vertrauenswürdigen Apple-Gerät. SMS-Codes funktionieren mit dem aktuellen Kompatibilitätsfix möglicherweise nicht.",
         "Vermeide wiederholte Anmeldeversuche. Falls Apple die Anfrage weiterhin ablehnt, warte und versuche es später erneut."
+      ],
+      "apple_service_unavailable": [
+        "Der Apple-Anmeldedienst hat HTTP 503 zurückgegeben. Die erste Anmeldeanfrage wird höchstens zweimal mit Wartezeit wiederholt.",
+        "Falls der Fehler bleibt: Warte einige Minuten und versuche es später erneut. Dein Passwort oder gespeicherte Zugangsdaten müssen deshalb nicht zurückgesetzt werden."
       ]
     }
   }

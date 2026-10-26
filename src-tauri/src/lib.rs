@@ -1,4 +1,5 @@
 mod account;
+mod auth_retry;
 mod credentials;
 mod device;
 mod error;

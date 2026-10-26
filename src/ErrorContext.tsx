@@ -1,3 +1,4 @@
+import { DEFAULT_ANISETTE_SERVER } from "./anisette";
 import React, {
   createContext,
   useCallback,
@@ -34,7 +35,7 @@ export const ErrorProvider: React.FC<{ children: React.ReactNode }> = ({
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [anisetteServer] = useStore<string>(
     "anisetteServer",
-    "ani.sidestore.io",
+    DEFAULT_ANISETTE_SERVER,
   );
   const { platform } = usePlatform();
 
