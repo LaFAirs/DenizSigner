@@ -26,6 +26,18 @@ Package using `scripts/package-linux.sh`. The tarball contains an installer and
 checksum; installed system libraries are required. Existing Windows release CI
 is retained; Linux CI builds/tests separately and can publish a Linux prerelease.
 
+## Apple login compatibility (0.1.1)
+
+Version 0.1.1 upgrades the pinned authentication library from `isideload` 0.4.0
+to 0.4.5 for Apple's `-80045` rejection. This includes the AuthKit client identity
+workaround, anisette resync, and detection of already-delivered 2FA codes.
+Enter the six-digit code shown on a trusted Apple device. SMS verification may
+not work with the upstream compatibility fix. No password or saved anisette
+state reset is required by this update. Remaining Apple rejections now have
+specific guidance instead of suggesting that the password must be wrong.
+
+Upstream fix: https://github.com/nab138/iloader/releases/tag/v2.3.7
+
 ## Credential Manager
 
 Open **Credential Manager** in the management sidebar and unlock it with your OS

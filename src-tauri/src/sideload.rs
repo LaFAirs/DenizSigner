@@ -51,7 +51,13 @@ pub async fn sideload(
     let mut sideloader = SideloaderGuard::take(&sideloader_state)?;
     let special = sideloader
         .get_mut()
-        .install_app(&provider, app_path.into(), false, None::<fn(f32) -> std::future::Ready<()>>)
+        .install_app(
+            &provider,
+            app_path.into(),
+            false,
+            None::<fn(f32) -> std::future::Ready<()>>,
+            None,
+        )
         .await?;
     Ok(special)
 }

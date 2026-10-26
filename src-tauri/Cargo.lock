@@ -1301,7 +1301,7 @@ dependencies = [
 
 [[package]]
 name = "denizsigner"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "apple-codesign-quick",
  "base64 0.22.1",
@@ -2784,9 +2784,9 @@ dependencies = [
 
 [[package]]
 name = "isideload"
-version = "0.4.0"
+version = "0.4.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec15f715854513ea29c71ac061dcfd6e053ccda71dc5e39e5145d22d32299343"
+checksum = "a98e192a82a0203e4cf9928dd5b4cea52b6bcada680ecc78f48834a37e40509d"
 dependencies = [
  "aes 0.9.3",
  "aes-gcm",

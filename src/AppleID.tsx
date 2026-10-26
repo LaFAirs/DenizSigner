@@ -60,42 +60,32 @@ export const AppleID = ({
     setSelectedSerials(certs?.map((c) => c.serialNumber) ?? []);
   }, [certs]);
 
-  const listenerAdded = useRef<boolean>(false);
-  const unlisten = useRef<() => void>(() => {});
+  const loginInFlight = useRef(false);
+
+  const finishLogin = () => {
+    loginInFlight.current = false;
+    setLoginBusy(false);
+    setTfaOpen(false);
+    setTfaCode("");
+    setTfaBusy(false);
+  };
 
   useEffect(() => {
-    if (!listenerAdded.current) {
-      (async () => {
-        const unlistenFn = await listen("2fa-required", () => {
-          setTfaOpen(true);
-        });
-        unlisten.current = unlistenFn;
-      })();
-      listenerAdded.current = true;
-    }
+    const subscription = listen("2fa-required", () => {
+      setTfaCode("");
+      setTfaOpen(true);
+    });
     return () => {
-      unlisten.current();
+      void subscription.then((stop) => stop());
     };
   }, []);
 
-  const certListenerAdded = useRef<boolean>(false);
-  const certUnlisten = useRef<() => void>(() => {});
-
   useEffect(() => {
-    if (!certListenerAdded.current) {
-      (async () => {
-        const unlistenFn = await listen<Certificate[]>(
-          "max-certs-reached",
-          (certs) => {
-            setCerts(certs.payload);
-          },
-        );
-        certUnlisten.current = unlistenFn;
-      })();
-      certListenerAdded.current = true;
-    }
+    const subscription = listen<Certificate[]>("max-certs-reached", (event) => {
+      setCerts(event.payload);
+    });
     return () => {
-      certUnlisten.current();
+      void subscription.then((stop) => stop());
     };
   }, []);
 
@@ -142,13 +132,21 @@ export const AppleID = ({
                       <button
                         type="button"
                         className="action-button primary"
+                        disabled={loginBusy}
                         onClick={() => {
+                          if (loginInFlight.current) return;
+                          loginInFlight.current = true;
+                          setLoginBusy(true);
                           let promise = async () => {
-                            await invoke("login_stored", {
-                              email: id,
-                              anisetteServer,
-                            });
-                            setForceUpdateIds((v) => v + 1);
+                            try {
+                              await invoke("login_stored", {
+                                email: id,
+                                anisetteServer,
+                              });
+                              setForceUpdateIds((v) => v + 1);
+                            } finally {
+                              finishLogin();
+                            }
                           };
                           toast.promise(promise, {
                             loading: t("apple_id.logging_in"),
@@ -205,6 +203,8 @@ export const AppleID = ({
                   toast.warning(t("apple_id.enter_email_password"));
                   return;
                 }
+                if (loginInFlight.current) return;
+                loginInFlight.current = true;
                 setLoginBusy(true);
                 let promise = async () => {
                   try {
@@ -219,7 +219,7 @@ export const AppleID = ({
                     // Drop the password from UI memory immediately; it is
                     // only ever sent to the backend login command.
                     setPasswordInput("");
-                    setLoginBusy(false);
+                    finishLogin();
                   }
                 };
                 toast.promise(promise, {
@@ -287,7 +287,7 @@ export const AppleID = ({
         <form
           onSubmit={async (e) => {
             e.preventDefault();
-            if (tfaCode.length !== 6) {
+            if (!/^\d{6}$/.test(tfaCode)) {
               toast.warning(t("apple_id.valid_6digit"));
               return;
             }

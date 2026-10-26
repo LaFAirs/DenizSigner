@@ -25,6 +25,8 @@ pub enum AppError {
     #[error("{0}")]
     Auth(String),
     #[error("{0}")]
+    AppleAuthRejected(String),
+    #[error("{0}")]
     Download(String),
     #[error("{0}: {1}")]
     HouseArrest(String, String),
@@ -96,6 +98,10 @@ fn friendly(kind: &str) -> (&'static str, &'static str) {
             "Apple account locked",
             "Apple locked this account for security. Unlock it at iforgot.apple.com, then sign in again.",
         ),
+        "apple_auth_rejected" => (
+            "Apple authentication rejected (-80045)",
+            "Apple rejected the authentication request. Use a code from a trusted Apple device; SMS verification may not work with the current compatibility fix. Avoid repeated sign-in attempts and retry later if Apple still rejects the request.",
+        ),
         "auth" => (
             "Sign-in failed",
             "Check your Apple ID, password and 2FA code. Use an app-specific password only if Apple asks for one.",
@@ -163,6 +169,7 @@ impl From<Report> for AppError {
                 match err {
                     &SideloadError::AuthWithMessage(code, _) => match code {
                         -20209 => return AppError::AccountLocked(report_str),
+                        -80045 => return AppError::AppleAuthRejected(report_str),
                         _ => return AppError::Auth(report_str),
                     },
                     &SideloadError::DeveloperError(code, _) => match code {
@@ -207,6 +214,21 @@ mod tests {
             let (title, hint) = friendly(kind);
             assert!(!title.is_empty() && !hint.is_empty(), "{kind}");
         }
+    }
+
+    #[test]
+    fn distinguishes_apple_rejection_from_bad_credentials() {
+        let report: Report = Report::new(SideloadError::AuthWithMessage(
+            -80045, "This action cannot be completed at this time.".into(),
+        )).into();
+        let error = AppError::from(report);
+        assert!(matches!(error, AppError::AppleAuthRejected(_)));
+        assert_eq!(serde_json::to_value(error).unwrap()["type"], "apple_auth_rejected");
+        let report: Report = Report::new(SideloadError::AuthWithMessage(
+            -22406, "Enter the correct password".into(),
+        )).into();
+        let bad_password = AppError::from(report);
+        assert!(matches!(bad_password, AppError::Auth(_)));
     }
 
     #[test]

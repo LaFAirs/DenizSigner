@@ -79,7 +79,7 @@
     "login": "Anmelden",
     "two_factor_title": "Zwei-Faktor-Authentifizierung",
     "two_factor_prompt": "Bitte den Bestätigungscode eingeben, der an dein Gerät gesendet wurde.",
-    "two_factor_hint": "Gib den 6-stelligen Code deines vertrauenswürdigen Geräts ein. Die Anfrage verfällt nach 2 Minuten ohne Code.",
+    "two_factor_hint": "Gib den 6-stelligen Code von deinem vertrauenswürdigen Apple-Gerät ein. SMS-Codes funktionieren mit dem aktuellen Apple-Kompatibilitätsfix möglicherweise nicht. Die Anfrage verfällt nach 2 Minuten.",
     "verification_placeholder": "Bestätigungscode...",
     "valid_6digit": "Bitte einen gültigen 6-stelligen Code eingeben.",
     "submit": "Absenden",
@@ -235,6 +235,13 @@
     "title": "Ein Fehler ist aufgetreten: {{msg}}",
     "unknown": "Unbekannt",
     "support_message": "Besteht das Problem weiterhin, drücke \"In die Zwischenablage kopieren\" und prüfe die Protokolle (Einstellungen → Protokolle ansehen).",
-    "suggestions_heading": "Vorschläge"
+    "suggestions_heading": "Vorschläge",
+    "suggestions": {
+      "apple_auth_rejected": [
+        "Apple hat die Authentifizierungsanfrage abgewiesen (-80045). Das bedeutet nicht automatisch, dass dein Passwort falsch ist.",
+        "Verwende einen Code von einem vertrauenswürdigen Apple-Gerät. SMS-Codes funktionieren mit dem aktuellen Kompatibilitätsfix möglicherweise nicht.",
+        "Vermeide wiederholte Anmeldeversuche. Falls Apple die Anfrage weiterhin ablehnt, warte und versuche es später erneut."
+      ]
+    }
   }
 }

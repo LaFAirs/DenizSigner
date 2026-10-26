@@ -5,6 +5,7 @@ export const errorSuggestionKeys = {
   account_locked: ["error.suggestions.account_locked"],
   developer: [],
   auth: ["error.suggestions.auth"],
+  apple_auth_rejected: ["error.suggestions.apple_auth_rejected"],
   download: ["error.suggestions.download"],
   house_arrest: [
     "error.suggestions.house_arrest",

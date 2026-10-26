@@ -164,15 +164,22 @@ async fn login(
         move |params: TwoFactorCallbackParams| {
             let window_clone = window_clone.clone();
             async move {
-                window_clone
-                    .emit("2fa-required", params)
-                    .context("Failed to emit 2fa-required event")?;
-                let (tx, rx) = std::sync::mpsc::channel::<String>();
+                // Register before showing the prompt so an immediate code is not lost.
+                let (tx, mut rx) = tokio::sync::mpsc::unbounded_channel::<String>();
                 let handler_id = window_clone.listen("2fa-recieved", move |event| {
                     let _ = tx.send(event.payload().to_string());
                 });
-                let result = rx.recv_timeout(Duration::from_secs(120))?;
+                let emitted = window_clone.emit("2fa-required", params);
+                if emitted.is_err() {
+                    window_clone.unlisten(handler_id);
+                }
+                emitted.context("Failed to emit 2fa-required event")?;
+                // Await without blocking the async runtime; clean up on timeout too.
+                let result = tokio::time::timeout(Duration::from_secs(120), rx.recv()).await;
                 window_clone.unlisten(handler_id);
+                let result = result
+                    .context("Two-factor code request expired after 2 minutes")?
+                    .ok_or_else(|| rootcause::report!("Two-factor code response channel closed"))?;
                 // Wipe the code as soon as it is handed to the auth call.
                 // It is never logged, stored, or forwarded anywhere else.
                 let code = zeroize::Zeroizing::new(result.trim_matches('"').to_string());
@@ -307,6 +314,19 @@ pub async fn delete_app_id(
 #[cfg(test)]
 mod tests {
     use super::should_invalidate;
+
+    // Exercise the resolved dependency: the old macOS identity triggers -80045.
+    #[tokio::test]
+    async fn anisette_uses_fixed_authkit_identity() {
+        use isideload::anisette::{AnisetteProvider, remote_v3::RemoteV3AnisetteProvider};
+        // Match the crypto initialization performed by main() in the application.
+        let _ = rustls::crypto::aws_lc_rs::default_provider().install_default();
+        let provider = RemoteV3AnisetteProvider::default().unwrap();
+        let info = provider.get_client_info().await.unwrap();
+        assert!(info.client_info.contains("<Android;"));
+        assert!(info.client_info.contains("com.apple.AuthKit/1"));
+        assert!(!info.client_info.contains("<macOS;"));
+    }
 
     #[test]
     fn invalidates_only_matching_session() {

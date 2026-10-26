@@ -4,6 +4,24 @@ All notable changes to DenizSigner are documented here.
 Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/);
 versions follow [Semantic Versioning](https://semver.org/).
 
+## [0.1.1] — 2026-10-26
+
+### Fixed
+
+- Apple login error `-80045`: pin `isideload` 0.4.5, including the upstream
+  AuthKit identity fix, anisette resync and already-delivered 2FA handling.
+- Register the code listener before opening the 2FA prompt, await it without
+  blocking the async runtime, and remove it on timeout or event failure.
+- Prevent overlapping login attempts; close expired 2FA prompts and preserve
+  event subscriptions across React Strict Mode remounts.
+- Show specific EN/DE guidance for remaining Apple `-80045` rejections.
+
+### Known limitation
+
+- The upstream compatibility fix may not support SMS 2FA. Use a verification
+  code from a trusted Apple device. Apple account authentication and physical
+  device installation still require an interactive user test.
+
 ## [Unreleased]
 
 ### Fixed
